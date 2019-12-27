@@ -19,6 +19,7 @@
 
 # RStudio files
 .Rproj.user/
+tidyREDCap.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -37,3 +38,4 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
