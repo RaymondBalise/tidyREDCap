@@ -20,5 +20,8 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
     purrr,
-    stringr
+    stringr,
+    tibble
 Roxygen: list(markdown = TRUE)
+Suggests: 
+    testthat (>= 2.1.0)

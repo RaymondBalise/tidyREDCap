@@ -12,7 +12,15 @@
 #' @importFrom stringr str_replace_na
 #' @export
 #'
-#' @example NULL
+#' @example 
+#'   test_df <- tibble::tibble(
+#'     q1 = c("Unchecked", "Checked"),
+#'     q2 = c("Unchecked", "Unchecked"),
+#'     q3 = c("Checked", "Checked"),
+#'     q4 = c("Checked", "Unchecked")
+#'   )
+#'   make_binary_word(test_df)
+#'   
 make_binary_word <- function(df, yes_value = "Checked", the_labels = letters) {
   
   # a matrix of true/false indicating if a choice was selected
