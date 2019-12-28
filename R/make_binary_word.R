@@ -1,10 +1,15 @@
 #' Convert a choose all question into a binary word
 #' 
-#' @description This funciton takes a dataframe holding quesitons that correspond to a choose all that apply question in REDCap.  It can be used for any "binary word" problem.
+#' @description This funciton takes a dataframe holding quesitons that 
+#'     correspond to a choose all that apply question in REDCap.  It can be used 
+#'     for any "binary word" problem.
 #'
-#' @param df The dataframe with the columns corresponding to 
-#' @param yes_value A character string value that corresoonds to chooseing yes in a binary variable.  Defaults to the REDCap "Checked" option. 
-#' @param the_labels A character vector holding letters for the word.  See the vignette called makeBinaryWord for an example.
+#' @param df The dataframe with the columns corresponding to choose all that 
+#'     apply variables.
+#' @param yes_value A character string value that corresoonds to chooseing yes 
+#'     in a binary variable.  Defaults to the REDCap "Checked" option. 
+#' @param the_labels A character vector holding letters for the word.  See the 
+#'     vignette called makeBinaryWord for an example.
 #'
 #' @return Character vector with length equal to the rows of `df`
 #' 

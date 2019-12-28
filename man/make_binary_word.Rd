@@ -7,17 +7,22 @@
 make_binary_word(df, yes_value = "Checked", the_labels = letters)
 }
 \arguments{
-\item{df}{The dataframe with the columns corresponding to}
+\item{df}{The dataframe with the columns corresponding to choose all that
+apply variables}
 
-\item{yes_value}{A character string value that corresoonds to chooseing yes in a binary variable.  Defaults to the REDCap "Checked" option.}
+\item{yes_value}{A character string value that corresoonds to chooseing yes
+in a binary variable.  Defaults to the REDCap "Checked" option.}
 
-\item{the_labels}{A character vector holding letters for the word.  See the vignette called makeBinaryWord for an example.}
+\item{the_labels}{A character vector holding letters for the word.  See the
+vignette called makeBinaryWord for an example.}
 }
 \value{
 Character vector with length equal to the rows of \code{df}
 }
 \description{
-This funciton takes a dataframe holding quesitons that correspond to a choose all that apply question in REDCap.  It can be used for any "binary word" problem.
+This funciton takes a dataframe holding quesitons that
+correspond to a choose all that apply question in REDCap.  It can be used
+for any "binary word" problem.
 }
 \examples{
   test_df <- tibble::tibble(
