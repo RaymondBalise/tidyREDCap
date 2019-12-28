@@ -40,7 +40,7 @@ analysis <- redcap %>%
 
 # The solution
 ## Default lettering
-The `make_ binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. If the first option from the NCI ingredient question, *chips* (i.e., ingredients___1), was checked, the word created by `make_ binary_word()` will begin with *a* or if it was not checked the word will begin with *\_*. If the second option, *Yellow cheese* (i.e., ingredients___2), was checked the next letter will be a *b* and if it was not checked, a *\_* used as a placeholder.  So, if somebody is not craving any ingredients the word will be eight underscores (i.e., ________) and if they are craving every ingredient the word will be abcdefgh.
+The `make_ binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. If the first option from the NCI ingredient question, *chips* (i.e., ingredients\_\_\_1), was checked, the word created by `make_ binary_word()` will begin with *a* or if it was not checked the word will begin with *\_*. If the second option, *Yellow cheese* (i.e., ingredients\_\_\_2), was checked the next letter will be a *b* and if it was not checked, a *\_* used as a placeholder.  So, if somebody is not craving any ingredients the word will be eight underscores (i.e., \_\_\_\_\_\_\_\_) and if they are craving every ingredient the word will be abcdefgh.
 
 ```{r nacoExample}
 patterns <- make_binary_word(analysis) 
