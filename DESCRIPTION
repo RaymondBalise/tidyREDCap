@@ -17,11 +17,18 @@ Description: Helper functions for working with REDCap. Funded by CTN 0094.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports: 
     purrr,
     stringr,
-    tibble
+    tibble,
+    magrittr
 Roxygen: list(markdown = TRUE)
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    dplyr,
+    redcapAPI,
+    janitor
+VignetteBuilder: knitr

@@ -2,20 +2,30 @@
 % Please edit documentation in R/make_binary_word.R
 \name{make_binary_word}
 \alias{make_binary_word}
-\title{Convert a choose all \strong{question} into a binary word}
+\title{Convert a choose all question into a binary word}
 \usage{
 make_binary_word(df, yes_value = "Checked", the_labels = letters)
 }
 \arguments{
-\item{df}{the dataframe with the columns}
+\item{df}{The dataframe with the columns corresponding to}
 
-\item{yes_value}{what was checked}
+\item{yes_value}{A character string value that corresoonds to chooseing yes in a binary variable.  Defaults to the REDCap "Checked" option.}
 
-\item{the_labels}{character vector for indicator letters}
+\item{the_labels}{A character vector holding letters for the word.  See the vignette called makeBinaryWord for an example.}
 }
 \value{
-character vector of length of rows of \code{df}
+Character vector with length equal to the rows of \code{df}
 }
 \description{
-Pass in a set variable
+This funciton takes a dataframe holding quesitons that correspond to a choose all that apply question in REDCap.  It can be used for any "binary word" problem.
+}
+\examples{
+  test_df <- tibble::tibble(
+    q1 = c("Unchecked", "Checked"),
+    q2 = c("Unchecked", "Unchecked"),
+    q3 = c("Checked", "Checked"),
+    q4 = c("Checked", "Unchecked")
+  )
+  make_binary_word(test_df)
+  
 }

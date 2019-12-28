@@ -1,0 +1,72 @@
+---
+title: "Make Binary Word"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Make Binary Word}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyREDCap)
+```
+
+# The issue
+
+REDCap exports choose-all-that-apply questions into a series of similarly-named binary indicator variables.  Using these variables there is no obvious way to detect common patterns that people pick together.  For example, in the Nacho Training Index (NCI) respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers) and those export into variables with names like `ingredients___1`, `ingredients___2`, etc.  In REDCap, it is simple to get a summary of those individual variables using the "Data Exports, Reports, and Stats" application built into the left side of the REDCap interface and selecting "Stats & Charts". Once data is in R, simple tables can be produced with the `table()` function or beautiful tables can be created with the `tabyl()` and `adorn_pct_formatting()` functions from the `janitor` package.   From these univariate tables it is impossible to judge which patterns of ingredients are craved together.  
+
+```{r getData}
+
+# rcon <- redcapAPI::redcapConnection(url='https://redcap.miami.edu/api/', 
+#                          token=Sys.getenv("NCI_API_Key"))
+# redcap <- redcapAPI::exportRecords(rcon)
+# 
+# saveRDS(redcap, file = "redcap.rds")
+
+redcap <- readRDS(file = "./redcap.rds")
+
+library(dplyr)
+analysis <- redcap %>% 
+  select(starts_with("ingredients___"))
+
+```
+
+# The solution
+## Default lettering
+The `make_ binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. If the first option from the NCI ingredient question, *chips* (i.e., ingredients___1), was checked, the word created by `make_ binary_word()` will begin with *a* or if it was not checked the word will begin with *_*. If the second option, *Yellow cheese* (i.e., ingredients___2), was checked the next letter will be a *b* and if it was not checked, a *_* used as a placeholder.  So, if somebody is not craving any ingredients the word will be eight underscores (i.e., ________) and if they are craving every ingredient the word will be abcdefgh.
+
+```{r nacoExample}
+patterns <- make_binary_word(analysis) 
+
+
+janitor::tabyl(patterns)
+```
+
+
+## Custom lettering
+While the default lettering is somewhat useful, using meaningful (mnemonic) letters makes the binary word easier to understand.  In this case, the first letter for each choice can be used as a useful mnemonic.
+
+| Abbreviation | Ingredient |
+| :---------- | :---------- |
+| C |	Chips |
+| Y |	Yellow cheese |
+| O |	Orange cheese |
+| W |	White cheese |
+| M |	Meat |
+| B |	Beans |
+| T |	Tomatoes |
+| P |	Peppers |
+
+```{r nachoAbreviations}
+labels <- c("C", "Y", "O", "W", "M", "B", "T", "P")
+patterns <- make_binary_word(analysis, the_labels = labels)
+janitor::tabyl(patterns)
+```
+

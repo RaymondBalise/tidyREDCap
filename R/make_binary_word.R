@@ -1,18 +1,18 @@
 #' Convert a choose all question into a binary word
 #' 
-#' @description Pass in a set variable
+#' @description This funciton takes a dataframe holding quesitons that correspond to a choose all that apply question in REDCap.  It can be used for any "binary word" problem.
 #'
-#' @param df the dataframe with the columns 
-#' @param yes_value what was checked
-#' @param the_labels character vector for indicator letters 
+#' @param df The dataframe with the columns corresponding to 
+#' @param yes_value A character string value that corresoonds to chooseing yes in a binary variable.  Defaults to the REDCap "Checked" option. 
+#' @param the_labels A character vector holding letters for the word.  See the vignette called makeBinaryWord for an example.
 #'
-#' @return character vector of length of rows of `df`
+#' @return Character vector with length equal to the rows of `df`
 #' 
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_na
 #' @export
 #'
-#' @example 
+#' @examples 
 #'   test_df <- tibble::tibble(
 #'     q1 = c("Unchecked", "Checked"),
 #'     q2 = c("Unchecked", "Unchecked"),
