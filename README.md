@@ -3,4 +3,4 @@
   <!-- badges: end -->
 
 # tidyREDCap
-Helper functions for processing REDCap data in R
+Helper functions for processing REDCap data in R.

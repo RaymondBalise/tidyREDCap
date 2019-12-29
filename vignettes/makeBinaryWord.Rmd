@@ -20,7 +20,7 @@ library(tidyREDCap)
 
 # The issue
 
-REDCap exports choose-all-that-apply questions into a series of similarly-named binary indicator variables.  Using these variables there is no obvious way to detect common patterns that people pick together.  For example, in the Nacho Training Index (NCI) respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers) and those export into variables with names like `ingredients___1`, `ingredients___2`, etc.  In REDCap, it is simple to get a summary of those individual variables using the "Data Exports, Reports, and Stats" application built into the left side of the REDCap interface and selecting "Stats & Charts". Once data is in R, simple tables can be produced with the `table()` function or beautiful tables can be created with the `tabyl()` and `adorn_pct_formatting()` functions from the `janitor` package.   From these univariate tables it is impossible to judge which patterns of ingredients are craved together.  
+REDCap exports a "choose all that apply" question into a series of, similarly-named, binary indicator variables. Using these variables there is no obvious way to detect common patterns that people pick together.  For example, in the Nacho Craving Index (NCI) respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers) and those export into variables with names like `ingredients___1`, `ingredients___2`, etc. In REDCap, it is simple to get a summary of those individual variables using the "Data Exports, Reports, and Stats" application built into the left side of the REDCap interface and selecting "Stats & Charts". Once data is in R, simple tables can be produced with the `table()` function or beautiful tables can be created with the `tabyl()` and `adorn_pct_formatting()` functions from the `janitor` package. From these univariate tables it is impossible to judge which patterns of ingredients are craved together.  
 
 ```{r getData}
 
@@ -40,7 +40,7 @@ analysis <- redcap %>%
 
 # The solution
 ## Default lettering
-The `make_ binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. If the first option from the NCI ingredient question, *chips* (i.e., ingredients\_\_\_1), was checked, the word created by `make_ binary_word()` will begin with *a* or if it was not checked the word will begin with *\_*. If the second option, *Yellow cheese* (i.e., ingredients\_\_\_2), was checked the next letter will be a *b* and if it was not checked, a *\_* used as a placeholder.  So, if somebody is not craving any ingredients the word will be eight underscores (i.e., \_\_\_\_\_\_\_\_) and if they are craving every ingredient the word will be abcdefgh.
+The `make_ binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. If the first option from the NCI ingredient question, *chips* (i.e., ingredients\_\_\_1), was checked, the word created by `make_ binary_word()` will begin with *a* or if it was not checked the word will begin with *\_*. If the second option, *Yellow cheese* (i.e., ingredients\_\_\_2), was checked the next letter will be a *b* and if it was not checked, a *\_* will be used as a placeholder.  So, if somebody is not craving any ingredients the word will be eight underscores (i.e., \_\_\_\_\_\_\_\_) and if they are craving every ingredient the word will be abcdefgh.
 
 ```{r nacoExample}
 patterns <- make_binary_word(analysis) 
@@ -62,6 +62,8 @@ While the default lettering is somewhat useful, using meaningful (mnemonic) lett
 | B |	Beans |
 | T |	Tomatoes |
 | P |	Peppers |
+
+To use custom lettering, specify a vector of single letter abbreviations and pass it to the `the_labels` argument to make_binary_word(),  For example:
 
 ```{r nachoAbreviations}
 labels <- c("C", "Y", "O", "W", "M", "B", "T", "P")
