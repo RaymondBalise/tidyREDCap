@@ -1,16 +1,16 @@
-#' Convert a choose all question into a binary word
+#' Convert a "choose all that apply" Question Into a Binary Word
 #' 
 #' @description This function takes a dataframe holding binary variables with 
-#'     values corresponing to a "dummy coded" choose all that apply question.  
-#'     It can be used for any "binary word" problem.
+#'     values corresponding to a dummy-coded "choose all that apply" question.  
+#'     It can be used for any *binary word* problem.
 #'
 #' @param df A dataframe with the variables corresponding to binary indicators 
 #'     (the dummy coded variables) for a "choose all that apply" question.
 #' @param yes_value A character string that corresponds to choosing "yes" 
 #'     in the df binary variables.  Defaults to the REDCap "Checked" option. 
-#' @param the_labels A character vector of single letters holding letters for 
-#'     the word.  See the article/vignette) called "Make Binary Word" for an 
-#'     example.
+#' @param the_labels A character vector of single letters holding the letters 
+#'     used to make the binary word.  See the article/vignette called "Make 
+#'     Binary Word" for an example.
 #'
 #' @return A character vector with length equal to the rows of `df`
 #' 

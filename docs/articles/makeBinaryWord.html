@@ -85,8 +85,8 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</span></code></pre></div>
 <div id="the-issue" class="section level1">
 <h1 class="hasAnchor">
-<a href="#the-issue" class="anchor"></a>The issue</h1>
-<p>REDCap exports a “choose all that apply” question into a series of, similarly-named, binary indicator variables. Using these variables there is no obvious way to detect common patterns that people pick together. For example, in the Nacho Training Index (NCI) respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers) and those export into variables with names like <code>ingredients___1</code>, <code>ingredients___2</code>, etc. In REDCap, it is simple to get a summary of those individual variables using the “Data Exports, Reports, and Stats” application built into the left side of the REDCap interface and selecting “Stats &amp; Charts”. Once data is in R, simple tables can be produced with the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function or beautiful tables can be created with the <code>tabyl()</code> and <code>adorn_pct_formatting()</code> functions from the <code>janitor</code> package. From these univariate tables it is impossible to judge which patterns of ingredients are craved together.</p>
+<a href="#the-issue" class="anchor"></a>The Issue</h1>
+<p>REDCap exports a “choose all that apply” question into a series of similarly-named, binary indicator variables. Using these variables, there is no obvious way to detect common patterns that people pick together. For example, in the Nacho Craving Index (NCI), respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers). These export into variables with names like <code>ingredients___1</code>, <code>ingredients___2</code>, etc. In REDCap, it is simple to get a summary of those individual variables by using the “Data Exports, Reports, and Stats” application built into the left side of the REDCap interface and selecting “Stats &amp; Charts”. Once data is in R, simple tables can be produced with the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function or beautiful tables can be created with the <code>tabyl()</code> and <code>adorn_pct_formatting()</code> functions from the <code>janitor</code> package. From these univariate tables it is impossible to judge which patterns of ingredients are craved together.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co"># rcon &lt;- redcapAPI::redcapConnection(url='https://redcap.miami.edu/api/', </span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#                          token=Sys.getenv("NCI_API_Key"))</span></span>
@@ -110,11 +110,11 @@
 </div>
 <div id="the-solution" class="section level1">
 <h1 class="hasAnchor">
-<a href="#the-solution" class="anchor"></a>The solution</h1>
+<a href="#the-solution" class="anchor"></a>The Solution</h1>
 <div id="default-lettering" class="section level2">
 <h2 class="hasAnchor">
-<a href="#default-lettering" class="anchor"></a>Default lettering</h2>
-<p>The <code>make_ binary_word()</code> function combines responses from the individual variables into a single “word” that indicates which choices were selected. If the first option from the NCI ingredient question, <em>chips</em> (i.e., ingredients___1), was checked, the word created by <code>make_ binary_word()</code> will begin with <em>a</em> or if it was not checked the word will begin with <em>_</em>. If the second option, <em>Yellow cheese</em> (i.e., ingredients___2), was checked the next letter will be a <em>b</em> and if it was not checked, a <em>_</em> will be used as a placeholder. So, if somebody is not craving any ingredients the word will be eight underscores (i.e., ________) and if they are craving every ingredient the word will be abcdefgh.</p>
+<a href="#default-lettering" class="anchor"></a>Default Lettering</h2>
+<p>The <code>make_ binary_word()</code> function combines responses from the individual variables into a single “word” that indicates which choices were selected. If the first option from the NCI ingredient question, <em>chips</em> (i.e., ingredients___1), was checked, the word created by <code>make_ binary_word()</code> will begin with <em>a</em>, or if it was not checked the word will begin with <em>_</em>. If the second option, <em>Yellow cheese</em> (i.e., ingredients___2), was checked, the next letter will be a <em>b</em> and if it was not checked, a <em>_</em> will be used as a placeholder. So, if somebody is not craving any ingredients the word will be eight underscores (i.e., ________), and if they are craving every ingredient the word will be abcdefgh.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>patterns &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_binary_word.html">make_binary_word</a></span>(analysis) </span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
 <span id="cb3-3"><a href="#cb3-3"></a>janitor<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span>(patterns)</span>
@@ -133,7 +133,7 @@
 </div>
 <div id="custom-lettering" class="section level2">
 <h2 class="hasAnchor">
-<a href="#custom-lettering" class="anchor"></a>Custom lettering</h2>
+<a href="#custom-lettering" class="anchor"></a>Custom Lettering</h2>
 <p>While the default lettering is somewhat useful, using meaningful (mnemonic) letters makes the binary word easier to understand. In this case, the first letter for each choice can be used as a useful mnemonic.</p>
 <table class="table">
 <thead><tr class="header">
@@ -175,7 +175,7 @@
 </tr>
 </tbody>
 </table>
-<p>To use custom lettering, specify a vector of single letter abbreviations like this:</p>
+<p>To use custom lettering, specify a vector of single letter abbreviations and pass it to the <code>the_labels</code> argument to make_binary_word().For example:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>labels &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"C"</span>, <span class="st">"Y"</span>, <span class="st">"O"</span>, <span class="st">"W"</span>, <span class="st">"M"</span>, <span class="st">"B"</span>, <span class="st">"T"</span>, <span class="st">"P"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>patterns &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_binary_word.html">make_binary_word</a></span>(analysis, <span class="dt">the_labels =</span> labels)</span>
 <span id="cb4-3"><a href="#cb4-3"></a>janitor<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span>(patterns)</span>
@@ -201,11 +201,11 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#the-issue">The issue</a></li>
+<li><a href="#the-issue">The Issue</a></li>
       <li>
-<a href="#the-solution">The solution</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#default-lettering">Default lettering</a></li>
-      <li><a href="#custom-lettering">Custom lettering</a></li>
+<a href="#the-solution">The Solution</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#default-lettering">Default Lettering</a></li>
+      <li><a href="#custom-lettering">Custom Lettering</a></li>
       </ul>
 </li>
       </ul>
