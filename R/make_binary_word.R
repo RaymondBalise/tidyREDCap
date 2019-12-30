@@ -37,29 +37,43 @@
 #'   
 make_binary_word <- function(df, yes_value = "Checked", the_labels = letters) {
   
+  # stop for user checks
+  # STOP 1: ncol(df) > 26
+  
+  # constants
+  nRows <- nrow(df)
+  nCols <- ncol(df)
+  
+  # vector corresponding to the answer element number (the third choose all
+  #   thing is number 3)
+  elementsOfPickAll_idxMat <- matrix(
+    seq_len(nCols), nrow = nRows, ncol = nCols, byrow = TRUE
+  )
+  
   # a matrix of true/false indicating if a choice was selected
   matrix_lgl <- as.matrix(df) == yes_value
   
-  # vector corresponding to the answer element number (the third choose all thing is number 3)
-  elementsOfPickAll <- seq_len(ncol(matrix_lgl))
+  # a matrix holing the column number if a value is checked or zero
+  chooseAllPatternPerRecord_mat <- matrix_lgl * elementsOfPickAll_idxMat
+  
+  # convert the 0 to NA (so they can be easily replaced with _ below)
+  chooseAllPatternPerRecord_mat[chooseAllPatternPerRecord_mat == 0] <- NA
+  
+  
   
   map_chr(
-    .x = seq_len(nrow(matrix_lgl)),
+    .x = seq_len(nRows),
     .f = ~ {
-      # a matrix holing the column number if a value is checked or zero
-      chooseAllPatternPerRecord <- matrix_lgl[.x, ] * elementsOfPickAll
-      
-      # convert the 0 to NA (so they can be easily replaced with _ below)
-      chooseAllPatternPerRecord[chooseAllPatternPerRecord == 0] <- NA
       
       # replace the column number with the latter of the alphabet or the_labels
-      lettersAndNA <- the_labels[chooseAllPatternPerRecord]
+      lettersAndNA <- the_labels[chooseAllPatternPerRecord_mat[.x, ]]
       
       # replace 0 with NA
       lettersAndUnderscore <- str_replace_na(lettersAndNA, replacement = "_")
       
       # glue together the letters and _ to make the owrd
       paste(lettersAndUnderscore, sep = "", collapse = "")
+      
     }
   )
 }
