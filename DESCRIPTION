@@ -13,11 +13,12 @@ Authors@R:
            email = "gabriel.odom@fiu.edu",
            comment = c(ORCID = "0000-0003-1341-4555"))
            )
-Description: Helper functions for working with REDCap. Funded by CTN 0094.
+Description: Helper functions for working with REDCap.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
+Depends: R (>= 3.5.0)
 Imports: 
     purrr,
     stringr,
