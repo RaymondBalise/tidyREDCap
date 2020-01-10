@@ -15,18 +15,20 @@ in the binary variables of \code{df}. Defaults to the REDCap "Checked" option.}
 
 \item{the_labels}{A character vector of single letters holding the letters
 used to make the binary word. See the article/vignette called "Make
-Binary Word" for an example: .}
+Binary Word" for an example:
+\url{https://raymondbalise.github.io/tidyREDCap/articles/makeBinaryWord.html}.}
 }
 \value{
 A character vector with length equal to the rows of \code{df}, including
 one letter or underscore for each column of \code{df}. For instance, if \code{df}
-has one column for each of the eight options, with a row containing the
-values "Chips" (checked), "Yellow cheese" (unchecked), "Orange cheese"
-(checked), "White cheese" (checked), "Meat" (checked), "Beans"
-(unchecked), "Tomatoes" (unchecked) and "Peppers" (checked), then
-the character string corresponding to that row will be \code{"a_cde__h"}. The
-underscores represent that the options for "Yellow cheese", "Beans", and
-"Tomatoes" were left unchecked.
+has one column for each of the eight options of the Nacho Craving Index
+example instrument (\url{https://libguides.du.edu/c.php?g=948419&p=6839916}),
+with a row containing the values "Chips" (checked), "Yellow cheese"
+(unchecked), "Orange cheese" (checked), "White cheese" (checked), "Meat"
+(checked), "Beans" (unchecked), "Tomatoes" (unchecked) and "Peppers"
+(checked), then the character string corresponding to that row will be
+\code{"a_cde__h"}. The underscores represent that the options for "Yellow
+cheese", "Beans", and "Tomatoes" were left unchecked.
 }
 \description{
 This function takes a data frame holding binary variables with
@@ -34,12 +36,11 @@ values corresponding to a dummy-coded "choose all that apply" question.
 It can be used for any \emph{binary word} problem.
 }
 \examples{
-  test_df <- tibble::tibble(
-    q1 = c("Unchecked", "Checked"),
-    q2 = c("Unchecked", "Unchecked"),
-    q3 = c("Checked", "Checked"),
-    q4 = c("Checked", "Unchecked")
-  )
-  make_binary_word(test_df)
-  
+test_df <- tibble::tibble(
+  q1 = c("Unchecked", "Checked"),
+  q2 = c("Unchecked", "Unchecked"),
+  q3 = c("Checked", "Checked"),
+  q4 = c("Checked", "Unchecked")
+)
+make_binary_word(test_df)
 }

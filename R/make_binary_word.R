@@ -10,17 +10,19 @@
 #'    in the binary variables of `df`. Defaults to the REDCap "Checked" option.
 #' @param the_labels A character vector of single letters holding the letters
 #'    used to make the binary word. See the article/vignette called "Make
-#'    Binary Word" for an example: .
+#'    Binary Word" for an example:
+#'    <https://raymondbalise.github.io/tidyREDCap/articles/makeBinaryWord.html>.
 #'
 #' @return A character vector with length equal to the rows of `df`, including
 #'    one letter or underscore for each column of `df`. For instance, if `df`
-#'    has one column for each of the eight options, with a row containing the
-#'    values "Chips" (checked), "Yellow cheese" (unchecked), "Orange cheese"
-#'    (checked), "White cheese" (checked), "Meat" (checked), "Beans"
-#'    (unchecked), "Tomatoes" (unchecked) and "Peppers" (checked), then
-#'    the character string corresponding to that row will be `"a_cde__h"`. The
-#'    underscores represent that the options for "Yellow cheese", "Beans", and
-#'    "Tomatoes" were left unchecked.
+#'    has one column for each of the eight options of the Nacho Craving Index
+#'    example instrument (<https://libguides.du.edu/c.php?g=948419&p=6839916>),
+#'    with a row containing the values "Chips" (checked), "Yellow cheese"
+#'    (unchecked), "Orange cheese" (checked), "White cheese" (checked), "Meat"
+#'    (checked), "Beans" (unchecked), "Tomatoes" (unchecked) and "Peppers"
+#'    (checked), then the character string corresponding to that row will be
+#'    `"a_cde__h"`. The underscores represent that the options for "Yellow
+#'    cheese", "Beans", and "Tomatoes" were left unchecked.
 #'
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_na

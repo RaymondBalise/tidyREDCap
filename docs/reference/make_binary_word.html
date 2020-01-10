@@ -71,7 +71,7 @@ It can be used for any binary word problem." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -147,7 +147,8 @@ in the binary variables of <code>df</code>. Defaults to the REDCap "Checked" opt
       <th>the_labels</th>
       <td><p>A character vector of single letters holding the letters
 used to make the binary word. See the article/vignette called "Make
-Binary Word" for an example: .</p></td>
+Binary Word" for an example:
+<a href='https://raymondbalise.github.io/tidyREDCap/articles/makeBinaryWord.html'>https://raymondbalise.github.io/tidyREDCap/articles/makeBinaryWord.html</a>.</p></td>
     </tr>
     </table>
 
@@ -155,23 +156,23 @@ Binary Word" for an example: .</p></td>
 
     <p>A character vector with length equal to the rows of <code>df</code>, including
 one letter or underscore for each column of <code>df</code>. For instance, if <code>df</code>
-has one column for each of the eight options, with a row containing the
-values "Chips" (checked), "Yellow cheese" (unchecked), "Orange cheese"
-(checked), "White cheese" (checked), "Meat" (checked), "Beans"
-(unchecked), "Tomatoes" (unchecked) and "Peppers" (checked), then
-the character string corresponding to that row will be <code>"a_cde__h"</code>. The
-underscores represent that the options for "Yellow cheese", "Beans", and
-"Tomatoes" were left unchecked.</p>
+has one column for each of the eight options of the Nacho Craving Index
+example instrument (<a href='https://libguides.du.edu/c.php?g=948419&amp;p=6839916'>https://libguides.du.edu/c.php?g=948419&amp;p=6839916</a>),
+with a row containing the values "Chips" (checked), "Yellow cheese"
+(unchecked), "Orange cheese" (checked), "White cheese" (checked), "Meat"
+(checked), "Beans" (unchecked), "Tomatoes" (unchecked) and "Peppers"
+(checked), then the character string corresponding to that row will be
+<code>"a_cde__h"</code>. The underscores represent that the options for "Yellow
+cheese", "Beans", and "Tomatoes" were left unchecked.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>  <span class='no'>test_df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-    <span class='kw'>q1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Unchecked"</span>, <span class='st'>"Checked"</span>),
-    <span class='kw'>q2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Unchecked"</span>, <span class='st'>"Unchecked"</span>),
-    <span class='kw'>q3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Checked"</span>, <span class='st'>"Checked"</span>),
-    <span class='kw'>q4</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Checked"</span>, <span class='st'>"Unchecked"</span>)
-  )
-  <span class='fu'>make_binary_word</span>(<span class='no'>test_df</span>)</div><div class='output co'>#&gt; [1] "__cd" "a_c_"</div><div class='input'>  
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>test_df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
+  <span class='kw'>q1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Unchecked"</span>, <span class='st'>"Checked"</span>),
+  <span class='kw'>q2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Unchecked"</span>, <span class='st'>"Unchecked"</span>),
+  <span class='kw'>q3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Checked"</span>, <span class='st'>"Checked"</span>),
+  <span class='kw'>q4</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Checked"</span>, <span class='st'>"Unchecked"</span>)
+)
+<span class='fu'>make_binary_word</span>(<span class='no'>test_df</span>)</div><div class='output co'>#&gt; [1] "__cd" "a_c_"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
