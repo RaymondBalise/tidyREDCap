@@ -1,6 +1,6 @@
 Package: tidyREDCap
-Title: Helper functions for working with REDCap data
-Version: 0.0.0.9005
+Title: Helper Functions for Working with REDCap Data
+Version: 0.1.0.0
 Authors@R: 
     c(person(given = "Raymond",
            family = "Balise",
@@ -13,7 +13,7 @@ Authors@R:
            email = "gabriel.odom@fiu.edu",
            comment = c(ORCID = "0000-0003-1341-4555"))
            )
-Description: Helper functions for working with REDCap.
+Description: Helper functions for processing REDCap data in R. 'REDCap' (Research Electronic Data CAPture; <https://projectredcap.org>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -1,3 +1,9 @@
+# tidyREDCap 0.1.0.0 (CRAN release)
+
+* Fixed title capitalization.
+* Added reference to REDCap website.
+* Updated the release year in the license.
+* Added references to financial support in the ReadMe.
 
 # tidyREDCap (development version)
 
