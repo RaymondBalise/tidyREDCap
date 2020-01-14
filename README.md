@@ -23,8 +23,9 @@ Projects that have repeated assessments with different questionnaires/instrument
 
 * make_instrument: makes a tibble for an questionnaire/instrument. <font color="red">(coming soon)</font>
 
-## Website
+## Websites
 https://raymondbalise.github.io/tidyREDCap/
+https://github.com/RaymondBalise/tidyREDCap
 
 ## Our Supporters
 The development of this package was supported by:
