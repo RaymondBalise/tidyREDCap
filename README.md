@@ -21,7 +21,7 @@ REDCap exports the responses to a <i>choose all that apply</i> question into man
 
 Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the the questionnaires/instruments:
 
-* make_instrument: makes a tibble for an questionnaire/instrument. <font color="red">(coming soon)</font>
+* make_instrument: makes a tibble for an questionnaire/instrument <font color="red">(coming soon)</font>
 
 ## Websites
 https://raymondbalise.github.io/tidyREDCap/
