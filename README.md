@@ -10,9 +10,9 @@ Helper functions for processing REDCap data in R.
 
 'REDCap' (Research Electronic Data CAPture; <https://projectredcap.org>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.
 
-### Printing a <i>choose one</i> question
+### Working with <i>choose one</i> questions
 
-* make_choose_one_table: print a janitor style table with a variable lable.  Lets you print one choice from a <i>choose all that apply<i> question. <font color="red">(coming soon)</font>
+* make_choose_one_table: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply<i> question. 
 
 ### Working with <i>choose all that apply</i> questions
 
