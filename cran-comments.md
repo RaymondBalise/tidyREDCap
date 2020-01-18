@@ -5,9 +5,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-* Set version 0.1.0.0
-* Fixed caiptalization in the title  
-* Add information about REDCap to description (with URL to the project)
-* Updated the year in the LICENSE file
+* Set version 0.1.1.0
+* Added make_choose_one_table() function

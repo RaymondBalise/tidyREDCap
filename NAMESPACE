@@ -2,6 +2,12 @@
 
 export("%>%")
 export(make_binary_word)
+export(make_choose_one_table)
+importFrom(dplyr,pull)
+importFrom(janitor,adorn_pct_formatting)
+importFrom(janitor,tabyl)
 importFrom(magrittr,"%>%")
 importFrom(purrr,map_chr)
+importFrom(stringr,str_locate)
 importFrom(stringr,str_replace_na)
+importFrom(stringr,str_sub)

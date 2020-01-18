@@ -27,15 +27,15 @@ Imports:
     purrr,
     stringr,
     tibble,
-    magrittr
+    magrittr,
+    dplyr,
+    janitor
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
-    dplyr,
-    redcapAPI,
-    janitor
+    redcapAPI
 VignetteBuilder: knitr
 URL: https://raymondbalise.github.io/tidyREDCap/index.html
 BugReports: https://github.com/RaymondBalise/tidyREDCap/issues
