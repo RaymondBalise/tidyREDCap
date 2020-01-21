@@ -12,7 +12,7 @@ Helper functions for processing REDCap data in R.
 
 ### Working with <i>choose one</i> questions
 
-* `make_choose_one_table`: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply<i> question. 
+* `make_choose_one_table`: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply</i> question. 
 
 ### Working with <i>choose all that apply</i> questions
 
