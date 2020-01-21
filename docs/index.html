@@ -106,7 +106,8 @@
 <h3 class="hasAnchor">
 <a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>choose one</i> questions</h3>
 <ul>
-<li>make_choose_one_table: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply<i> question.</i></i>
+<li>
+<code>make_choose_one_table</code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply<i> question.</i></i>
 </li>
 </ul>
 </div>
@@ -115,8 +116,10 @@
 <a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>choose all that apply</i> questions</h3>
 <p>REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions. tidyREDCap helps summarize the responses with two functions:</p>
 <ul>
-<li>make_binary_word: converts all the responses into a single descriptive “word”</li>
-<li>make_choose_all_table: converts all the responses into a single summary table</li>
+<li>
+<code>make_binary_word</code>: converts all the responses into a single descriptive “word”</li>
+<li>
+<code>make_choose_all_table</code>: converts all the responses into a single summary table</li>
 </ul>
 </div>
 <div id="working-with-repeated-measures" class="section level3">
@@ -124,7 +127,8 @@
 <a href="#working-with-repeated-measures" class="anchor"></a>Working with repeated measures</h3>
 <p>Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV. tidyREDCap will parse the export and create tables for any of the the questionnaires/instruments:</p>
 <ul>
-<li>make_instrument: makes a tibble for a questionnaire/instrument</li>
+<li>
+<code>make_instrument</code>: makes a tibble for a questionnaire/instrument</li>
 </ul>
 </div>
 <div id="websites" class="section level2">

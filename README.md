@@ -12,20 +12,20 @@ Helper functions for processing REDCap data in R.
 
 ### Working with <i>choose one</i> questions
 
-* make_choose_one_table: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply<i> question. 
+* `make_choose_one_table`: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply<i> question. 
 
 ### Working with <i>choose all that apply</i> questions
 
 REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions.  tidyREDCap helps summarize the responses with two functions:
 
-* make_binary_word: converts all the responses into a single descriptive "word"
-* make_choose_all_table: converts all the responses into a single summary table
+* `make_binary_word`: converts all the responses into a single descriptive "word"
+* `make_choose_all_table`: converts all the responses into a single summary table
 
 ### Working with repeated measures
 
 Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the the questionnaires/instruments:
 
-* make_instrument: makes a tibble for a questionnaire/instrument
+* `make_instrument`: makes a tibble for a questionnaire/instrument
 
 ## Websites
 https://raymondbalise.github.io/tidyREDCap/
