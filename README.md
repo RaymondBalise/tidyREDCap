@@ -19,7 +19,7 @@ Helper functions for processing REDCap data in R.
 REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions.  tidyREDCap helps summarize the responses with two functions:
 
 * make_binary_word: converts all the responses into a single descriptive "word"
-* make_choose_all_table: converts all the responses into a single summary table <font color="red">(coming soon)</font>
+* make_choose_all_table: converts all the responses into a single summary table
 
 ### Working with repeated measures
 

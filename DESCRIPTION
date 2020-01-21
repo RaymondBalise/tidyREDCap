@@ -29,7 +29,9 @@ Imports:
     tibble,
     magrittr,
     dplyr,
-    janitor
+    janitor,
+    tidyr,
+    rlang
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat (>= 2.1.0),

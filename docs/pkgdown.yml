@@ -3,6 +3,7 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   makeBinaryWord: makeBinaryWord.html
+  makeChooseAllTable: makeChooseAllTable.html
   makeChooseOneTable: makeChooseOneTable.html
   makeInstrument: makeInstrument.html
 
