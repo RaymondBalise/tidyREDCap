@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.1</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@
 <div id="first-load-redcap-data-into-r" class="section level1">
 <h1 class="hasAnchor">
 <a href="#first-load-redcap-data-into-r" class="anchor"></a>First Load REDCap Data into R</h1>
-<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key I have saved the data to the package website.</p>
+<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2"></a>rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>, </span>
@@ -116,7 +116,7 @@
 <div id="the-problem-and-solution" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-problem-and-solution" class="anchor"></a>The Problem and Solution</h1>
-<p>It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels that are exported on <em>choose all that apply</em> questions include both the question and which ever response was chosen. This redundancy is often unwanted.</p>
+<p>It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels that are exported on <em>choose all that apply</em> questions include both the question and whichever response was chosen. This redundancy is often unwanted.</p>
 <p>The make_choose_one_table() function can either use a factor variable or a data frame name and the name of the factor inside of the data frame. The subset option if set to TRUE will cause the function to subset the label’s text and only show the response option (not repeat the question.)</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>

@@ -1,7 +1,13 @@
+# tidyREDCap 0.2.0.1 
+* Cleaned up vignettes
+
 # tidyREDCap 0.2.0 
 
-* Added make_choose_one_table() function
 * Added make_instrument() function
+
+# tidyREDCap 0.1.1
+
+* Added make_choose_one_table() function
 
 # tidyREDCap 0.1.0 (CRAN release)
 

@@ -7,5 +7,6 @@
 
 0 errors | 0 warnings | 0 note
 
-* Set version 0.1.1.0
+* Set version 0.2.0.1
 * Added make_choose_one_table() function
+* Added make_instrument() function

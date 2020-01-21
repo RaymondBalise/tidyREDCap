@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.1</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
 <div id="first-load-redcap-data-into-r" class="section level1">
 <h1 class="hasAnchor">
 <a href="#first-load-redcap-data-into-r" class="anchor"></a>First Load REDCap Data into R</h1>
-<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key I have saved the data to the package website.</p>
+<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co"># rcon &lt;- redcapAPI::redcapConnection(</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#   url = 'https://redcap.miami.edu/api/',</span></span>
@@ -119,9 +119,9 @@
 <div id="the-problem" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-problem" class="anchor"></a>The Problem</h1>
-<p>REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day). This works well when every instrument/questionnaire is given at every assessment but for projects that have different instruments/questionnaire given on different days, REDCap exports blanks (the value NA). For example, in the Nachos for Axiety project, three instruments were used and they each had a different administration schedule. Subject’s anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale, everyday it was assessed with the Hamilton Anxiety Scale (HAM-A) but the Nacho Craving Index was administered only at the baseline and at the end of the study.</p>
+<p>REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day). This works well when every instrument/questionnaire is given at every assessment, but for projects that have different instruments/questionnaires given on different days, REDCap exports blanks (the value NA). For example, in the Nachos for Anxiety project, three instruments were used and they each had a different administration schedule. Subjects’ anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale. Every day it was assessed with the Hamilton Anxiety Scale (HAM-A), but the Nacho Craving Index was administered only at the baseline and at the end of the study.</p>
 <p><img src="schedule.png"></p>
-<p>The instruments that are not assessed every day appear as entirely blank questionnaires when the data is export. For example, the NCI is shown as missing for the Day 1, Day 2 an Day 3 anxiety assessment visits where it was not administered.</p>
+<p>The instruments that are not assessed every day appear as entirely blank questionnaires when the data is exported. For example, the NCI is shown as missing for the Day 1, Day 2 an Day 3 anxiety assessment visits where it was not administered.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>redcap <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(record_id, redcap_event_name, nachos<span class="op">:</span>nci_complete) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
@@ -325,7 +325,7 @@
 <td align="left">Complete</td>
 </tr></tbody>
 </table>
-<p>To extract cacho craving information:</p>
+<p>To extract nacho craving information:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(redcap, <span class="st">"nachos"</span>, <span class="st">"nci_complete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <table class="table">

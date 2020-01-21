@@ -20,7 +20,7 @@ suppressPackageStartupMessages(library(dplyr))
 ```
 
 # First Load REDCap Data into R
-The `redcapAPI` package can be used to load data directly into R.  To learn more about it take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key I have saved the data to the package website.
+The `redcapAPI` package can be used to load data directly into R.  To learn more about it, take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key, I have saved the data to the package website.
 
 ```{r getData}
 
@@ -38,11 +38,11 @@ redcap <- readRDS(file = "./redcap_nacho_anxiety.rds")
 
 # The Problem 
 
-REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day).  This works well when every instrument/questionnaire is given at every assessment but for projects that have different instruments/questionnaire given on different days, REDCap exports blanks (the value NA).  For example, in the Nachos for Axiety project, three instruments were used and they each had a different administration schedule. Subject's anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale, everyday it was assessed with the Hamilton Anxiety Scale (HAM-A) but the Nacho Craving Index was administered only at the baseline and at the end of the study. 
+REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day).  This works well when every instrument/questionnaire is given at every assessment, but for projects that have different instruments/questionnaires given on different days, REDCap exports blanks (the value NA).  For example, in the Nachos for Anxiety project, three instruments were used and they each had a different administration schedule. Subjects' anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale. Every day it was assessed with the Hamilton Anxiety Scale (HAM-A), but the Nacho Craving Index was administered only at the baseline and at the end of the study. 
 
 ![](schedule.png)
 
-The instruments that are not assessed every day appear as entirely blank questionnaires when the data is export.  For example, the NCI is shown as missing for the Day 1, Day 2 an Day 3 anxiety assessment visits where it was not administered. 
+The instruments that are not assessed every day appear as entirely blank questionnaires when the data is exported.  For example, the NCI is shown as missing for the Day 1, Day 2 an Day 3 anxiety assessment visits where it was not administered. 
 
 ```{r}
 redcap %>% 
@@ -51,7 +51,7 @@ redcap %>%
 ```
 
 
-It is often useful to make a different data table, which has the values for each  questionnaire, without the blank records. 
+It is often useful to make a different data table, which has the values for each questionnaire, without the blank records. 
 
 # The Solution
 
@@ -62,7 +62,7 @@ make_instrument(redcap, "concented", "enrollment_complete") %>%
   knitr::kable()
 ```
 
-To extract cacho craving information:
+To extract nacho craving information:
 
 ```{r}
 make_instrument(redcap, "nachos", "nci_complete") %>% 
