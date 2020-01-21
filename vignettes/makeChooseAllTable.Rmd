@@ -39,13 +39,21 @@ redcap <- readRDS(file = "./redcap.rds")
 
 # The Problem 
 
-REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables. It is desirable to having a consise table showing how often each option was chosen.
+REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables. It is desirable to have a consise table showing how often each option was chosen.
 
-# The solution
+# The Solution
 
-If you pass the `make_choose_all_table()` function the name of a REDCap export, and the name of the _choose all that apply question_ question in REDCap, it will produce a consise frequency count table.
+If you pass the `make_choose_all_table()` function the name of a REDCap export and the name of the _choose all that apply question_ question in REDCap, it will produce a consise frequency count table.
+
+
+```{r showCode, eval=FALSE}
+make_choose_all_table(redcap, "ingredients") %>% 
+  knitr::kable()
+```
+
 ### What ingredients do you currently crave?
-```{r makeTable}
+
+```{r showOutput, echo=FALSE}
 make_choose_all_table(redcap, "ingredients") %>% 
   knitr::kable()
 ```
