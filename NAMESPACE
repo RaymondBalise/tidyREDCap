@@ -3,6 +3,7 @@
 export("%>%")
 export(make_binary_word)
 export(make_choose_one_table)
+export(make_instrument)
 importFrom(dplyr,pull)
 importFrom(janitor,adorn_pct_formatting)
 importFrom(janitor,tabyl)

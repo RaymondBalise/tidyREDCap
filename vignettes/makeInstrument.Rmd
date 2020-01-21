@@ -1,0 +1,78 @@
+---
+title: "Make Instrument"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Make Instrument}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyREDCap)
+suppressPackageStartupMessages(library(dplyr))
+```
+
+# First Load REDCap Data into R
+The `redcapAPI` package can be used to load data directly into R.  To learn more about it take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key I have saved the data to the package website.
+
+```{r getData}
+
+# rcon <- redcapAPI::redcapConnection(
+#   url = 'https://redcap.miami.edu/api/',
+#   token = Sys.getenv("nacho_anxiety_Key")
+# )
+# 
+# redcap_nacho_anxiety <- redcapAPI::exportRecords(rcon)
+# 
+# saveRDS(redcap_nacho_anxiety, file = "redcap_nacho_anxiety.rds")
+
+redcap <- readRDS(file = "./redcap_nacho_anxiety.rds")
+```
+
+# The Problem 
+
+REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day).  This works well when every instrument/questionnaire is given at every assessment but for projects that have different instruments/questionnaire given on different days, REDCap exports blanks (the value NA).  For example, in the Nachos for Axiety project, three instruments were used and they each had a different administration schedule. Subject's anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale, everyday it was assessed with the Hamilton Anxiety Scale (HAM-A) but the Nacho Craving Index was administered only at the baseline and at the end of the study. 
+
+![](schedule.png)
+
+The instruments that are not assessed every day appear as entirely blank questionnaires when the data is export.  For example, the NCI is shown as missing for the Day 1, Day 2 an Day 3 anxiety assessment visits where it was not administered. 
+
+```{r}
+redcap %>% 
+  select(record_id, redcap_event_name, nachos:nci_complete) %>% 
+  knitr::kable()
+```
+
+
+It is often useful to make a different data table, which has the values for each  questionnaire, without the blank records. 
+
+# The Solution
+
+Pass the `make_instrument()` function the name of a dataset and the names of the first and last variable in an instrument and it will return a table that has the not blank records for the instrument.  For example, to extract the enrollment/concent instrument:
+
+```{r}
+make_instrument(redcap, "concented", "enrollment_complete") %>% 
+  knitr::kable()
+```
+
+To extract cacho craving information:
+
+```{r}
+make_instrument(redcap, "nachos", "nci_complete") %>% 
+  knitr::kable()
+```
+
+To make an analysis dataset containing the NCI values without the subject ID and the event name:
+
+```{r}
+make_instrument(redcap, "nachos", "nci_complete", drop_which_when = TRUE) %>% 
+  knitr::kable()
+```
+

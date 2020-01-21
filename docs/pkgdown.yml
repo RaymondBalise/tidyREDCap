@@ -4,4 +4,5 @@ pkgdown_sha: ~
 articles:
   makeBinaryWord: makeBinaryWord.html
   makeChooseOneTable: makeChooseOneTable.html
+  makeInstrument: makeInstrument.html
 
