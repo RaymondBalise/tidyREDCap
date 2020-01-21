@@ -123,22 +123,73 @@
 <p>The make_choose_one_table() function can either use a factor variable or a data frame name and the name of the factor inside of the data frame. The subset option if set to TRUE will cause the function to subset the label’s text and only show the response option (not repeat the question.)</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>)</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; What ingredients do you currently crave?: Chips</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt;   Response  n percent</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;  Unchecked 21     70%</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;    Checked  9     30%</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">2</span>, <span class="dt">subset =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; Yellow cheese</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;   Response  n percent</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;  Unchecked 23     77%</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt;    Checked  7     23%</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; What ingredients do you currently crave?: Chips</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Response</th>
+<th align="right">n</th>
+<th align="left">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Unchecked</td>
+<td align="right">21</td>
+<td align="left">70%</td>
+</tr>
+<tr class="even">
+<td align="left">Checked</td>
+<td align="right">9</td>
+<td align="left">30%</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">2</span>, <span class="dt">subset =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; Yellow cheese</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Response</th>
+<th align="right">n</th>
+<th align="left">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Unchecked</td>
+<td align="right">23</td>
+<td align="left">77%</td>
+</tr>
+<tr class="even">
+<td align="left">Checked</td>
+<td align="right">7</td>
+<td align="left">23%</td>
+</tr>
+</tbody>
+</table>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>redcap <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(ingredients___<span class="dv">3</span>, <span class="dt">subset =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; Orange cheese</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;   Response  n percent</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  Unchecked 27     90%</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;    Checked  3     10%</span></span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(ingredients___<span class="dv">3</span>, <span class="dt">subset =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; Orange cheese</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Response</th>
+<th align="right">n</th>
+<th align="left">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Unchecked</td>
+<td align="right">27</td>
+<td align="left">90%</td>
+</tr>
+<tr class="even">
+<td align="left">Checked</td>
+<td align="right">3</td>
+<td align="left">10%</td>
+</tr>
+</tbody>
+</table>
 </div>
   </div>
 

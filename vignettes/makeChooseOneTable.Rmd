@@ -40,15 +40,18 @@ The make_choose_one_table() function can either use a factor variable or a data 
 ```{r example}
 redcap <- readRDS(file = "./redcap.rds")
 
-make_choose_one_table(redcap$ingredients___1)
+make_choose_one_table(redcap$ingredients___1) %>% 
+  knitr::kable()
 ```
 
 ```{r example2}
-make_choose_one_table(redcap$ingredients___2, subset = TRUE)
+make_choose_one_table(redcap$ingredients___2, subset = TRUE) %>% 
+  knitr::kable()
 ```
 
 ```{r example3}
 redcap %>% 
-  make_choose_one_table(ingredients___3, subset = TRUE)
+  make_choose_one_table(ingredients___3, subset = TRUE) %>% 
+  knitr::kable()
 ```
 
