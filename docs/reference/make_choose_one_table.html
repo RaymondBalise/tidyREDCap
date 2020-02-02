@@ -43,9 +43,9 @@
 
 
 <meta property="og:title" content="make_choose_one_table — make_choose_one_table" />
-<meta property="og:description" content="Pass this function either a labeled factor or a data frame and
-a factor in the fame and it will return a janitor style table.  Use subset =
-TRUE if you are making a report on varaible that is part of a choose all that
+<meta property="og:description" content="Pass this function either 1) a labeled factor or 2) a data frame and also
+a factor in the frame, and it will return a janitor-style table.  Use subset =
+TRUE if you are making a report on a variable that is part of a choose all that
 apply question." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -141,10 +141,10 @@ apply question." />
     </div>
 
     <div class="ref-description">
-    <p>Pass this function either a labeled factor or a data frame and
-a factor in the fame and it will return a janitor style table.  Use subset =
-TRUE if you are making a report on varaible that is part of a choose all that
-apply question.</p>
+    <p>Pass this function either 1) a labeled factor or 2) a data frame and also
+a factor in the frame, and it will return a <code>janitor</code>-style table.  Use subset =
+TRUE if you are making a report on a variable that is part of a <em>choose all that
+apply</em> question.</p>
     </div>
 
     <pre class="usage"><span class='fu'>make_choose_one_table</span>(<span class='no'>arg1</span>, <span class='no'>arg2</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -158,12 +158,13 @@ apply question.</p>
     </tr>
     <tr>
       <th>arg2</th>
-      <td><p>if arg1 is a data frame this is the factor name</p></td>
+      <td><p>if arg1 is a data frame, this is a factor name</p></td>
     </tr>
     <tr>
       <th>subset</th>
-      <td><p>TRUE/FALSE Remove extra variable name text from the label if used with a
-choose all question</p></td>
+      <td><p>can be equal to TRUE/FALSE.  This option removes extra variable
+name text from the label.  This option is useful for <em>choose all that
+apply</em> questions.</p></td>
     </tr>
     </table>
 

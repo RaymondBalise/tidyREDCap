@@ -96,39 +96,43 @@
   <div class="contents col-md-9">
 
 
-<div id="tidyredcap" class="section level1">
+<div id="tidyredcap-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#tidyredcap" class="anchor"></a>tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<a href="#tidyredcap-" class="anchor"></a>tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/"><img src="reference/figures/logo.png" align="right" height="139"></a>
 </h1></div>
-<p>Helper functions for processing REDCap data in R.</p>
+<p>tidyREDCap is an R package with functions for processing REDCap data.</p>
 <p>‘REDCap’ (Research Electronic Data CAPture; <a href="https://projectredcap.org" class="uri">https://projectredcap.org</a>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.</p>
+<div id="what-tidyredcap-functions-can-do-for-you" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-tidyredcap-functions-can-do-for-you" class="anchor"></a>What tidyREDCap Functions Can Do for You</h2>
 <div id="working-with-choose-one-questions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>choose one</i> questions</h3>
+<a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>Choose One</i> Questions</h3>
 <ul>
 <li>
-<code>make_choose_one_table</code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
+<code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
 </ul>
 </div>
 <div id="working-with-choose-all-that-apply-questions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>choose all that apply</i> questions</h3>
+<a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>Choose All that Apply</i> Questions</h3>
 <p>REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions. tidyREDCap helps summarize the responses with two functions:</p>
 <ul>
 <li>
-<code>make_binary_word</code>: converts all the responses into a single descriptive “word”</li>
+<code><a href="reference/make_binary_word.html">make_binary_word()</a></code>: converts all the responses into a single descriptive “word”</li>
 <li>
-<code>make_choose_all_table</code>: converts all the responses into a single summary table</li>
+<code><a href="reference/make_choose_all_table.html">make_choose_all_table()</a></code>: converts all the responses into a single summary table</li>
 </ul>
 </div>
 <div id="working-with-repeated-measures" class="section level3">
 <h3 class="hasAnchor">
-<a href="#working-with-repeated-measures" class="anchor"></a>Working with repeated measures</h3>
-<p>Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV. tidyREDCap will parse the export and create tables for any of the the questionnaires/instruments:</p>
+<a href="#working-with-repeated-measures" class="anchor"></a>Working with Repeated Measures</h3>
+<p>Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV. tidyREDCap will parse the export and create tables for any of the questionnaires/instruments:</p>
 <ul>
 <li>
-<code>make_instrument</code>: makes a tibble for a questionnaire/instrument</li>
+<code><a href="reference/make_instrument.html">make_instrument()</a></code>: makes a tibble for a questionnaire/instrument</li>
 </ul>
+</div>
 </div>
 <div id="websites" class="section level2">
 <h2 class="hasAnchor">

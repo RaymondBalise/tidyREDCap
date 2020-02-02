@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#"
 )
 ```
 
@@ -36,22 +36,25 @@ saveRDS(redcap, file = "redcap.rds")
 # The Problem and Solution 
 It is often desirable to print variable labels above a summary table that shows the count of factor labels.  The labels that are exported on _choose all that apply_ questions include both the question and whichever response was chosen.  This redundancy is often unwanted.
 
-The make_choose_one_table() function can either use a factor variable or a data frame name and the name of the factor inside of the data frame.  The subset option if set to TRUE will cause the function to subset the label's text and only show the response option (not repeat the question.)
-```{r example}
+The `make_choose_one_table()` function can be used with a factor variable.  It can also be used with a data frame name and the name of the factor inside of that data frame.  The `subset` option, if set to TRUE, will cause the function to subset the label's text and only show the response option (not repeat the question).
+```{r example, results="asis"}
 redcap <- readRDS(file = "./redcap.rds")
 
 make_choose_one_table(redcap$ingredients___1) %>% 
   knitr::kable()
 ```
 
-```{r example2}
+```{r example2, results="asis", }
 make_choose_one_table(redcap$ingredients___2, subset = TRUE) %>% 
   knitr::kable()
 ```
 
-```{r example3}
+```{r example3,  results="asis", fig.align="left"}
+
+library(tidyREDCap)
+
 redcap %>% 
   make_choose_one_table(ingredients___3, subset = TRUE) %>% 
-  knitr::kable()
+  knitr::kable() 
 ```
 

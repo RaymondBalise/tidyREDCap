@@ -49,8 +49,9 @@ taybull <- function(variable, subset = FALSE) {
 #'
 #' @param data a dataframe that has the factor to report on 
 #' @param aVariable a factor to report on 
-#' @param subset parse off extra variable name if used with a choose all 
-#'     question
+#' @param subset TRUE/FALSE used to remove the repeated text from of a 
+#'     _choose all that apply_ question
+#'
 #'     
 #' @importFrom dplyr pull     
 #'
@@ -80,15 +81,16 @@ taybull2 <- function(data, aVariable, subset = FALSE) {
 
 #' make_choose_one_table
 #' 
-#' @description Pass this function either a labeled factor or a data frame and
-#' a factor in the fame and it will return a janitor style table.  Use subset =
-#' TRUE if you are making a report on varaible that is part of a choose all that
-#' apply question.
+#' @description Pass this function either 1) a labeled factor or 2) a data frame and also
+#' a factor in the frame, and it will return a `janitor`-style table.  Use subset =
+#' TRUE if you are making a report on a variable that is part of a _choose all that
+#' apply_ question.
 #'
 #' @param arg1 data frame that has a factor or a factor name
-#' @param arg2 if arg1 is a data frame this is the factor name
-#' @param subset TRUE/FALSE Remove extra variable name text from the label if used with a 
-#'     choose all question
+#' @param arg2 if arg1 is a data frame, this is a factor name
+#' @param subset can be equal to TRUE/FALSE.  This option removes extra variable 
+#'     name text from the label.  This option is useful for _choose all that 
+#'     apply_ questions.
 #'
 #' @return a table
 #' @export

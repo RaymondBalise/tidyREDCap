@@ -1,3 +1,7 @@
+# tidyREDCap 0.3.0.1 
+
+* Cleaned up vignettes, docs
+
 # tidyREDCap 0.3.0 
 
 * Added make_choose_all_table() function

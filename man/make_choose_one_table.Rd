@@ -9,17 +9,18 @@ make_choose_one_table(arg1, arg2, subset = FALSE)
 \arguments{
 \item{arg1}{data frame that has a factor or a factor name}
 
-\item{arg2}{if arg1 is a data frame this is the factor name}
+\item{arg2}{if arg1 is a data frame, this is a factor name}
 
-\item{subset}{TRUE/FALSE Remove extra variable name text from the label if used with a
-choose all question}
+\item{subset}{can be equal to TRUE/FALSE.  This option removes extra variable
+name text from the label.  This option is useful for \emph{choose all that
+apply} questions.}
 }
 \value{
 a table
 }
 \description{
-Pass this function either a labeled factor or a data frame and
-a factor in the fame and it will return a janitor style table.  Use subset =
-TRUE if you are making a report on varaible that is part of a choose all that
-apply question.
+Pass this function either 1) a labeled factor or 2) a data frame and also
+a factor in the frame, and it will return a \code{janitor}-style table.  Use subset =
+TRUE if you are making a report on a variable that is part of a \emph{choose all that
+apply} question.
 }

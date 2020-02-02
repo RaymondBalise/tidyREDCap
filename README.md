@@ -6,26 +6,28 @@
 
 # tidyREDCap <a href='https://raymondbalise.github.io/tidyREDCap/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
-Helper functions for processing REDCap data in R. 
+tidyREDCap is an R package with functions for processing REDCap data. 
 
 'REDCap' (Research Electronic Data CAPture; <https://projectredcap.org>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.
 
-### Working with <i>choose one</i> questions
+## What tidyREDCap Functions Can Do for You
 
-* `make_choose_one_table`: print a `janitor::tabyl` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply</i> question. 
+### Working with <i>Choose One</i> Questions
 
-### Working with <i>choose all that apply</i> questions
+* `make_choose_one_table()`: print a `janitor::tabyl()` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply</i> question. 
+
+### Working with <i>Choose All that Apply</i> Questions
 
 REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions.  tidyREDCap helps summarize the responses with two functions:
 
-* `make_binary_word`: converts all the responses into a single descriptive "word"
-* `make_choose_all_table`: converts all the responses into a single summary table
+* `make_binary_word()`: converts all the responses into a single descriptive "word"
+* `make_choose_all_table()`: converts all the responses into a single summary table
 
-### Working with repeated measures
+### Working with Repeated Measures
 
-Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the the questionnaires/instruments:
+Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the questionnaires/instruments:
 
-* `make_instrument`: makes a tibble for a questionnaire/instrument
+* `make_instrument()`: makes a tibble for a questionnaire/instrument
 
 ## Websites
 https://raymondbalise.github.io/tidyREDCap/

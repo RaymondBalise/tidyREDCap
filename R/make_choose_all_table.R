@@ -1,11 +1,12 @@
-#' Get a Variable Label from a Data Set and Variable 
+#' Get a variable's label from a data frame and variable 
 #'
 #' @param data The name of the data set
 #' @param aVariable The name of the variable
 #' 
 #' @importFrom stringr str_sub str_locate
 #'
-#' @return A variable's response label without  the choose all the question
+#' @return A variable's response label without the repeated text from of a 
+#'     _choose all that apply_ question
 #'
 ## @examples
 getLabel2 <- function(data, aVariable) {

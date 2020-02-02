@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_choose_all_table.R
 \name{getLabel2}
 \alias{getLabel2}
-\title{Get a Variable Label from a Data Set and Variable}
+\title{Get a variable's label from a data frame and variable}
 \usage{
 getLabel2(data, aVariable)
 }
@@ -12,8 +12,9 @@ getLabel2(data, aVariable)
 \item{aVariable}{The name of the variable}
 }
 \value{
-A variable's response label without  the choose all the question
+A variable's response label without the repeated text from of a
+\emph{choose all that apply} question
 }
 \description{
-Get a Variable Label from a Data Set and Variable
+Get a variable's label from a data frame and variable
 }

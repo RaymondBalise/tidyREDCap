@@ -11,8 +11,8 @@ taybull2(data, aVariable, subset = FALSE)
 
 \item{aVariable}{a factor to report on}
 
-\item{subset}{parse off extra variable name if used with a choose all
-question}
+\item{subset}{TRUE/FALSE used to remove the repeated text from of a
+\emph{choose all that apply} question}
 }
 \value{
 a table
