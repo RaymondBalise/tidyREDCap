@@ -10,31 +10,44 @@ tidyREDCap is an R package with functions for processing REDCap data.
 
 'REDCap' (Research Electronic Data CAPture; <https://projectredcap.org>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.
 
-## What tidyREDCap Functions Can Do for You
+## What tidyREDCap Functions Can Do for You?
 
-### Working with <i>Choose One</i> Questions
+#### Working with <i>Choose One</i> Questions
 
 * `make_choose_one_table()`: print a `janitor::tabyl()` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply</i> question. 
 
-### Working with <i>Choose All that Apply</i> Questions
+#### Working with <i>Choose All that Apply</i> Questions
 
 REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions.  tidyREDCap helps summarize the responses with two functions:
 
 * `make_binary_word()`: converts all the responses into a single descriptive "word"
 * `make_choose_all_table()`: converts all the responses into a single summary table
 
-### Working with Repeated Measures
+#### Working with Repeated Measures
 
 Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the questionnaires/instruments:
 
 * `make_instrument()`: makes a tibble for a questionnaire/instrument
 
-## Websites
+## What are the tidyREDCap Websites?
 https://raymondbalise.github.io/tidyREDCap/
 
 https://github.com/RaymondBalise/tidyREDCap
 
-## Our Supporters
+## Where Can I Find tidyREDCap?
+
+#### Offical Release
+You can get the latest offical release of tidyREDCap from CRAN.
+
+#### Development Release
+Run these two lines of code to install rUM from GitHub:
+
+```
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("RaymondBalise/tidyREDCap")
+```
+
+## Who Are Our Supporters?
 The development of this package was supported by:
 
 * Healing Communities Study: Developing and Testing and Integrated Approach to Address the Opioid Crisis-New York State. 

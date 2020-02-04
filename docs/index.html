@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3.1</span>
       </span>
     </div>
 
@@ -104,18 +104,18 @@
 <p>‘REDCap’ (Research Electronic Data CAPture; <a href="https://projectredcap.org" class="uri">https://projectredcap.org</a>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.</p>
 <div id="what-tidyredcap-functions-can-do-for-you" class="section level2">
 <h2 class="hasAnchor">
-<a href="#what-tidyredcap-functions-can-do-for-you" class="anchor"></a>What tidyREDCap Functions Can Do for You</h2>
-<div id="working-with-choose-one-questions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>Choose One</i> Questions</h3>
+<a href="#what-tidyredcap-functions-can-do-for-you" class="anchor"></a>What tidyREDCap Functions Can Do for You?</h2>
+<div id="working-with-choose-one-questions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>Choose One</i> Questions</h4>
 <ul>
 <li>
 <code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
 </ul>
 </div>
-<div id="working-with-choose-all-that-apply-questions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>Choose All that Apply</i> Questions</h3>
+<div id="working-with-choose-all-that-apply-questions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>Choose All that Apply</i> Questions</h4>
 <p>REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions. tidyREDCap helps summarize the responses with two functions:</p>
 <ul>
 <li>
@@ -124,9 +124,9 @@
 <code><a href="reference/make_choose_all_table.html">make_choose_all_table()</a></code>: converts all the responses into a single summary table</li>
 </ul>
 </div>
-<div id="working-with-repeated-measures" class="section level3">
-<h3 class="hasAnchor">
-<a href="#working-with-repeated-measures" class="anchor"></a>Working with Repeated Measures</h3>
+<div id="working-with-repeated-measures" class="section level4">
+<h4 class="hasAnchor">
+<a href="#working-with-repeated-measures" class="anchor"></a>Working with Repeated Measures</h4>
 <p>Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV. tidyREDCap will parse the export and create tables for any of the questionnaires/instruments:</p>
 <ul>
 <li>
@@ -134,15 +134,31 @@
 </ul>
 </div>
 </div>
-<div id="websites" class="section level2">
+<div id="what-are-the-tidyredcap-websites" class="section level2">
 <h2 class="hasAnchor">
-<a href="#websites" class="anchor"></a>Websites</h2>
+<a href="#what-are-the-tidyredcap-websites" class="anchor"></a>What are the tidyREDCap Websites?</h2>
 <p><a href="https://raymondbalise.github.io/tidyREDCap/" class="uri">https://raymondbalise.github.io/tidyREDCap/</a></p>
 <p><a href="https://github.com/RaymondBalise/tidyREDCap" class="uri">https://github.com/RaymondBalise/tidyREDCap</a></p>
 </div>
-<div id="our-supporters" class="section level2">
+<div id="where-can-i-find-tidyredcap" class="section level2">
 <h2 class="hasAnchor">
-<a href="#our-supporters" class="anchor"></a>Our Supporters</h2>
+<a href="#where-can-i-find-tidyredcap" class="anchor"></a>Where Can I Find tidyREDCap?</h2>
+<div id="offical-release" class="section level4">
+<h4 class="hasAnchor">
+<a href="#offical-release" class="anchor"></a>Offical Release</h4>
+<p>You can get the latest offical release of tidyREDCap from CRAN.</p>
+</div>
+<div id="development-release" class="section level4">
+<h4 class="hasAnchor">
+<a href="#development-release" class="anchor"></a>Development Release</h4>
+<p>Run these two lines of code to install rUM from GitHub:</p>
+<pre><code>if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
+</div>
+</div>
+<div id="who-are-our-supporters" class="section level2">
+<h2 class="hasAnchor">
+<a href="#who-are-our-supporters" class="anchor"></a>Who Are Our Supporters?</h2>
 <p>The development of this package was supported by:</p>
 <ul>
 <li>Healing Communities Study: Developing and Testing and Integrated Approach to Address the Opioid Crisis-New York State.
