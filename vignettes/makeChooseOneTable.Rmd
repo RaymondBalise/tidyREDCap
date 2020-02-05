@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(tidyREDCap)
 ```
 
+</br>
 
 
 # The Problem
