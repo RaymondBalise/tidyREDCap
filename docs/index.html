@@ -68,10 +68,10 @@
       <a href="articles/makeBinaryWord.html">Make Binary Word</a>
     </li>
     <li>
-      <a href="articles/makeChooseAllTable.html">Make Choose All Table</a>
+      <a href="articles/makeChooseAllTable.html">Make a 'Choose All' Table</a>
     </li>
     <li>
-      <a href="articles/makeChooseOneTable.html">Make Choose One Table</a>
+      <a href="articles/makeChooseOneTable.html">Make a 'Choose One' Table</a>
     </li>
     <li>
       <a href="articles/makeInstrument.html">Make Instrument</a>
@@ -96,9 +96,9 @@
   <div class="contents col-md-9">
 
 
-<div id="tidyredcap-" class="section level1">
+<div id="tidyredcap" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#tidyredcap-" class="anchor"></a>tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<a href="#tidyredcap" class="anchor"></a>tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/"><img src="reference/figures/logo.png" align="right" height="139"></a>
 </h1></div>
 <p>tidyREDCap is an R package with functions for processing REDCap data.</p>
 <p>‘REDCap’ (Research Electronic Data CAPture; <a href="https://projectredcap.org" class="uri">https://projectredcap.org</a>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.</p>
@@ -137,8 +137,8 @@
 <div id="what-are-the-tidyredcap-websites" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-are-the-tidyredcap-websites" class="anchor"></a>What are the tidyREDCap Websites?</h2>
-<p><a href="https://raymondbalise.github.io/tidyREDCap/" class="uri">https://raymondbalise.github.io/tidyREDCap/</a></p>
-<p><a href="https://github.com/RaymondBalise/tidyREDCap" class="uri">https://github.com/RaymondBalise/tidyREDCap</a></p>
+<p>Main Page: <a href="https://raymondbalise.github.io/tidyREDCap/" class="uri">https://raymondbalise.github.io/tidyREDCap/</a><br><strong>User Guides</strong>: <a href="https://raymondbalise.github.io/tidyREDCap/articles/" class="uri">https://raymondbalise.github.io/tidyREDCap/articles/</a><br>
+Development Site: <a href="https://github.com/RaymondBalise/tidyREDCap" class="uri">https://github.com/RaymondBalise/tidyREDCap</a></p>
 </div>
 <div id="where-can-i-find-tidyredcap" class="section level2">
 <h2 class="hasAnchor">
@@ -147,14 +147,20 @@
 <h4 class="hasAnchor">
 <a href="#offical-release" class="anchor"></a>Offical Release</h4>
 <p>You can get the latest offical release of tidyREDCap from CRAN.</p>
+<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("tidyREDCap")</a></code></pre>
 </div>
 <div id="development-release" class="section level4">
 <h4 class="hasAnchor">
 <a href="#development-release" class="anchor"></a>Development Release</h4>
-<p>Run these two lines of code to install rUM from GitHub:</p>
+<p>Run these two lines of code to install tidyREDCap from GitHub (this requires <a href="https://cran.r-project.org/bin/windows/Rtools/">RTools</a> for Windows or <a href="https://developer.apple.com/xcode/">Xcode</a> for Mac to be installed on your computer):</p>
 <pre><code>if (!requireNamespace("devtools")) install.packages("devtools")
 devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
 </div>
+</div>
+<div id="what-if-i-find-a-problem" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-if-i-find-a-problem" class="anchor"></a>What if I Find a Problem?</h2>
+<p>We are currently in active development of tidyREDCap. If one of our functions does not work the way that you expect, or if one of our functions is broken, please submit an issue ticket (using a <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html">reproducible example</a>) to our <a href="https://github.com/RaymondBalise/tidyREDCap/issues">issues page</a>. If you have a cool idea for our next new function, also submit an issue ticket. If you are an R developer and want so contribute to this package, please submit an issue ticket or a pull request.</p>
 </div>
 <div id="who-are-our-supporters" class="section level2">
 <h2 class="hasAnchor">
@@ -177,6 +183,7 @@ devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
 </ul>
 </li>
 <li>University of Miami, Sylvester Comprehensive Cancer Center</li>
+<li>Florida International University, Stempel College of Public Health</li>
 </ul>
 </div>
 </div>

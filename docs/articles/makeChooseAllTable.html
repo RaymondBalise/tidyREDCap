@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Make Choose All Table • tidyREDCap</title>
+<title>Make a 'Choose All' Table • tidyREDCap</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Make Choose All Table">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Make a 'Choose All' Table">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -64,10 +64,10 @@
       <a href="../articles/makeBinaryWord.html">Make Binary Word</a>
     </li>
     <li>
-      <a href="../articles/makeChooseAllTable.html">Make Choose All Table</a>
+      <a href="../articles/makeChooseAllTable.html">Make a 'Choose All' Table</a>
     </li>
     <li>
-      <a href="../articles/makeChooseOneTable.html">Make Choose One Table</a>
+      <a href="../articles/makeChooseOneTable.html">Make a 'Choose One' Table</a>
     </li>
     <li>
       <a href="../articles/makeInstrument.html">Make Instrument</a>
@@ -91,7 +91,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Make Choose All Table</h1>
+      <h1>Make a ‘Choose All’ Table</h1>
             
       
       
@@ -101,36 +101,64 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</span></code></pre></div>
-<div id="first-load-redcap-data-into-r" class="section level1">
-<h1 class="hasAnchor">
-<a href="#first-load-redcap-data-into-r" class="anchor"></a>First Load REDCap Data into R</h1>
-<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key I have saved the data to the package website.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2"></a>rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"NCI_API_Key"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a>redcap &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(redcap, <span class="dt">file =</span> <span class="st">"redcap.rds"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a></code></pre></div>
 <div id="the-problem" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-problem" class="anchor"></a>The Problem</h1>
-<p>REDCap exports a “choose all that apply” question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either “checked” or “unchecked”). It is desirable to have a consise table showing how often each option was chosen.</p>
+<p>REDCap exports a “choose all that apply” question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either “checked” or “unchecked”). For example, the following data represents a sample of responses to the Nacho Craving Index.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">redcap <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">"ingredients___"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;   ingredients___1 ingredients___2 ingredients___3 ingredients___4</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 1         Checked         Checked         Checked         Checked</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 2         Checked         Checked       Unchecked         Checked</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 3       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 4       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 5       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 6       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   ingredients___5 ingredients___6 ingredients___7 ingredients___8</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 1         Checked         Checked       Unchecked         Checked</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 2         Checked       Unchecked         Checked         Checked</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; 3       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; 4       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; 5       Unchecked       Unchecked       Unchecked       Unchecked</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; 6       Unchecked       Unchecked       Unchecked       Unchecked</span></a></code></pre></div>
+<p>It is desirable to have a consise table showing how often each option was chosen.</p>
+<div id="aside-loading-redcap-data-into-r" class="section level3">
+<h3 class="hasAnchor">
+<a href="#aside-loading-redcap-data-into-r" class="anchor"></a>Aside: Loading REDCap Data into R</h3>
+<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>, </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"NCI_API_Key"</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">redcap &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</a></code></pre></div>
+<p> </p>
+</div>
 </div>
 <div id="the-solution" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-solution" class="anchor"></a>The Solution</h1>
 <p>If you pass the <code><a href="../reference/make_choose_all_table.html">make_choose_all_table()</a></code> function the name of a REDCap export and the name of the <em>choose all that apply question</em> question in REDCap, it will produce a consise frequency count table.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="../reference/make_choose_all_table.html">make_choose_all_table</a></span>(redcap, <span class="st">"ingredients"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
-<div id="what-ingredients-do-you-currently-crave" class="section level3">
-<h3 class="hasAnchor">
-<a href="#what-ingredients-do-you-currently-crave" class="anchor"></a>What ingredients do you currently crave?</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/make_choose_all_table.html">make_choose_all_table</a></span>(redcap, <span class="st">"ingredients"</span>) </a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A tibble: 8 x 2</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;   What          Count</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 1 Chips             9</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 2 Yellow cheese     7</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 3 Orange cheese     3</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 4 White cheese      4</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 5 Meat              5</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 6 Beans             7</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 7 Tomatoes          6</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 8 Peppers           8</span></a></code></pre></div>
+<p>Similar to the <code><a href="../reference/make_choose_one_table.html">make_choose_one_table()</a></code> function, we can use this function inside an analysis pipeline. We can add the <code>kable()</code> call to make the table publication quality as well.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">redcap <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/make_choose_all_table.html">make_choose_all_table</a></span>(<span class="st">"ingredients"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">What</th>
@@ -172,7 +200,6 @@
 </tbody>
 </table>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -181,8 +208,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#first-load-redcap-data-into-r">First Load REDCap Data into R</a></li>
-      <li><a href="#the-problem">The Problem</a></li>
+<li><a href="#the-problem">The Problem</a></li>
       <li><a href="#the-solution">The Solution</a></li>
       </ul>
 </div>
