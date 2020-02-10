@@ -101,29 +101,29 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</span></code></pre></div>
 <p></p>
 <div id="the-problem" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-problem" class="anchor"></a>The Problem</h1>
 <p>REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day). This works well when every instrument/questionnaire is given at every assessment, but for projects that have different instruments/questionnaires given on different days, REDCap exports empty values (represented by the value <code>NA</code> in R).</p>
 <blockquote>
-<p><strong>Example:</strong> In the Nachos for Anxiety project, three instruments were used; they each had a different administration schedule. Subjects’ anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale. Every day, it was assessed with the Hamilton Anxiety Scale (HAM-A), but the Nacho Craving Index was administered only at the baseline and at the end of the study (see the figure below for clarification). <img src="schedule.png"></p>
+<p><strong>Example:</strong> In the Nachos for Anxiety project, three instruments were used; they each had a different administration schedule. Subjects’ anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale. Every day, it was assessed with the Hamilton Anxiety Scale (HAM-A), but the Nacho Craving Index was administered only at the baseline and at the end of the study (see the figure below for clarification).<br><img src="schedule.png"></p>
 </blockquote>
 <p>The instruments that are not assessed every day appear as entirely blank questionnaires when the data is exported. For example, values from the NCI instrument are shown as missing for the Day 1, Day 2, and Day 3 (because it was not administered during those visits).</p>
 <p>In R, this data is displayed as</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap_nacho_anxiety.rds"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">redcap <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="co"># Select these two columns</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    record_id, redcap_event_name,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="co"># And also select all columns between "nachos" and "nci_complete"</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">    nachos<span class="op">:</span>nci_complete</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="st">  </span><span class="co"># Make the table pretty</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap_nacho_anxiety.rds"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>redcap <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="co"># Select these two columns</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    record_id, redcap_event_name,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="co"># And also select all columns between "nachos" and "nci_complete"</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    nachos<span class="op">:</span>nci_complete</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="st">  </span><span class="co"># Make the table pretty</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">record_id</th>
@@ -307,14 +307,14 @@
 <h3 class="hasAnchor">
 <a href="#aside-loading-redcap-data-into-r" class="anchor"></a>Aside: Loading REDCap Data into R</h3>
 <p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"nacho_anxiety_Key"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">redcap_nacho_anxiety &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(redcap_nacho_anxiety, <span class="dt">file =</span> <span class="st">"redcap_nacho_anxiety.rds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"nacho_anxiety_Key"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>redcap_nacho_anxiety &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(redcap_nacho_anxiety, <span class="dt">file =</span> <span class="st">"redcap_nacho_anxiety.rds"</span>)</span></code></pre></div>
 <p> </p>
 </div>
 </div>
@@ -322,8 +322,8 @@
 <h1 class="hasAnchor">
 <a href="#the-solution" class="anchor"></a>The Solution</h1>
 <p>Pass the <code><a href="../reference/make_instrument.html">make_instrument()</a></code> function the name of a dataset and the names of the first and last variables in an instrument and it will return a table that has the non-empty records for the instrument. For example, to extract the enrollment/consent instrument:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(redcap, <span class="st">"concented"</span>, <span class="st">"enrollment_complete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(redcap, <span class="st">"concented"</span>, <span class="st">"enrollment_complete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">record_id</th>
@@ -339,8 +339,8 @@
 </tr></tbody>
 </table>
 <p>To extract nacho craving information:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(redcap, <span class="st">"nachos"</span>, <span class="st">"nci_complete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(redcap, <span class="st">"nachos"</span>, <span class="st">"nci_complete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -436,12 +436,12 @@
 </tbody>
 </table>
 <p>To make an analysis dataset containing the NCI values <strong>without</strong> the subject ID and the event name:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  redcap,</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="st">"nachos"</span>, <span class="st">"nci_complete"</span>,</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">drop_which_when =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="../reference/make_instrument.html">make_instrument</a></span>(</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  redcap,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="st">"nachos"</span>, <span class="st">"nci_complete"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="dt">drop_which_when =</span> <span class="ot">TRUE</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>

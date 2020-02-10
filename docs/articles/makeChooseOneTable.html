@@ -101,43 +101,43 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyREDCap)</span></code></pre></div>
 <p></p>
 <div id="the-problem" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-problem" class="anchor"></a>The Problem</h1>
 <p>It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels that are exported on <em>choose all that apply</em> questions include both the question and whichever response was chosen. This redundancy is often unwanted, and the results are not presented professionally.</p>
 <p>For example, in the Nacho Craving Index data, the first ingredient is “Chips”. We see how R presents this information by simply printing the components of the <code>ingredients___1</code> column.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">redcap<span class="op">$</span>ingredients___<span class="dv">1</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#  [1] Checked   Checked   Unchecked Unchecked Unchecked Unchecked Checked  </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#  [8] Unchecked Unchecked Unchecked Unchecked Unchecked Checked   Unchecked</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># [15] Unchecked Checked   Unchecked Unchecked Checked   Unchecked Unchecked</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># [22] Unchecked Checked   Unchecked Checked   Unchecked Unchecked Unchecked</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># [29] Unchecked Checked  </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># attr(,"redcapLabels")</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># [1] Unchecked Checked  </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># attr(,"redcapLevels")</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co"># [1] 0 1</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co"># attr(,"label")</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co"># [1] What ingredients do you currently crave?: Chips</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co"># Levels: Unchecked Checked</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>redcap &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="dt">file =</span> <span class="st">"./redcap.rds"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>redcap<span class="op">$</span>ingredients___<span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#  [1] Checked   Checked   Unchecked Unchecked Unchecked Unchecked Checked  </span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#  [8] Unchecked Unchecked Unchecked Unchecked Unchecked Checked   Unchecked</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># [15] Unchecked Checked   Unchecked Unchecked Checked   Unchecked Unchecked</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># [22] Unchecked Checked   Unchecked Checked   Unchecked Unchecked Unchecked</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># [29] Unchecked Checked  </span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># attr(,"redcapLabels")</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># [1] Unchecked Checked  </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># attr(,"redcapLevels")</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co"># [1] 0 1</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># attr(,"label")</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># [1] What ingredients do you currently crave?: Chips</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co"># Levels: Unchecked Checked</span></span></code></pre></div>
 <p>As we can see, this information is quite ugly, so we want to tabulate the results instead. However, if we use the simple <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function to clean up this information, we lose the original question and the answer label for <code>ingredients___1</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># </span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># Unchecked   Checked </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#        21         9</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># </span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Unchecked   Checked </span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#        21         9</span></span></code></pre></div>
 <p>We no longer know what the question was, or which “select all” option this information represents.</p>
 <div id="aside-loading-redcap-data-into-r" class="section level3">
 <h3 class="hasAnchor">
 <a href="#aside-loading-redcap-data-into-r" class="anchor"></a>Aside: Loading REDCap Data into R</h3>
 <p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>, </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"NCI_API_Key"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">redcap &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>rcon &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="dt">url =</span> <span class="st">'https://redcap.miami.edu/api/'</span>, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">token =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"NCI_API_Key"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a>redcap &lt;-<span class="st"> </span>redcapAPI<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span>(rcon)</span></code></pre></div>
 <p> </p>
 </div>
 </div>
@@ -145,14 +145,14 @@
 <h1 class="hasAnchor">
 <a href="#the-solution" class="anchor"></a>The Solution</h1>
 <p>The <code><a href="../reference/make_choose_one_table.html">make_choose_one_table()</a></code> function can be used with a factor variable to tabulate the response <em>while preserving the question and checked option context</em>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>) </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># What ingredients do you currently crave?: Chips</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#   Response  n percent</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#  Unchecked 21     70%</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#    Checked  9     30%</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>) </span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># What ingredients do you currently crave?: Chips</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#   Response  n percent</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#  Unchecked 21     70%</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#    Checked  9     30%</span></span></code></pre></div>
 <p>Further, this output can be molded into a publication-ready table with a single additional function call.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(redcap<span class="op">$</span>ingredients___<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <p>What ingredients do you currently crave?: Chips</p>
 <table class="table">
 <thead><tr class="header">
@@ -174,11 +174,11 @@
 </tbody>
 </table>
 <p>The <code>subset</code> option, if set to <code>TRUE</code>, will cause the function to remove the label’s text and only show the response option (i.e., not repeat the “What ingredients do you currently crave?” question).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  redcap<span class="op">$</span>ingredients___<span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">subset =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  redcap<span class="op">$</span>ingredients___<span class="dv">2</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="dt">subset =</span> <span class="ot">TRUE</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</span></code></pre></div>
 <p>Yellow cheese</p>
 <table class="table">
 <thead><tr class="header">
@@ -200,9 +200,9 @@
 </tbody>
 </table>
 <p>This function can also be used in an analysis pipeline with a data frame name and the name of the factor inside of that data frame. For example:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">redcap <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(ingredients___<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>() </a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>redcap <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span>(ingredients___<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>() </span></code></pre></div>
 <p>What ingredients do you currently crave?: Orange cheese</p>
 <table class="table">
 <thead><tr class="header">
