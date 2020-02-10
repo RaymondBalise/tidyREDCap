@@ -1,3 +1,7 @@
+# tidyREDCap 0.2.0 (CRAN release)
+
+* Cleaned up vignettes, docs
+
 # tidyREDCap 0.1.3.1 
 
 * Cleaned up vignettes, docs
