@@ -41,3 +41,5 @@ vignettes/*.pdf
 
 inst/doc
 .Rproj.user
+
+.DS_Store
