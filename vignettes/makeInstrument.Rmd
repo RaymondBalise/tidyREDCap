@@ -2,7 +2,7 @@
 title: "Make an Instrument"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Make Instrument}
+  %\VignetteIndexEntry{Make an Instrument}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -2,7 +2,7 @@
 title: "Make a 'Choose All' Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Make Choose All Table}
+  %\VignetteIndexEntry{Make a 'Choose All' Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

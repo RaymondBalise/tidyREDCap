@@ -2,7 +2,7 @@
 title: "Make a 'Choose One' Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Make Choose One Table}
+  %\VignetteIndexEntry{Make a 'Choose One' Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
