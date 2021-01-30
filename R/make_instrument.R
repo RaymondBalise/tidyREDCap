@@ -24,7 +24,7 @@ make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE) {
 
   # which records are all missing
   allMissing <- apply(instrument, 1, function(x) {
-    all(is.na(x))
+    all(is.na(x) | x == "")
   })
 
   # the rows that are not all missing
