@@ -1,4 +1,4 @@
-# tidyREDCap 0.2.0.1
+# tidyREDCap 0.2.1  (CRAN release)
 
 * Fix bug with "" character stings with make_instrument()
 
