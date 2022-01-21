@@ -53,7 +53,7 @@ make_choose_all_table <- function(df, variable) {
     }) %>%
     tibble::enframe(name = NULL) %>%  # new variable is value
     dplyr::rename("What" = .data$value) %>% 
-    dplyr::bind_cols(.data$., counts) %>% 
+    dplyr::bind_cols(counts) %>% 
     dplyr::select(.data$What, .data$Count)
   aTable
 }
