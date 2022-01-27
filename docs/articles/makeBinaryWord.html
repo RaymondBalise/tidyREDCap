@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -80,7 +76,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/RaymondBalise/tidyREDCap/">
+  <a href="https://github.com/RaymondBalise/tidyREDCap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -95,13 +91,13 @@
 
       
 
-      </header><script src="makeBinaryWord_files/header-attrs-2.6.4/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Make Binary Word</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/RaymondBalise/tidyREDCap/blob/master/vignettes/makeBinaryWord.Rmd"><code>vignettes/makeBinaryWord.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RaymondBalise/tidyREDCap/blob/HEAD/vignettes/makeBinaryWord.Rmd" class="external-link"><code>vignettes/makeBinaryWord.Rmd</code></a></small>
       <div class="hidden name"><code>makeBinaryWord.Rmd</code></div>
 
     </div>
@@ -109,24 +105,24 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://raymondbalise.github.io/tidyREDCap/index.html">tidyREDCap</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://raymondbalise.github.io/tidyREDCap/index.html" class="external-link">tidyREDCap</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
 <p></p>
-<div id="the-problem" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-problem" class="anchor"></a>The Problem</h1>
+<div class="section level1">
+<h1 id="the-problem">The Problem<a class="anchor" aria-label="anchor" href="#the-problem"></a>
+</h1>
 <p>REDCap exports a “choose all that apply” question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either “checked” or “unchecked”). Using these variables individually, there is no obvious way to detect common patterns that people pick together.</p>
 <blockquote>
 <p><strong>Example:</strong> In the Nacho Craving Index (NCI), respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers). These are exported into variables with names like <code>ingredients___1</code>, <code>ingredients___2</code>, etc.</p>
 </blockquote>
-<p>In REDCap, it is simple to get a summary of those individual variables by using the “Data Exports, Reports, and Stats” application within the REDCap interface and selecting “Stats &amp; Charts”. Once the data is in R, simple tables can be produced with the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function, or beautiful tables can be created with the <code>tabyl()</code> and <code>adorn_pct_formatting()</code> functions from the <code>janitor</code> package. However, from these univariate tables, it is impossible to judge which patterns of answers are marked together. In the above example, using the univariate tables, it is difficult to tell what pecentage of people are craving both chips and yellow cheese.</p>
+<p>In REDCap, it is simple to get a summary of those individual variables by using the “Data Exports, Reports, and Stats” application within the REDCap interface and selecting “Stats &amp; Charts”. Once the data is in R, simple tables can be produced with the <code><a href="https://rdrr.io/r/base/table.html" class="external-link">table()</a></code> function, or beautiful tables can be created with the <code>tabyl()</code> and <code>adorn_pct_formatting()</code> functions from the <code>janitor</code> package. However, from these univariate tables, it is impossible to judge which patterns of answers are marked together. In the above example, using the univariate tables, it is difficult to tell what pecentage of people are craving both chips and yellow cheese.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
 
 <span class="co"># Chips</span>
-<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html">adorn_pct_formatting</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">tabyl</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html" class="external-link">adorn_pct_formatting</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">redcap$ingredients___1</th>
@@ -149,9 +145,9 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Yellow cheese</span>
-<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___2</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html">adorn_pct_formatting</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">tabyl</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html" class="external-link">adorn_pct_formatting</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">redcap$ingredients___2</th>
@@ -171,34 +167,34 @@
 </tr>
 </tbody>
 </table>
-<div id="aside-loading-redcap-data-into-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#aside-loading-redcap-data-into-r" class="anchor"></a>Aside: Loading REDCap Data into R</h3>
-<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
+<div class="section level3">
+<h3 id="aside-loading-redcap-data-into-r">Aside: Loading REDCap Data into R<a class="anchor" aria-label="anchor" href="#aside-loading-redcap-data-into-r"></a>
+</h3>
+<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki" class="external-link">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html" class="external-link">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rcon</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">rcon</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html" class="external-link">redcapConnection</a></span><span class="op">(</span>
   url <span class="op">=</span> <span class="st">'https://redcap.miami.edu/api/'</span>, 
-  token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"NCI_API_Key"</span><span class="op">)</span>
+  token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NCI_API_Key"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span><span class="op">(</span><span class="va">rcon</span><span class="op">)</span>
+<span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html" class="external-link">exportRecords</a></span><span class="op">(</span><span class="va">rcon</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">redcap</span>, file <span class="op">=</span> <span class="st">"redcap.rds"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">redcap</span>, file <span class="op">=</span> <span class="st">"redcap.rds"</span><span class="op">)</span></code></pre></div>
 <p> </p>
 </div>
 </div>
-<div id="make-analysis-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#make-analysis-data" class="anchor"></a>Make Analysis Data</h1>
+<div class="section level1">
+<h1 id="make-analysis-data">Make Analysis Data<a class="anchor" aria-label="anchor" href="#make-analysis-data"></a>
+</h1>
 <p>Even after subsetting the REDCap data to only include the ingredients variables, it is still difficult to detect common patterns in the eight ingredients.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
 
-<span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">redcap</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"ingredients___"</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">redcap</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ingredients___"</span><span class="op">)</span><span class="op">)</span> 
   
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<table class="table">
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
 <col width="12%">
@@ -292,16 +288,16 @@
 </table>
 <p> </p>
 </div>
-<div id="the-solution" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-solution" class="anchor"></a>The Solution</h1>
-<div id="default-lettering" class="section level2">
-<h2 class="hasAnchor">
-<a href="#default-lettering" class="anchor"></a>Default Lettering</h2>
+<div class="section level1">
+<h1 id="the-solution">The Solution<a class="anchor" aria-label="anchor" href="#the-solution"></a>
+</h1>
+<div class="section level2">
+<h2 id="default-lettering">Default Lettering<a class="anchor" aria-label="anchor" href="#default-lettering"></a>
+</h2>
 <p>The <code><a href="../reference/make_binary_word.html">make_binary_word()</a></code> function combines responses from the individual variables into a single “word” that indicates which choices were selected. For example, if the first option from the NCI ingredient question, <em>chips</em> (i.e., <code>ingredients___1</code>), was checked, the word created by <code><a href="../reference/make_binary_word.html">make_binary_word()</a></code> will begin with <em>a</em>; or if it was not checked, the word will begin with <em>_</em>. If the second option, <em>Yellow cheese</em> (i.e., <code>ingredients___2</code>), was checked, the next letter will be a <em>b</em>, otherwise a <em>_</em> will be used as a placeholder. Following this pattern, if somebody is not craving any of the eight nacho ingredients, the “word” will be eight underscores, one for each ingredient (i.e., ________). Conversely, if they are craving every ingredient, the “word” will be <em>abcdefgh</em>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patterns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_binary_word.html">make_binary_word</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span> 
-<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span><span class="op">(</span><span class="va">patterns</span><span class="op">)</span>
+<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">tabyl</a></span><span class="op">(</span><span class="va">patterns</span><span class="op">)</span>
 <span class="co">#&gt;  patterns  n    percent</span>
 <span class="co">#&gt;  ________ 20 0.66666667</span>
 <span class="co">#&gt;  ______gh  1 0.03333333</span>
@@ -315,9 +311,9 @@
 <span class="co">#&gt;  ab_defgh  1 0.03333333</span>
 <span class="co">#&gt;  abcdef_h  1 0.03333333</span></code></pre></div>
 </div>
-<div id="custom-lettering" class="section level2">
-<h2 class="hasAnchor">
-<a href="#custom-lettering" class="anchor"></a>Custom Lettering</h2>
+<div class="section level2">
+<h2 id="custom-lettering">Custom Lettering<a class="anchor" aria-label="anchor" href="#custom-lettering"></a>
+</h2>
 <p>While the default lettering is somewhat useful, using meaningful (mnemonic) letters makes the binary words easier to understand. In this case, the first letter for each choice can be used as a useful mnemonic.</p>
 <table class="table">
 <thead><tr class="header">
@@ -361,11 +357,11 @@
 </table>
 <p>To use custom lettering, specify a vector of single letter abbreviations and pass it to the <code>the_labels</code> argument. Be sure to include one unique abbreviation for each column of the data frame. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"Y"</span>, <span class="st">"O"</span>, <span class="st">"W"</span>, <span class="st">"M"</span>, <span class="st">"B"</span>, <span class="st">"T"</span>, <span class="st">"P"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"Y"</span>, <span class="st">"O"</span>, <span class="st">"W"</span>, <span class="st">"M"</span>, <span class="st">"B"</span>, <span class="st">"T"</span>, <span class="st">"P"</span><span class="op">)</span>
 
 <span class="va">patterns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_binary_word.html">make_binary_word</a></span><span class="op">(</span><span class="va">analysis</span>, the_labels <span class="op">=</span> <span class="va">labels</span><span class="op">)</span>
 
-<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">tabyl</a></span><span class="op">(</span><span class="va">patterns</span><span class="op">)</span>
+<span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">tabyl</a></span><span class="op">(</span><span class="va">patterns</span><span class="op">)</span>
 <span class="co">#&gt;  patterns  n    percent</span>
 <span class="co">#&gt;  ________ 20 0.66666667</span>
 <span class="co">#&gt;  ______TP  1 0.03333333</span>
@@ -394,11 +390,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Raymond Balise, Gabriel Odom.</p>
+  <p></p>
+<p>Developed by Raymond Balise, Gabriel Odom, Layla Bouzoubaa.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -406,6 +404,8 @@
 
   
 
+
+  
 
   </body>
 </html>

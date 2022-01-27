@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -80,7 +76,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/RaymondBalise/tidyREDCap/">
+  <a href="https://github.com/RaymondBalise/tidyREDCap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -95,13 +91,13 @@
 
       
 
-      </header><script src="makeChooseOneTable_files/header-attrs-2.6.4/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Make a ‘Choose One’ Table</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/RaymondBalise/tidyREDCap/blob/master/vignettes/makeChooseOneTable.Rmd"><code>vignettes/makeChooseOneTable.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RaymondBalise/tidyREDCap/blob/HEAD/vignettes/makeChooseOneTable.Rmd" class="external-link"><code>vignettes/makeChooseOneTable.Rmd</code></a></small>
       <div class="hidden name"><code>makeChooseOneTable.Rmd</code></div>
 
     </div>
@@ -109,15 +105,15 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://raymondbalise.github.io/tidyREDCap/index.html">tidyREDCap</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://raymondbalise.github.io/tidyREDCap/index.html" class="external-link">tidyREDCap</a></span><span class="op">)</span></code></pre></div>
 <p></p>
-<div id="the-problem" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-problem" class="anchor"></a>The Problem</h1>
+<div class="section level1">
+<h1 id="the-problem">The Problem<a class="anchor" aria-label="anchor" href="#the-problem"></a>
+</h1>
 <p>It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels that are exported on <em>choose all that apply</em> questions include both the question and whichever response was chosen. This redundancy is often unwanted, and the results are not presented professionally.</p>
 <p>For example, in the Nacho Craving Index data, the first ingredient is “Chips”. We see how R presents this information by simply printing the components of the <code>ingredients___1</code> column.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./redcap.rds"</span><span class="op">)</span>
 <span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span>
 <span class="co">#  [1] Checked   Checked   Unchecked Unchecked Unchecked Unchecked Checked  </span>
 <span class="co">#  [8] Unchecked Unchecked Unchecked Unchecked Unchecked Checked   Unchecked</span>
@@ -131,30 +127,30 @@
 <span class="co"># attr(,"label")</span>
 <span class="co"># [1] What ingredients do you currently crave?: Chips</span>
 <span class="co"># Levels: Unchecked Checked</span></code></pre></div>
-<p>As we can see, this information is quite ugly, so we want to tabulate the results instead. However, if we use the simple <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function to clean up this information, we lose the original question and the answer label for <code>ingredients___1</code>.</p>
+<p>As we can see, this information is quite ugly, so we want to tabulate the results instead. However, if we use the simple <code><a href="https://rdrr.io/r/base/table.html" class="external-link">table()</a></code> function to clean up this information, we lose the original question and the answer label for <code>ingredients___1</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span>
 <span class="co"># </span>
 <span class="co"># Unchecked   Checked </span>
 <span class="co">#        21         9</span></code></pre></div>
 <p>We no longer know what the question was, or which “select all” option this information represents.</p>
-<div id="aside-loading-redcap-data-into-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#aside-loading-redcap-data-into-r" class="anchor"></a>Aside: Loading REDCap Data into R</h3>
-<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
+<div class="section level3">
+<h3 id="aside-loading-redcap-data-into-r">Aside: Loading REDCap Data into R<a class="anchor" aria-label="anchor" href="#aside-loading-redcap-data-into-r"></a>
+</h3>
+<p>The <code>redcapAPI</code> package can be used to load data directly into R. To learn more about it, take a look <a href="https://github.com/nutterb/redcapAPI/wiki" class="external-link">here</a>. Normally the code to automatically pull data with an API includes a person’s secret code “key”. Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to <code><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv()</a></code> to grab the key. To learn more about working with APIs, look <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html" class="external-link">here</a>. Also notice that the data is saved using the <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> function. REDCap data loaded with the API has the variable labels added as an extra attribute. To allow this vignette to run without sharing my secret key, I have saved the data to the package website.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rcon</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html">redcapConnection</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">rcon</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/redcapConnection.html" class="external-link">redcapConnection</a></span><span class="op">(</span>
   url <span class="op">=</span> <span class="st">'https://redcap.miami.edu/api/'</span>, 
-  token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"NCI_API_Key"</span><span class="op">)</span>
+  token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NCI_API_Key"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html">exportRecords</a></span><span class="op">(</span><span class="va">rcon</span><span class="op">)</span></code></pre></div>
+<span class="va">redcap</span> <span class="op">&lt;-</span> <span class="fu">redcapAPI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/redcapAPI/man/exportRecords.html" class="external-link">exportRecords</a></span><span class="op">(</span><span class="va">rcon</span><span class="op">)</span></code></pre></div>
 <p> </p>
 </div>
 </div>
-<div id="the-solution" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-solution" class="anchor"></a>The Solution</h1>
+<div class="section level1">
+<h1 id="the-solution">The Solution<a class="anchor" aria-label="anchor" href="#the-solution"></a>
+</h1>
 <p>The <code><a href="../reference/make_choose_one_table.html">make_choose_one_table()</a></code> function can be used with a factor variable to tabulate the response <em>while preserving the question and checked option context</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span> 
@@ -164,8 +160,8 @@
 <span class="co">#    Checked  9     30%</span></code></pre></div>
 <p>Further, this output can be molded into a publication-ready table with a single additional function call.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span><span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>What ingredients do you currently crave?: Chips</p>
 <table class="table">
 <thead><tr class="header">
@@ -191,8 +187,8 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span>
   <span class="va">redcap</span><span class="op">$</span><span class="va">ingredients___2</span>,
   subset <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Yellow cheese</p>
 <table class="table">
 <thead><tr class="header">
@@ -215,9 +211,9 @@
 </table>
 <p>This function can also be used in an analysis pipeline with a data frame name and the name of the factor inside of that data frame. For example:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">redcap</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span><span class="va">ingredients___3</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span class="va">redcap</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/make_choose_one_table.html">make_choose_one_table</a></span><span class="op">(</span><span class="va">ingredients___3</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
 <p>What ingredients do you currently crave?: Orange cheese</p>
 <table class="table">
 <thead><tr class="header">
@@ -252,11 +248,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Raymond Balise, Gabriel Odom.</p>
+  <p></p>
+<p>Developed by Raymond Balise, Gabriel Odom, Layla Bouzoubaa.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -264,6 +262,8 @@
 
   
 
+
+  
 
   </body>
 </html>

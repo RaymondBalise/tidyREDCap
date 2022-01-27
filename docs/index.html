@@ -30,6 +30,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -42,18 +44,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -84,7 +80,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/RaymondBalise/tidyREDCap/">
+  <a href="https://github.com/RaymondBalise/tidyREDCap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -102,28 +98,28 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<p><!-- badges: start --> <a href="https://CRAN.R-project.org/package=tidyREDCap"><img src="https://www.r-pkg.org/badges/version/tidyREDCap" alt="CRAN status"></a> <a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a> <!-- badges: end --></p>
+<p><!-- badges: start --> <a href="https://CRAN.R-project.org/package=tidyREDCap" class="external-link"><img src="https://www.r-pkg.org/badges/version/tidyREDCap" alt="CRAN status"></a> <a href="https://www.tidyverse.org/lifecycle/#maturing" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a> <!-- badges: end --></p>
 <p><!-- [![Travis build status](https://travis-ci.org/RaymondBalise/tidyREDCap.svg?branch=master)](https://travis-ci.org/RaymondBalise/tidyREDCap) --></p>
-<div id="tidyredcap-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#tidyredcap-" class="anchor"></a>tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="tidyredcap-">tidyREDCap <a href="https://raymondbalise.github.io/tidyREDCap/" class="external-link"><img src="reference/figures/logo.png" align="right" width="139"></a>
+<a class="anchor" aria-label="anchor" href="#tidyredcap-"></a>
 </h1></div>
 <p>tidyREDCap is an R package with functions for processing REDCap data.</p>
-<p>‘REDCap’ (Research Electronic Data CAPture; <a href="https://projectredcap.org" class="uri">https://projectredcap.org</a>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.</p>
-<div id="what-tidyredcap-functions-can-do-for-you" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-tidyredcap-functions-can-do-for-you" class="anchor"></a>What tidyREDCap Functions Can Do for You?</h2>
-<div id="working-with-choose-one-questions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#working-with-choose-one-questions" class="anchor"></a>Working with <i>Choose One</i> Questions</h4>
+<p>‘REDCap’ (Research Electronic Data CAPture; <a href="https://projectredcap.org" class="external-link uri">https://projectredcap.org</a>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.</p>
+<div class="section level2">
+<h2 id="what-tidyredcap-functions-can-do-for-you">What tidyREDCap Functions Can Do for You?<a class="anchor" aria-label="anchor" href="#what-tidyredcap-functions-can-do-for-you"></a>
+</h2>
+<div class="section level4">
+<h4 id="working-with-choose-one-questions">Working with <i>Choose One</i> Questions<a class="anchor" aria-label="anchor" href="#working-with-choose-one-questions"></a>
+</h4>
 <ul>
 <li>
-<code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
+<code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
 </ul>
 </div>
-<div id="working-with-choose-all-that-apply-questions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#working-with-choose-all-that-apply-questions" class="anchor"></a>Working with <i>Choose All that Apply</i> Questions</h4>
+<div class="section level4">
+<h4 id="working-with-choose-all-that-apply-questions">Working with <i>Choose All that Apply</i> Questions<a class="anchor" aria-label="anchor" href="#working-with-choose-all-that-apply-questions"></a>
+</h4>
 <p>REDCap exports the responses to a <i>choose all that apply</i> question into many similarly named questions. tidyREDCap helps summarize the responses with two functions:</p>
 <ul>
 <li>
@@ -132,9 +128,9 @@
 <code><a href="reference/make_choose_all_table.html">make_choose_all_table()</a></code>: converts all the responses into a single summary table</li>
 </ul>
 </div>
-<div id="working-with-repeated-measures" class="section level4">
-<h4 class="hasAnchor">
-<a href="#working-with-repeated-measures" class="anchor"></a>Working with Repeated Measures</h4>
+<div class="section level4">
+<h4 id="working-with-repeated-measures">Working with Repeated Measures<a class="anchor" aria-label="anchor" href="#working-with-repeated-measures"></a>
+</h4>
 <p>Projects that have repeated assessments with different questionnaires/instruments export with holes in the CSV. tidyREDCap will parse the export and create tables for any of the questionnaires/instruments:</p>
 <ul>
 <li>
@@ -142,37 +138,37 @@
 </ul>
 </div>
 </div>
-<div id="what-are-the-tidyredcap-websites" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-are-the-tidyredcap-websites" class="anchor"></a>What are the tidyREDCap Websites?</h2>
-<p>Main Page: <a href="https://raymondbalise.github.io/tidyREDCap/" class="uri">https://raymondbalise.github.io/tidyREDCap/</a><br><strong>User Guides</strong>: <a href="https://raymondbalise.github.io/tidyREDCap/articles/" class="uri">https://raymondbalise.github.io/tidyREDCap/articles/</a><br>
-Development Site: <a href="https://github.com/RaymondBalise/tidyREDCap" class="uri">https://github.com/RaymondBalise/tidyREDCap</a></p>
+<div class="section level2">
+<h2 id="what-are-the-tidyredcap-websites">What are the tidyREDCap Websites?<a class="anchor" aria-label="anchor" href="#what-are-the-tidyredcap-websites"></a>
+</h2>
+<p>Main Page: <a href="https://raymondbalise.github.io/tidyREDCap/" class="external-link uri">https://raymondbalise.github.io/tidyREDCap/</a><br><strong>User Guides</strong>: <a href="https://raymondbalise.github.io/tidyREDCap/articles/" class="external-link uri">https://raymondbalise.github.io/tidyREDCap/articles/</a><br>
+Development Site: <a href="https://github.com/RaymondBalise/tidyREDCap" class="external-link uri">https://github.com/RaymondBalise/tidyREDCap</a></p>
 </div>
-<div id="where-can-i-find-tidyredcap" class="section level2">
-<h2 class="hasAnchor">
-<a href="#where-can-i-find-tidyredcap" class="anchor"></a>Where Can I Find tidyREDCap?</h2>
-<div id="offical-release" class="section level4">
-<h4 class="hasAnchor">
-<a href="#offical-release" class="anchor"></a>Offical Release</h4>
+<div class="section level2">
+<h2 id="where-can-i-find-tidyredcap">Where Can I Find tidyREDCap?<a class="anchor" aria-label="anchor" href="#where-can-i-find-tidyredcap"></a>
+</h2>
+<div class="section level4">
+<h4 id="offical-release">Offical Release<a class="anchor" aria-label="anchor" href="#offical-release"></a>
+</h4>
 <p>You can get the latest offical release of tidyREDCap from CRAN.</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("tidyREDCap")</a></code></pre>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyREDCap"</span><span class="op">)</span></code></pre>
 </div>
-<div id="development-release" class="section level4">
-<h4 class="hasAnchor">
-<a href="#development-release" class="anchor"></a>Development Release</h4>
-<p>Run these two lines of code to install tidyREDCap from GitHub (this requires <a href="https://cran.r-project.org/bin/windows/Rtools/">RTools</a> for Windows or <a href="https://developer.apple.com/xcode/">Xcode</a> for Mac to be installed on your computer):</p>
-<pre><code>if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
+<div class="section level4">
+<h4 id="development-release">Development Release<a class="anchor" aria-label="anchor" href="#development-release"></a>
+</h4>
+<p>Run these two lines of code to install tidyREDCap from GitHub (this requires <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">RTools</a> for Windows or <a href="https://developer.apple.com/xcode/" class="external-link">Xcode</a> for Mac to be installed on your computer):</p>
+<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RaymondBalise/tidyREDCap"</span><span class="op">)</span></code></pre>
 </div>
 </div>
-<div id="what-if-i-find-a-problem" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-if-i-find-a-problem" class="anchor"></a>What if I Find a Problem?</h2>
-<p>We are currently in active development of tidyREDCap. If one of our functions does not work the way that you expect, or if one of our functions is broken, please submit an issue ticket (using a <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html">reproducible example</a>) to our <a href="https://github.com/RaymondBalise/tidyREDCap/issues">issues page</a>. If you have a cool idea for our next new function, also submit an issue ticket. If you are an R developer and want so contribute to this package, please submit an issue ticket or a pull request.</p>
+<div class="section level2">
+<h2 id="what-if-i-find-a-problem">What if I Find a Problem?<a class="anchor" aria-label="anchor" href="#what-if-i-find-a-problem"></a>
+</h2>
+<p>We are currently in active development of tidyREDCap. If one of our functions does not work the way that you expect, or if one of our functions is broken, please submit an issue ticket (using a <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html" class="external-link">reproducible example</a>) to our <a href="https://github.com/RaymondBalise/tidyREDCap/issues" class="external-link">issues page</a>. If you have a cool idea for our next new function, also submit an issue ticket. If you are an R developer and want so contribute to this package, please submit an issue ticket or a pull request.</p>
 </div>
-<div id="who-are-our-supporters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#who-are-our-supporters" class="anchor"></a>Who Are Our Supporters?</h2>
+<div class="section level2">
+<h2 id="who-are-our-supporters">Who Are Our Supporters?<a class="anchor" aria-label="anchor" href="#who-are-our-supporters"></a>
+</h2>
 <p>The development of this package was supported by:</p>
 <ul>
 <li>Healing Communities Study: Developing and Testing and Integrated Approach to Address the Opioid Crisis-New York State.
@@ -200,41 +196,53 @@ devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=tidyREDCap">https://​cloud.r-project.org/​package=tidyREDCap</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/RaymondBalise/tidyREDCap/">https://​github.com/​RaymondBalise/​tidyREDCap/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/RaymondBalise/tidyREDCap/issues">https://​github.com/​RaymondBalise/​tidyREDCap/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=tidyREDCap" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/RaymondBalise/tidyREDCap/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/RaymondBalise/tidyREDCap/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Raymond Balise <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9856-5901" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Gabriel Odom <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1341-4555" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing tidyREDCap</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Raymond Balise <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9856-5901" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Gabriel Odom <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1341-4555" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Layla Bouzoubaa <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6616-0950" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Raymond Balise, Gabriel Odom.</p>
+  <p></p>
+<p>Developed by Raymond Balise, Gabriel Odom, Layla Bouzoubaa.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -242,6 +250,8 @@ devtools::install_github("RaymondBalise/tidyREDCap")</code></pre>
 
   
 
+
+  
 
   </body>
 </html>
