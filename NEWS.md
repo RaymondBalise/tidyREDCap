@@ -1,3 +1,7 @@
+# tidyREDCap 0.2.2  (CRAN patch)
+
+* Fix `rlang` bug in `make_choose_all_table()`; see <https://github.com/RaymondBalise/tidyREDCap/pull/13>
+
 # tidyREDCap 0.2.1  (CRAN release)
 
 * Fix bug with "" character stings with make_instrument()
