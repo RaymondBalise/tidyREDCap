@@ -25,7 +25,6 @@ Description:
     Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: false
 RoxygenNote: 7.1.2
 Depends: R (>= 3.5.0)
 Imports: 
