@@ -1,6 +1,6 @@
   <!-- badges: start -->
   [![CRAN status](https://www.r-pkg.org/badges/version/tidyREDCap)](https://CRAN.R-project.org/package=tidyREDCap)
-  [![Lifecycle: maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://www.tidyverse.org/lifecycle/#stable)
+  [![Lifecycle: maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
   <!-- badges: end -->
 
  <!-- [![Travis build status](https://travis-ci.org/RaymondBalise/tidyREDCap.svg?branch=master)](https://travis-ci.org/RaymondBalise/tidyREDCap) -->
