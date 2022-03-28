@@ -56,9 +56,9 @@ import_instruments <- function(connection, envir = .GlobalEnv) {
   	#   data sets from exportRecords()
   	assign(
   		data_name[dataSet],
-  		redcap[, c(1,currInstr_idx)] %>% 
-   # Dropping duplicate record_id from first insturment
-  		select_if(!names(.) %in% "record_id.1"),
+  		redcap[, c(1:2,currInstr_idx)] %>% 
+   # Dropping duplicate record_id and event_name from first instrument
+  		select_if(!names(.) %in% c("record_id.1", "redcap_event_name.1")),
   		envir = envir
   	)
   	
