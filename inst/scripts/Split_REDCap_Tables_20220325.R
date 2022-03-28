@@ -56,7 +56,9 @@ import_instruments <- function(connection, envir = .GlobalEnv) {
   	#   data sets from exportRecords()
   	assign(
   		data_name[dataSet],
-  		redcap[, currInstr_idx],
+  		redcap[, c(1,currInstr_idx)] %>% 
+   # Dropping duplicate record_id from first insturment
+  		select_if(!names(.) %in% "record_id.1"),
   		envir = envir
   	)
   	
@@ -70,4 +72,4 @@ rcon <- redcapAPI::redcapConnection(
 	url <- "https://redcap.miami.edu/api/",
 	token = Sys.getenv("REDCAP_PLACEHOLDER5_KEY")
 )
-redcap_split(rcon)
+import_instruments(rcon)
