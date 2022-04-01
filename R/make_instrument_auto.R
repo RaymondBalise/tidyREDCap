@@ -14,7 +14,11 @@
 ## @examples
 make_instrument_auto <- function(df, drop_which_when = FALSE) {
   # browser()
-  # get the column numbers for the first and last variables
+
+  if(names(df)[1] != "record_id"){
+    stop("The first variable in df must be `record_id`", call. = FALSE)
+  }
+  
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
 

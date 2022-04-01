@@ -30,6 +30,10 @@
 import_instruments <- function(connection, drop_blank = TRUE, envir = .GlobalEnv) {
    #browser()
   
+  if(class(connection) != "redcapApiConnection"){
+    stop("The `connection` argument must come from `redcapAPI::redcapConnection()`. See the `Using the imports_instruments() function` vignette.", call. = FALSE)
+  }
+
   # Get names of instruments
   instrument_name <- NULL
   data_name <- redcapAPI::exportInstruments(connection) %>%
