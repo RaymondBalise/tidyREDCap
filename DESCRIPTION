@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with REDCap Data
-Version: 0.2.3
+Version: 1.0.0.9000
 Authors@R: 
     c(person(
         given = "Raymond",
@@ -29,6 +29,13 @@ Authors@R:
         role = "aut",
         email = "wfd14@miami.edu",
         comment = c(ORCID = "0000-0002-2584-6278")
+      ),
+      person(
+        given = "Lauren",
+        family = "Nahodyl",
+        role = "aut",
+        email = "lxn295@miami.edu",
+        comment = c(ORCID = "0000-0000-0000-0000")
       )
     )
 Description:
@@ -41,20 +48,21 @@ Encoding: UTF-8
 RoxygenNote: 7.1.2
 Depends: R (>= 3.5.0)
 Imports: 
-    purrr,
-    stringr,
-    tibble,
-    magrittr,
     dplyr,
     janitor,
+    magrittr,
+    purrr,
+    redcapAPI,
+    rlang,
+    stringr,
+    tibble,
     tidyr,
-    rlang
+    tidyselect
 Roxygen: list(markdown = TRUE)
-Suggests: 
-    testthat (>= 2.1.0),
+Suggests:
     knitr,
     rmarkdown,
-    redcapAPI
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr
 URL: https://raymondbalise.github.io/tidyREDCap/index.html
 BugReports: https://github.com/RaymondBalise/tidyREDCap/issues
