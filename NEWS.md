@@ -1,8 +1,9 @@
 # tidyREDCap 1.0.0.9000  (CRAN release candidate)
 
-* Fix superseded `mutate_if` and `mutate_all` from `make_choose_all_table()`
+* Removes superseded `mutate_if` and `mutate_all` from `make_choose_all_table()`
 * Added `import_instruments()` function
 * Added `make_instrument_auto()` function
+* Adds checks on arguments
 
 # tidyREDCap 0.2.2  (CRAN patch)
 
