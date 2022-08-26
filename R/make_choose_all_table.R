@@ -46,7 +46,7 @@ make_choose_all_table <- function(df, variable) {
     dplyr::select(dplyr::starts_with(variable)) %>%
     dplyr::mutate(across(everything(), ~ . == "Checked")) %>%
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.logical), as.numeric)) %>% 
-    dplyr::summarise_all(sum) %>%
+    dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
     dplyr::mutate(blah = "x") %>%
     tidyr::pivot_longer(-.data$blah, names_to = "thingy", values_to = "Count") 
   
@@ -62,5 +62,3 @@ make_choose_all_table <- function(df, variable) {
     dplyr::select(.data$What, .data$Count)
   aTable
 }
-
-

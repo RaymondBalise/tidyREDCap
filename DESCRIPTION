@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with REDCap Data
-Version: 1.0.0.9000
+Version: 1.0.0.9001
 Authors@R: 
     c(person(
         given = "Raymond",
@@ -33,7 +33,7 @@ Authors@R:
       person(
         given = "Lauren",
         family = "Nahodyl",
-        role = "aut",
+        role = "ctb",
         email = "lxn295@miami.edu",
         comment = c(ORCID = "0000-0000-0000-0000")
       )

@@ -1,3 +1,8 @@
+# tidyREDCap 1.0.0.9001  (CRAN release candidate)
+
+* Fix bug in `make_choose_all_table()` with repeating instruments showing NA counts
+* Removes superseded `summarise_all()` function
+
 # tidyREDCap 1.0.0.9000  (CRAN release candidate)
 
 * Removes superseded `mutate_if` and `mutate_all` from `make_choose_all_table()`
