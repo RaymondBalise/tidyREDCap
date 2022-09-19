@@ -53,7 +53,6 @@ Imports:
     labelVector,
     magrittr,
     purrr,
-    redcapAPI,
     REDCapR,
     rlang,
     stringr,
@@ -63,6 +62,7 @@ Imports:
 Roxygen: list(markdown = TRUE)
 Suggests:
     knitr,
+    redcapAPI,
     rmarkdown,
     testthat (>= 2.1.0)
 VignetteBuilder: knitr

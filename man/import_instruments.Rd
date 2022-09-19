@@ -4,11 +4,12 @@
 \alias{import_instruments}
 \title{import_instruments}
 \usage{
-import_instruments(connection, drop_blank = TRUE, envir = .GlobalEnv)
+import_instruments(url, token, drop_blank = TRUE, envir = .GlobalEnv)
 }
 \arguments{
-\item{connection}{The name of connection created by a call to the
-\code{redcapAPI::redcapConnection()} function}
+\item{url}{The API URL for your the instance of REDCap}
+
+\item{token}{The API security token}
 
 \item{drop_blank}{Drop records that have no data. TRUE by default.}
 
@@ -18,16 +19,14 @@ import_instruments(connection, drop_blank = TRUE, envir = .GlobalEnv)
 datasets, by default in the global environment
 }
 \description{
-This function takes the name of a connection to a REDCap
+This function takes the url and key for a REDCap
 project and returns a table for each instrument/form in the project.
 }
 \examples{
 \dontrun{
-  rcon <- redcapAPI::redcapConnection(
-    url <- "https://redcap.miami.edu/api/",
-    token = Sys.getenv("REDCAP_PLACEHOLDER5_KEY")
-  )
-  
-  import_instruments(rcon)
+ import_instruments(
+    "https://redcap.miami.edu/api/", 
+    Sys.getenv("test_API_key")
+ )
 }   
 }
