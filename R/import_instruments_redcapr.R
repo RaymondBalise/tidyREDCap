@@ -50,28 +50,26 @@ relabel <- function(x) {
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_which
 #' @importFrom tidyselect ends_with
+#' @importFrom labelVector set_label
 #' @export
 #'
 #' @examples
 #'\dontrun{
-#'  import_instruments(
+#'  import_instruments_redcapr(
 #'     "https://redcap.miami.edu/api/", 
 #'     Sys.getenv("test_API_key")
 #'  )
 #'}   
 import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .GlobalEnv) {
-#   browser()
+  #browser()
   
-
   ds_instrument <- 
     REDCapR::redcap_metadata_read(redcap_uri=url, token=token)$data
   
   # Get names of instruments
   instrument_name <- NULL
-  data_name <- ds_instrument %>%
-    select(form_name) |> 
-    unique() |> 
-    pull(form_name)
+  data_name <- ds_instrument[, "form_name"] |> 
+    unique()
   
   # do the api call
   #redcap <- redcapAPI::exportRecords(connection)
@@ -85,10 +83,7 @@ import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .G
     )$data
   
   just_labels <- raw_labels
-  
-  
 
-  
   raw_redcapr <- 
     REDCapR::redcap_read(
       redcap_uri = url, 

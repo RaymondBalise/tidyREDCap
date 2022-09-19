@@ -19,12 +19,12 @@ import_instruments_redcapr(url, token, drop_blank = TRUE, envir = .GlobalEnv)
 datasets, by default in the global environment
 }
 \description{
-This function takes the name of a connection to a REDCap
+This function takes the url and key for a REDCap
 project and returns a table for each instrument/form in the project.
 }
 \examples{
 \dontrun{
- import_instruments(
+ import_instruments_redcapr(
     "https://redcap.miami.edu/api/", 
     Sys.getenv("test_API_key")
  )

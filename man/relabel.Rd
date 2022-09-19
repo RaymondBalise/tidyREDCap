@@ -7,15 +7,16 @@
 relabel(x)
 }
 \arguments{
-\item{x}{str variable label to be check for possible labels that need fixing}
+\item{x}{Character string variable holding label to be check for possible
+labels that need fixing to match REDCapAPI's variable label convention.}
 }
 \value{
 vector text changed
 }
 \description{
-Function to change labels to match REDCapAPI.  REDCapR labels
-choose all that apply variables with "(choice= thingy)" vs. ": thingy" in
-REDCapAPI
+This is a function to change labels to match REDCapAPI. REDCapR
+labels "choose all that apply" variables with "(choice= thingy)" vs.
+": thingy" in REDCapAPI.
 }
 \examples{
 \dontrun{

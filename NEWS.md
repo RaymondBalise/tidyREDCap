@@ -1,3 +1,7 @@
+# tidyREDCap 1.0.0.9002  (CRAN release candidate)
+
+* Add {REDCapR} support
+
 # tidyREDCap 1.0.0.9001  (CRAN release candidate)
 
 * Fix bug in `make_choose_all_table()` with repeating instruments showing NA counts
