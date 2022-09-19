@@ -45,7 +45,7 @@ Description:
     Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Depends: R (>= 3.5.0)
 Imports: 
     dplyr,
@@ -53,6 +53,7 @@ Imports:
     magrittr,
     purrr,
     redcapAPI,
+    REDCapR,
     rlang,
     stringr,
     tibble,

@@ -44,7 +44,7 @@ make_choose_all_table <- function(df, variable) {
   # . <- NULL # kludge to get CMD Check to pass with nonstandard evaluation
   counts <- df %>%
     dplyr::select(dplyr::starts_with(variable)) %>%
-    dplyr::mutate(across(everything(), ~ . == "Checked")) %>%
+    dplyr::mutate(across(everything(), ~ . %in% c("1" "Checked"))) %>%
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.logical), as.numeric)) %>% 
     dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
     dplyr::mutate(blah = "x") %>%

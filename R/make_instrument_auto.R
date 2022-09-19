@@ -32,7 +32,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE) {
   last_col <- length(names(df))
 
   # the instrument's content
-  instrument <- df[, c(first_col:length(names(df)))]
+  instrument <- df[, c(first_col:length(names(df))), drop=FALSE]
 
   # which records are all missing
   allMissing <- apply(instrument, 1, function(x) {
