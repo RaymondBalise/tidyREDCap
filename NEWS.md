@@ -1,6 +1,8 @@
 # tidyREDCap 1.0.0.9002  (CRAN release candidate)
 
 * Add {REDCapR} support
+* Added `import_instruments()` function to import all instruments; currently uses the `REDCapR` package as the API
+
 
 # tidyREDCap 1.0.0.9001  (CRAN release candidate)
 
