@@ -155,6 +155,7 @@ import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .G
         envir = envir
       )
     } else{
+      warning(paste("The", instrument_name[dataSet], "instrument/form has 0 records and will not be imported. \n" ), call.=FALSE)
       # How to print warning about no records... how disruptive should this be?
     }
   }
