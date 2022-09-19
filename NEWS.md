@@ -1,3 +1,7 @@
+# tidyREDCap 1.0.1  (CRAN release)
+
+* Merged Wayne's branch to main (see versions 1.0.0.9000 - 1.0.0.9002)
+
 # tidyREDCap 1.0.0.9002  (CRAN release candidate)
 
 * Add {REDCapR} support
