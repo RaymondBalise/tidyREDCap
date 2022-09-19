@@ -48,7 +48,7 @@ relabel <- function(x) {
 #' @importFrom REDCapR redcap_read
 #' @importFrom dplyr pull if_else
 #' @importFrom magrittr %>%
-#' @importFrom stringr str_which
+#' @importFrom stringr str_which str_remove
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
 #' @export
@@ -67,9 +67,12 @@ import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .G
     REDCapR::redcap_metadata_read(redcap_uri=url, token=token)$data
   
   # Get names of instruments
-  instrument_name <- NULL
-  data_name <- ds_instrument[, "form_name"] |> 
-    unique()
+  form_name <- NULL
+  
+  instrument_name <- ds_instrument |> 
+    pull(form_name) |> 
+    unique() 
+
   
   # do the api call
   #redcap <- redcapAPI::exportRecords(connection)
@@ -109,9 +112,11 @@ import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .G
   
   
   # get the index (end) of instruments
-  i <- redcap %>%
-    names() %>%
-    str_which("_complete")
+  i <- 
+    which(
+      str_remove(names(redcap), "_complete") %in% instrument_name
+    )
+  
   # add placeholder
   bigI <- c(0, i)
   nInstr_int <- length(bigI) - 1
@@ -145,7 +150,7 @@ import_instruments_redcapr <- function(url, token, drop_blank = TRUE, envir = .G
     
     if(nrow(processed_blank > 0)){
       assign(
-        data_name[dataSet],
+        instrument_name[dataSet],
         processed_blank,
         envir = envir
       )
