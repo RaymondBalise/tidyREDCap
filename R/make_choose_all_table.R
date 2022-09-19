@@ -19,29 +19,34 @@ getLabel2 <- function(data, aVariable) {
 }
 
 
-#' Count The Reponses to a Choose All That Apply Question 
+#' Count The Responses to a Choose All That Apply Question 
 #'
 #' @param df The name of the data set
 #' @param variable The name of the REDCap variable
 #' 
-#' @importFrom dplyr select starts_with mutate_all mutate_if summarise_all
-#' @importFrom dplyr mutate pull rename bind_cols
+#' @importFrom dplyr select starts_with summarise_all
+#' @importFrom dplyr across mutate pull rename bind_cols
 #' @importFrom tidyr pivot_longer
 #' @importFrom purrr map_chr
 #' @importFrom tibble enframe
+#' @importFrom tidyselect everything vars_select_helpers
 #' @importFrom rlang .data
 #' @export
 #'
 #' @return A variable's response label without  the choose all the question
 #'
-## @examples make_choose_all_table(redcap, "ingredients")
+## @examples
+##\dontrun{
+##  make_choose_all_table(redcap, "ingredients")
+##  }
 make_choose_all_table <- function(df, variable) {
-  # . <- NULL # kludge to get CMD Check to pass with nonstandard evaulation
+  
+  # . <- NULL # kludge to get CMD Check to pass with nonstandard evaluation
   counts <- df %>%
     dplyr::select(dplyr::starts_with(variable)) %>%
-    dplyr::mutate_all(~ . == "Checked") %>%
-    dplyr::mutate_if(is.logical, as.numeric) %>%
-    dplyr::summarise_all(sum) %>%
+    dplyr::mutate(across(everything(), ~ . %in% c("1", "Checked"))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.logical), as.numeric)) %>% 
+    dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
     dplyr::mutate(blah = "x") %>%
     tidyr::pivot_longer(-.data$blah, names_to = "thingy", values_to = "Count") 
   
@@ -57,5 +62,3 @@ make_choose_all_table <- function(df, variable) {
     dplyr::select(.data$What, .data$Count)
   aTable
 }
-
-

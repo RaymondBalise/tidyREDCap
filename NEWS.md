@@ -1,3 +1,21 @@
+# tidyREDCap 1.0.0.9002  (CRAN release candidate)
+
+* Add {REDCapR} support
+* Added `import_instruments()` function to import all instruments; currently uses the `REDCapR` package as the API
+
+
+# tidyREDCap 1.0.0.9001  (CRAN release candidate)
+
+* Fix bug in `make_choose_all_table()` with repeating instruments showing NA counts
+* Removes superseded `summarise_all()` function
+
+# tidyREDCap 1.0.0.9000  (CRAN release candidate)
+
+* Removes superseded `mutate_if` and `mutate_all` from `make_choose_all_table()`
+* Added `import_instruments()` function
+* Added `make_instrument_auto()` function
+* Adds checks on arguments
+
 # tidyREDCap 0.2.2  (CRAN patch)
 
 * Fix `rlang` bug in `make_choose_all_table()`; see <https://github.com/RaymondBalise/tidyREDCap/pull/13>

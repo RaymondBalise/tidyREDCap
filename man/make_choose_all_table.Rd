@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_choose_all_table.R
 \name{make_choose_all_table}
 \alias{make_choose_all_table}
-\title{Count The Reponses to a Choose All That Apply Question}
+\title{Count The Responses to a Choose All That Apply Question}
 \usage{
 make_choose_all_table(df, variable)
 }
@@ -15,5 +15,5 @@ make_choose_all_table(df, variable)
 A variable's response label without  the choose all the question
 }
 \description{
-Count The Reponses to a Choose All That Apply Question
+Count The Responses to a Choose All That Apply Question
 }

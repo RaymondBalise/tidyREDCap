@@ -15,6 +15,16 @@
 ## @examples
 make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE) {
 
+  if(! any(class(df) == "data.frame")){
+    stop("The `df` argument must be of class data.frame.", call. = FALSE)
+  }
+  if(! any(names(df) == first_var)){
+    stop(paste("The `first_var` variable", first_var, "is not in the table."), call. = FALSE)
+  }
+  if(! any(names(df) == last_var)){
+    stop(paste("The `last_var` variable", last_var, "is not in the table."), call. = FALSE)
+  }
+  
   # get the column numbers for the first and last variables
   first_col <- which(colnames(df) == first_var)
   last_col <- which(colnames(df) == last_var)
