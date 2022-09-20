@@ -36,8 +36,8 @@ import_instruments <- function(url, token, drop_blank = TRUE, envir = .GlobalEnv
   # Get names of instruments
   form_name <- NULL
   
-  instrument_name <- ds_instrument |> 
-    pull(form_name) |> 
+  instrument_name <- ds_instrument %>% 
+    pull(form_name) %>%  
     unique() 
 
   
