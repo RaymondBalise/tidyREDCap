@@ -27,108 +27,115 @@
 #'   Sys.getenv("test_API_key")
 #' )
 #' }
-import_instruments <- function(url, token, drop_blank = TRUE, envir = .GlobalEnv) {
-  # browser()
+import_instruments <-
+  function(url, token, drop_blank = TRUE, envir = .GlobalEnv) {
+    # browser()
+    ds_instrument <-
+      REDCapR::redcap_metadata_read(redcap_uri = url, token = token)$data
 
-  ds_instrument <-
-    REDCapR::redcap_metadata_read(redcap_uri = url, token = token)$data
+    # Get names of instruments
+    form_name <- NULL
 
-  # Get names of instruments
-  form_name <- NULL
-
-  instrument_name <- ds_instrument %>%
-    pull(form_name) %>%
-    unique()
-
-
-  # do the api call
-  # redcap <- redcapAPI::exportRecords(connection)
-
-  raw_labels <-
-    REDCapR::redcap_read(
-      redcap_uri = url,
-      token = token,
-      raw_or_label_headers = "label",
-      records = 1
-    )$data
-
-  just_labels <- raw_labels
-
-  raw_redcapr <-
-    REDCapR::redcap_read(
-      redcap_uri = url,
-      token = token,
-    )$data
-
-  just_data <- raw_redcapr
-
-  just_data[] <-
-    mapply(
-      nm = names(just_data),
-      lab = relabel(names(just_labels)),
-      FUN = function(nm, lab) {
-        labelVector::set_label(just_data[[nm]], lab)
-      },
-      SIMPLIFY = FALSE
-    )
-
-  redcap <- just_data
+    instrument_name <- ds_instrument %>%
+      pull(form_name) %>%
+      unique()
 
 
+    # do the api call
+    # redcap <- redcapAPI::exportRecords(connection)
 
+    raw_labels <-
+      REDCapR::redcap_read(
+        redcap_uri = url,
+        token = token,
+        raw_or_label_headers = "label",
+        records = 1
+      )$data
 
+    just_labels <- raw_labels
 
+    raw_redcapr <-
+      REDCapR::redcap_read(
+        redcap_uri = url,
+        token = token,
+      )$data
 
-  # get the index (end) of instruments
-  i <-
-    which(
-      str_remove(names(redcap), "_complete") %in% instrument_name
-    )
+    just_data <- raw_redcapr
 
-  # add placeholder
-  bigI <- c(0, i)
-  nInstr_int <- length(bigI) - 1
-
-  is_longitudinal <- any(names(redcap) == "redcap_event_name")
-
-  if (is_longitudinal) {
-    meta <- c(1:2)
-  } else {
-    meta <- 1
-  }
-
-  # Load all datasets to the global environment
-  for (dataSet in seq_len(nInstr_int)) {
-    # all columns in the current instrument
-    currInstr_idx <- (bigI[dataSet] + 1):bigI[dataSet + 1]
-
-    drop_dot_one <- redcap[, c(meta, currInstr_idx)] %>%
-      select(-ends_with(".1"))
-
-    # drops blank instruments
-    if (drop_blank == TRUE) {
-      processed_blank <- make_instrument_auto(drop_dot_one)
-    } else {
-      processed_blank <- drop_dot_one
-    }
-
-    # The order of the names from exportInstruments() matches the order of the
-    #   data sets from exportRecords()
-
-    if (nrow(processed_blank > 0)) {
-      assign(
-        instrument_name[dataSet],
-        processed_blank,
-        envir = envir
+    just_data[] <-
+      mapply(
+        nm = names(just_data),
+        lab = relabel(names(just_labels)),
+        FUN = function(nm, lab) {
+          labelVector::set_label(just_data[[nm]], lab)
+        },
+        SIMPLIFY = FALSE
       )
-    } else {
-      warning(paste("The", instrument_name[dataSet], "instrument/form has 0 records and will not be imported. \n"), call. = FALSE)
-      # How to print warning about no records... how disruptive should this be?
-    }
-  }
 
-  invisible()
-}
+    redcap <- just_data
+
+
+
+
+
+
+    # get the index (end) of instruments
+    i <-
+      which(
+        str_remove(names(redcap), "_complete") %in% instrument_name
+      )
+
+    # add placeholder
+    bigI <- c(0, i)
+    nInstr_int <- length(bigI) - 1
+
+    is_longitudinal <- any(names(redcap) == "redcap_event_name")
+
+    if (is_longitudinal) {
+      meta <- c(1:2)
+    } else {
+      meta <- 1
+    }
+
+    # Load all datasets to the global environment
+    for (dataSet in seq_len(nInstr_int)) {
+      # all columns in the current instrument
+      currInstr_idx <- (bigI[dataSet] + 1):bigI[dataSet + 1]
+
+      drop_dot_one <- redcap[, c(meta, currInstr_idx)] %>%
+        select(-ends_with(".1"))
+
+      # drops blank instruments
+      if (drop_blank == TRUE) {
+        processed_blank <- make_instrument_auto(drop_dot_one)
+      } else {
+        processed_blank <- drop_dot_one
+      }
+
+      # The order of the names from exportInstruments() matches the order of the
+      #   data sets from exportRecords()
+
+      if (nrow(processed_blank > 0)) {
+        assign(
+          instrument_name[dataSet],
+          processed_blank,
+          envir = envir
+        )
+      } else {
+        warning(
+          paste(
+            "The",
+            instrument_name[dataSet],
+            "instrument/form has 0 records and will not be imported. \n"
+          ),
+          call. = FALSE
+        )
+        # How to print warning about no records... how disruptive should this be?
+      }
+    }
+
+    invisible()
+  }
 
 #' @title relabel
 #'
