@@ -36,12 +36,8 @@ table(redcap$ingredients___1)
 ```
 We no longer know what the question was, or which "select all" option this information represents.
 
-### Aside: Loading REDCap Data into R
-Take a look at the import_instruments vignettes 
-
-</br>
-</br>
-
+## Aside: Loading REDCap Data into R
+See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
 
 # The Solution
 The `make_choose_one_table()` function can be used with a factor variable to tabulate the response *while preserving the question and checked option context*.
