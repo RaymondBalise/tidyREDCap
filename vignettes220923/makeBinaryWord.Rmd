@@ -1,0 +1,102 @@
+---
+title: "Make Binary Word"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Make Binary Word}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE}
+library(tidyREDCap)
+library(dplyr)
+```
+
+</br>
+
+
+# The Problem 
+
+REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). Using these variables individually, there is no obvious way to detect common patterns that people pick together.
+
+> **Example:** In the Nacho Craving Index (NCI), respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers). These are exported into variables with names like `ingredients___1`, `ingredients___2`, etc.
+
+In REDCap, it is simple to get a summary of those individual variables by using the "Data Exports, Reports, and Stats" application within the REDCap interface and selecting "Stats & Charts". Once the data is in R, simple tables can be produced with the `table()` function, or beautiful tables can be created with the `tabyl()` and `adorn_pct_formatting()` functions from the `janitor` package. However, from these univariate tables, it is impossible to judge which patterns of answers are marked together. In the above example, using the univariate tables, it is difficult to tell what pecentage of people are craving both chips and yellow cheese.
+
+```{r univariate}
+redcap <- readRDS(file = "./redcap.rds")
+
+# Chips
+janitor::tabyl(redcap$ingredients___1) %>% 
+  janitor::adorn_pct_formatting() %>% 
+  knitr::kable()
+
+# Yellow cheese
+janitor::tabyl(redcap$ingredients___2) %>% 
+  janitor::adorn_pct_formatting() %>% 
+  knitr::kable()
+
+```
+
+## Aside: Loading REDCap Data into R
+See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
+
+# Make Analysis Data
+ 
+Even after subsetting the REDCap data to only include the ingredients variables, it is still difficult to detect common patterns in the eight ingredients.
+
+```{r loadData}
+redcap <- readRDS(file = "./redcap.rds")
+
+analysis <- redcap %>% 
+  select(starts_with("ingredients___")) 
+  
+knitr::kable(tail(analysis))
+  
+```
+
+</br>
+</br>
+
+# The Solution
+## Default Lettering
+The `make_binary_word()` function combines responses from the individual variables into a single "word" that indicates which choices were selected. For example, if the first option from the NCI ingredient question, *chips* (i.e., `ingredients___1`), was checked, the word created by `make_binary_word()` will begin with *a*; or if it was not checked, the word will begin with *\_*. If the second option, *Yellow cheese* (i.e., `ingredients___2`), was checked, the next letter will be a *b*, otherwise a *\_* will be used as a placeholder.  Following this pattern, if somebody is not craving any of the eight nacho ingredients, the "word" will be eight underscores, one for each ingredient (i.e., \_\_\_\_\_\_\_\_).  Conversely, if they are craving every ingredient, the "word" will be *abcdefgh*.
+
+```{r nachoExample}
+patterns <- make_binary_word(analysis) 
+janitor::tabyl(patterns)
+```
+
+
+## Custom Lettering
+While the default lettering is somewhat useful, using meaningful (mnemonic) letters makes the binary words easier to understand.  In this case, the first letter for each choice can be used as a useful mnemonic.
+
+| Abbreviation | Ingredient     |
+| :----------  | :----------    |
+| C            | Chips          |
+| Y            | Yellow cheese  |
+| O            | Orange cheese  |
+| W            | White cheese   |
+| M            | Meat           |
+| B            | Beans          |
+| T            | Tomatoes       |
+| P            | Peppers        |
+
+To use custom lettering, specify a vector of single letter abbreviations and pass it to the `the_labels` argument. Be sure to include one unique abbreviation for each column of the data frame.  For example:
+
+```{r nachoAbreviations}
+labels <- c("C", "Y", "O", "W", "M", "B", "T", "P")
+
+patterns <- make_binary_word(analysis, the_labels = labels)
+
+janitor::tabyl(patterns)
+```
+
+The summary table shows that 20 people did not provide information about what ingredients they crave.  The remaining people do not show any recurring patterns, but many people craved both chips and yellow cheese together.
