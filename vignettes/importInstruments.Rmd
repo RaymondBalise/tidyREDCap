@@ -48,12 +48,23 @@ The `import_instruments()` function can be given the name of a redcapAPI connect
 import_instruments(rcon)
 ```
 
-After running the above code we get four tables from the REDCap project.
+After running the above code we get four tables from the REDCap project (See Figure 2).
+\
 
 ![](./global.jpg)
+<p class=caption id="fig2">
+Figure 2 </p>
 
-Notice that each repeat of the HAM-A is its own record.
+\
+
+Notice that each repeat of the HAM-A is its own record (See Figure 3).
 
 ![](./hama.jpg)
+<p class=caption id="fig3">
+Figure 3 </p>
+\
 
 If a person has only done the baseline assessment they will only have one record.
+
+\
+\
