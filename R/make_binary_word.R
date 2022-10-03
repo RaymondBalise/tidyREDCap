@@ -52,7 +52,8 @@ make_binary_word <- function(df, yes_value = "Checked", the_labels = letters) {
   # vector corresponding to the answer element number (the third choose all
   #   thing is number 3)
   elementsOfPickAll_idxMat <- matrix(
-    seq_len(nCols), nrow = nRows, ncol = nCols, byrow = TRUE
+    seq_len(nCols),
+    nrow = nRows, ncol = nCols, byrow = TRUE
   )
 
   # a matrix of true/false indicating if a choice was selected
@@ -67,7 +68,6 @@ make_binary_word <- function(df, yes_value = "Checked", the_labels = letters) {
   map_chr(
     .x = seq_len(nRows),
     .f = ~ {
-
       # replace the column number with the latter of the alphabet or the_labels
       lettersAndNA <- the_labels[chooseAllPatternPerRecord_mat[.x, ]]
 
