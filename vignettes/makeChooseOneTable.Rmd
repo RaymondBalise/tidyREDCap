@@ -36,8 +36,21 @@ table(redcap$ingredients___1)
 ```
 We no longer know what the question was, or which "select all" option this information represents.
 
-## Aside: Loading REDCap Data into R
-See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
+### Aside: Loading REDCap Data into R
+The `redcapAPI` package can be used to load data directly into R.  To learn more about it, take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key, I have saved the data to the package website.
+
+```{r getData, eval=FALSE}
+rcon <- redcapAPI::redcapConnection(
+  url = 'https://redcap.miami.edu/api/', 
+  token = Sys.getenv("NCI_API_Key")
+)
+
+redcap <- redcapAPI::exportRecords(rcon)
+```
+
+</br>
+</br>
+
 
 # The Solution
 The `make_choose_one_table()` function can be used with a factor variable to tabulate the response *while preserving the question and checked option context*.
