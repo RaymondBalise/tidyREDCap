@@ -53,7 +53,7 @@ tidyREDCap::import_instruments(
 )
 ```
 
-If you do this anybody who gets a copy of your code will be able to access your REDCap project.  Also whenever your run this line of code the API token will be saved into your R history files.
+If you do this anybody who gets a copy of you code will be able to access your REDCap project.  Also whenever your run this line of code the API token will be saved into your R history files.
 
 #### Better Options
 
@@ -74,7 +74,7 @@ usethis::edit_r_profile()
 
 It will cause the file to open.  
 
-Create a name for your API key and add a like like this to your .Renviron file:
+Create a name for your API key and add a line like this to your .Renviron file:
 
 ```
 nacho_anxiety_key="1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3"
@@ -122,4 +122,4 @@ saveRDS(redcap, file = "redcap.rds")
 </br>
 
 ### Even Better Options
-If somebody gets access to the files on your machine they could find and read your .Renviron file.  A more secure option is to use the r `keyring` package.  It will store an encrypted copy of your API key in your machines credential store (i.e., the "keychain" on MacOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
+If somebody gets access to the files on your machine they could find and read your .Renviron file.  A more secure option is to use the r `keyring` package.  It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on MacOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
