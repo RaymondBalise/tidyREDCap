@@ -22,7 +22,7 @@ library(tidyREDCap)
 
 
 # The Problem
-It is often desirable to print variable labels above a summary table that shows the count of factor labels.  The labels that are exported on _choose all that apply_ questions include both the question and whichever response was chosen.  This redundancy is often unwanted, and the results are not presented professionally.
+It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels exported on _choose all that apply_ questions, including the question and whichever response was chosen. This redundancy is often unwanted, and the results are not presented professionally.
 
 For example, in the Nacho Craving Index data, the first ingredient is "Chips". We see how R presents this information by simply printing the components of the `ingredients___1` column.
 ```{r}
@@ -34,23 +34,10 @@ As we can see, this information is quite ugly, so we want to tabulate the result
 ```{r}
 table(redcap$ingredients___1)
 ```
-We no longer know what the question was, or which "select all" option this information represents.
+We no longer know what the question was or which "select all" option this information represents.
 
-### Aside: Loading REDCap Data into R
-The `redcapAPI` package can be used to load data directly into R.  To learn more about it, take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key, I have saved the data to the package website.
-
-```{r getData, eval=FALSE}
-rcon <- redcapAPI::redcapConnection(
-  url = 'https://redcap.miami.edu/api/', 
-  token = Sys.getenv("NCI_API_Key")
-)
-
-redcap <- redcapAPI::exportRecords(rcon)
-```
-
-</br>
-</br>
-
+## Aside: Loading REDCap Data into R
+See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
 
 # The Solution
 The `make_choose_one_table()` function can be used with a factor variable to tabulate the response *while preserving the question and checked option context*.
@@ -64,7 +51,7 @@ make_choose_one_table(redcap$ingredients___1) %>%
   knitr::kable()
 ```
 
-The `subset` option, if set to `TRUE`, will cause the function to remove the label's text and only show the response option (i.e., not repeat the "What ingredients do you currently crave?" question).
+The `subset` option, if set to `TRUE,` will cause the function to remove the label's text and only show the response option (i.e., not repeat the "What ingredients do you currently crave?" question).
 ```{r example2, results="asis", }
 make_choose_one_table(
   redcap$ingredients___2,
@@ -73,7 +60,7 @@ make_choose_one_table(
   knitr::kable()
 ```
 
-This function can also be used in an analysis pipeline with a data frame name and the name of the factor inside of that data frame. For example:
+This function can also be used in an analysis pipeline with a data frame name and the name of the factor inside that data frame. For example:
 ```{r example3,  results="asis", fig.align="left"}
 redcap %>% 
   make_choose_one_table(ingredients___3) %>% 
