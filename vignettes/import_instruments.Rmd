@@ -28,7 +28,7 @@ p.caption {
 
 
 # The Problem 
-Suppose you have a REDCap project with many instruments; some instruments are administered in some visits but not in others. In that case, the export from REDCap will have empty cells for the visits in which the instrument was not used. For example, Figure 1 shows a study where subjects completed four instruments (Enrollment, NCI, GAD7, and Hamilton) at baseline. On days 1, 2, and 3, they completed only Hamilton. At the end of the study, they completed NCI and Hamilton. The export of the data for this subject will have five records (one for each visit), and each record will have a cell for every existing instrument. However,  the “NCI” record will only have values for the baseline and final visit and empty cells for the visits in between. On the other hand, there will be no empty spaces for the “Hamilton” record. It would be good to have a function that will export all the data from a project and produce one R table for each instrument. Those tables should remove the blank records. 
+Suppose you have a REDCap project with many instruments; some instruments are administered in some visits but not in others. In that case, the export from REDCap will have empty cells for the visits in which the instrument was not used. For example, Figure 1 shows a study where subjects completed four instruments (Enrollment, NCI, GAD7, and Hamilton) at baseline. On days 1, 2, and 3, they completed only Hamilton. At the end of the study, they completed NCI and Hamilton. The export of data the data for this subject will have five records (one for each visit), and each record will have a cell for every existing instrument. However,  the “NCI” record will only have values for the baseline and final visit and empty cells for the visits in between. On the other hand, there will be no empty spaces for the “Hamilton” record. It would be good to have a function that will export all the data from a project and produce one R table for each instrument. Those tables should remove the blank records. 
 \
 \
 ![](./dashboard.jpg)
@@ -40,30 +40,31 @@ The same functionality should help deal with instruments that are potentially gi
 
 # The Solution
 
-```{r eval=FALSE}
-# Do not type your API token directly into your code
-tidyREDCap::import_instruments(
-  "https://redcap.miami.edu/api/",
-  "1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3" # This is BAD!
-)
+The `import_instruments()` function can be given the name of a redcapAPI connection, like the one created above and it will return one table for each instrument in a project.  By default, the function will drop all records. For example, the above API call is pulling data from a REDCap project that has four instruments: Enrollment, the Nacho Craving Index (NCI), the Generalized Anxiety Disorder Assessment (GAD7), and the Hamilton Anxiety Scale (HAM-A).
 
-# The right way to do this is
-tidyREDCap::import_instruments(
-  "https://redcap.miami.edu/api/", 
-  Sys.getenv("nacho_anxiety_key")
-)
+
+
+```{r eval=FALSE}
+import_instruments(rcon)
 ```
 
-See the [Importing from REDCap](../doc/useAPI.html) vignette for details/information.
-
-The `import_instruments()` function can be given a URL and token for a REDCap project, like the one created above and it will return one table for each instrument in a project.  By default, the function will drop all empty records. For example, the above API call is pulling data from a REDCap project that has four instruments: Enrollment, the Nacho Craving Index (NCI), the Generalized Anxiety Disorder Assessment (GAD7), and the Hamilton Anxiety Scale (HAM-A).
-
-After running the above code we get four tables from the REDCap project.
+After running the above code we get four tables from the REDCap project (See Figure 2).
+\
 
 ![](./global.jpg)
+<p class=caption id="fig2">
+Figure 2 </p>
 
-Notice that each repeat of the HAM-A is its own record.
+\
+
+Notice that each repeat of the HAM-A is its own record (See Figure 3).
 
 ![](./hama.jpg)
+<p class=caption id="fig3">
+Figure 3 </p>
+\
 
 If a person has only done the baseline assessment they will only have one record.
+
+\
+\
