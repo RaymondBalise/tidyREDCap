@@ -15,10 +15,10 @@
 make_instrument_auto <- function(df, drop_which_when = FALSE) {
   # browser()
 
-  if(names(df)[1] != "record_id"){
+  if (names(df)[1] != "record_id") {
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
-  
+
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
 
@@ -32,7 +32,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE) {
   last_col <- length(names(df))
 
   # the instrument's content
-  instrument <- df[, c(first_col:length(names(df))), drop=FALSE]
+  instrument <- df[, c(first_col:length(names(df))), drop = FALSE]
 
   # which records are all missing
   allMissing <- apply(instrument, 1, function(x) {
@@ -42,7 +42,6 @@ make_instrument_auto <- function(df, drop_which_when = FALSE) {
   # the rows that are not all missing
   if (drop_which_when == FALSE) {
     if (is_longitudinal) {
-
       # get the column number for the id and event name
       record_id_col <- which(colnames(df) == "record_id")
       redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
