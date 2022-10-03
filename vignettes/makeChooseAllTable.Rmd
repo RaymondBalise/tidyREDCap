@@ -24,31 +24,39 @@ library(dplyr)
 
 # The Problem 
 
-REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). 
-
-For example, the following data represents a sample of responses to the Nacho Craving Index.
-
-> **Example:** The following data represents a sample of responses to the Nacho Craving Index (NCI), where respondents can indicate which of eight ingredients they are currently craving (i.e., Chips, Yellow cheese, Orange cheese, White cheese, Meat, Beans, Tomatoes, Peppers). 
+REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). For example, the following data represents a sample of responses to the Nacho Craving Index.
 ```{r}
 redcap <- readRDS(file = "./redcap.rds")
 redcap %>% 
   select(starts_with("ingredients___")) %>% 
   head()
 ```
-It is desirable to have a concise table showing how often each option was chosen.
+It is desirable to have a consise table showing how often each option was chosen.
 
-## Aside: Loading REDCap Data into R
-See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
+### Aside: Loading REDCap Data into R
+The `redcapAPI` package can be used to load data directly into R.  To learn more about it, take a look [here](https://github.com/nutterb/redcapAPI/wiki).  Normally the code to automatically pull data with an API includes a person's secret code "key".  Because I want to keep this hidden, I have hidden this API key in my user profile and the code below includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). Also notice that the data is saved using the `saveRDS()` function. REDCap data loaded with the API has the variable labels added as an extra attribute.  To allow this vignette to run without sharing my secret key, I have saved the data to the package website.
+
+```{r getData, eval=FALSE}
+rcon <- redcapAPI::redcapConnection(
+  url = 'https://redcap.miami.edu/api/', 
+  token = Sys.getenv("NCI_API_Key")
+)
+
+redcap <- redcapAPI::exportRecords(rcon)
+```
+
+</br>
+</br>
 
 
 # The Solution
 
-When we use the `make_choose_all_table()` function, the name of a REDCap export, and the name of the _choose all that apply question_ question from REDCap, it will produce a concise frequency count table. 
+If you pass the `make_choose_all_table()` function the name of a REDCap export and the name of the _choose all that apply question_ question in REDCap, it will produce a consise frequency count table. 
 ```{r show_results}
 make_choose_all_table(redcap, "ingredients") 
 ```
 
-Similar to the `make_choose_one_table()` function, we can use this function inside an analysis pipeline. We can also add the `kable()` call to make the table publication quality.
+Similar to the `make_choose_one_table()` function, we can use this function inside an analysis pipeline. We can add the `kable()` call to make the table publication quality as well.
 ```{r show_results_pretty, results='asis'}
 redcap %>% 
   make_choose_all_table("ingredients") %>% 
