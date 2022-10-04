@@ -53,7 +53,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   just_labels <- raw_labels
 
   raw_redcapr <-
-    REDCapR::redcap_read(
+    REDCapR::redcap_read_oneshot(
       redcap_uri = url,
       token = token,
     )$data
