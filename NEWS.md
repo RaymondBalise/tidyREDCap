@@ -1,6 +1,7 @@
 # tidyREDCap 1.0.1  (CRAN release)
 
-* Merged Wayne's branch to main (see versions 1.0.0.9000 - 1.0.0.9002)
+* Merged many small fixes to main (see versions 1.0.0.9000 - 1.0.0.9002)
+* Greatly improved vignettes
 
 # tidyREDCap 1.0.0.9002  (CRAN release candidate)
 

@@ -80,7 +80,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   # get the index (end) of instruments
   i <-
     which(
-      str_remove(names(redcap), "_complete") %in% instrument_name
+      names(redcap) %in% paste0(instrument_name, "_complete")
     )
 
   # add placeholder
