@@ -26,6 +26,7 @@
 #' )
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,
+                               record_id="record_id",
                                envir = .GlobalEnv) {
   # browser()
   ds_instrument <-
@@ -105,7 +106,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
     # drops blank instruments
     if (drop_blank == TRUE) {
-      processed_blank <- make_instrument_auto(drop_dot_one)
+      processed_blank <- make_instrument_auto(drop_dot_one, record_id=record_id)
     } else {
       processed_blank <- drop_dot_one
     }

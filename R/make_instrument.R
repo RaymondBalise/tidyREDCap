@@ -13,7 +13,8 @@
 #' @export
 #'
 ## @examples
-make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE) {
+make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE, 
+                            record_id="record_id") {
 
   if (! any(class(df) == "data.frame")) {
     stop("The `df` argument must be of class data.frame.", call. = FALSE)
@@ -43,7 +44,7 @@ make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE) {
   if (drop_which_when == FALSE) {
 
     # get the column number for the id and event name
-    record_id_col <- which(colnames(df) == "record_id")
+    record_id_col <- which(colnames(df) == record_id)
     redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
 
     return(df[!allMissing, c(

@@ -12,7 +12,7 @@
 #' @export
 #'
 ## @examples
-make_instrument_auto <- function(df, drop_which_when = FALSE) {
+make_instrument_auto <- function(df, record_id="record_id", drop_which_when = FALSE) {
   if (names(df)[1] != "record_id") {
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
@@ -41,7 +41,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE) {
   if (drop_which_when == FALSE) {
     if (is_longitudinal) {
       # get the column number for the id and event name
-      record_id_col <- which(colnames(df) == "record_id")
+      record_id_col <- which(colnames(df) == record_id)
       redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
 
       return(df[!allMissing, c(
@@ -51,7 +51,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE) {
       )])
     } else {
       # get the column number for the id and event name
-      record_id_col <- which(colnames(df) == "record_id")
+      record_id_col <- which(colnames(df) == record_id)
 
       return(df[!allMissing, c(
         record_id_col,
