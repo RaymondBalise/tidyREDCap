@@ -13,7 +13,8 @@
 #'
 ## @examples
 make_instrument_auto <- function(df, record_id="record_id", drop_which_when = FALSE) {
-  if (names(df)[1] != "record_id") {
+  #browser()
+  if (names(df)[1] != record_id) {
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
 
@@ -28,9 +29,36 @@ make_instrument_auto <- function(df, record_id="record_id", drop_which_when = FA
   }
 
   last_col <- length(names(df))
-
+  
+  #the_tibble_df <- tibble::as_tibble(df)
+  browser()
+  
+  # labelled class with hms causes 
+  #  "Error in as.character(x) : Can't convert `x` <time> to <character>.
+  
+  classes_ls <- lapply(df, class)
+  
+  # check_hms <- function(x) {
+  #   "hms" %in% x
+  # }
+  move_to_end <- function(x) {
+    c(x[2:length(x)], x[1])
+  }
+  
+  # has_hms <- vapply(classes_ls, FUN = check_hms, FUN.VALUE = logical(1)) 
+  
+  classes2_ls <- classes_ls
+  classes2_ls <- lapply(
+    X = classes_ls,
+    FUN = move_to_end
+  )
+  
+  for (i in 1:ncol(df)){
+    class(df[,i]) <- classes2_ls[[i]]
+  }
+    
   # the instrument's content
-  instrument <- df[, c(first_col:length(names(df))), drop = FALSE]
+  instrument <- df[, c(first_col:last_col), drop = FALSE]
 
   # which records are all missing
   allMissing <- apply(instrument, 1, function(x) {
