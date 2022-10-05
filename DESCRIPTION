@@ -17,6 +17,13 @@ Authors@R:
         comment = c(ORCID = "0000-0003-1341-4555")
       ),
       person(
+        given = "Anna",
+        family = "Calderon",
+        role = "aut",
+        email = "anna_calderon@miami.edu",
+        comment = c(ORCID = "0000-0000-0000-0000")
+      ),
+      person(
         given = "Layla",
         family = "Bouzoubaa",
         role = "aut",

@@ -10,6 +10,9 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/import_instruments.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -23,6 +26,9 @@
   </url>
   <url>
     <loc>/articles/makeInstrument.html</loc>
+  </url>
+  <url>
+    <loc>/articles/useAPI.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
@@ -40,6 +46,9 @@
     <loc>/reference/getLabel2.html</loc>
   </url>
   <url>
+    <loc>/reference/import_instruments.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -53,6 +62,9 @@
   </url>
   <url>
     <loc>/reference/make_instrument.html</loc>
+  </url>
+  <url>
+    <loc>/reference/make_instrument_auto.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>

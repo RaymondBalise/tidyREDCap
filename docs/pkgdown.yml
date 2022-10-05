@@ -1,10 +1,12 @@
-pandoc: 2.14.0.3
-pkgdown: 2.0.1
+pandoc: '2.18'
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
+  import_instruments: import_instruments.html
   makeBinaryWord: makeBinaryWord.html
   makeChooseAllTable: makeChooseAllTable.html
   makeChooseOneTable: makeChooseOneTable.html
   makeInstrument: makeInstrument.html
-last_built: 2022-01-28T19:02Z
+  useAPI: useAPI.html
+last_built: 2022-10-05T19:20Z
 
