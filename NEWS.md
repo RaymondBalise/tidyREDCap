@@ -9,8 +9,7 @@
 ## Minor improvements and fixes
 
 * `make_choose_one_table()` no longer requires factors
-* `make_choose_all_table()` now works with "1" vs "0" indiator variables
-* added status messaging during the import
+* `make_choose_all_table()` now works with "1" vs "0" indicator variables
 * Greatly improved vignettes
 
 # tidyREDCap 1.0.0.9002  (dev version)
