@@ -103,10 +103,19 @@ taybull2 <- function(data, aVariable, subset = FALSE) {
 #'
 #' @return a table
 #' @export
+# make_choose_one_table <- function(arg1, arg2, subset = FALSE) {
+#   if (is.factor(arg1)) {
+#     return(taybull(arg1, subset))
+#   } else if (is.data.frame(arg1)) {
+#     return(taybull2(arg1, {{ arg2 }}, subset))
+#   }
+# }
+
+
 make_choose_one_table <- function(arg1, arg2, subset = FALSE) {
-  if (is.factor(arg1)) {
-    return(taybull(arg1, subset))
-  } else if (is.data.frame(arg1)) {
+  if (is.data.frame(arg1)) {
     return(taybull2(arg1, {{ arg2 }}, subset))
+  } else {
+    return(taybull(arg1, subset))
   }
 }
