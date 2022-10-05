@@ -19,8 +19,9 @@ apply} questions.}
 a table
 }
 \description{
-Pass this function either 1) a labeled factor or 2) a data frame and also
-a factor in the frame, and it will return a \code{janitor}-style table.  Use subset =
-TRUE if you are making a report on a variable that is part of a \emph{choose all that
-apply} question.
+Pass this function either 1) a labeled factor or 2)
+a data frame and also
+a factor in the frame, and it will return a \code{janitor}-style table.
+Use subset = TRUE if you are making a report on a variable that is part of
+a \emph{choose all that apply} question.
 }

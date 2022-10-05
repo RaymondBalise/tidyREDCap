@@ -24,12 +24,12 @@ getLabel2 <- function(data, aVariable) {
 #' @param df The name of the data set
 #' @param variable The name of the REDCap variable
 #'
-#' @importFrom dplyr select starts_with summarise_all
+#' @importFrom dplyr select starts_with summarise_all 
 #' @importFrom dplyr across mutate pull rename bind_cols
 #' @importFrom tidyr pivot_longer
 #' @importFrom purrr map_chr
 #' @importFrom tibble enframe
-#' @importFrom tidyselect everything vars_select_helpers
+#' @importFrom tidyselect everything vars_select_helpers starts_with
 #' @importFrom rlang .data
 #' @export
 #'
@@ -43,7 +43,7 @@ make_choose_all_table <- function(df, variable) {
   # . <- NULL # kludge to get CMD Check to pass with nonstandard evaluation
   counts <- df %>%
     dplyr::select(dplyr::starts_with(variable)) %>%
-    dplyr::mutate(across(everything(), ~ . %in% c("1", "Checked"))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::everything(), ~ . %in% c("1", "Checked"))) %>%
     dplyr::mutate(dplyr::across(
       tidyselect::vars_select_helpers$where(
         is.logical
