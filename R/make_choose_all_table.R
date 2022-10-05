@@ -5,6 +5,8 @@
 #' @return A variable's response label without the repeated text from of a
 #'     _choose all that apply_ question
 #'
+#' @noRd
+#'
 ## @examples
 getLabel2 <- function(data, aVariable) {
   # pull the variable out and into a data frame

@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_instruments.R
 \name{import_instruments}
 \alias{import_instruments}
-\title{import_instruments}
+\title{Import all instruments into individual R tables}
 \usage{
 import_instruments(
   url,

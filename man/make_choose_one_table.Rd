@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_choose_one_table.R
 \name{make_choose_one_table}
 \alias{make_choose_one_table}
-\title{make_choose_one_table}
+\title{Make a frequency table for a categorical variable}
 \usage{
 make_choose_one_table(arg1, arg2, subset = FALSE)
 }

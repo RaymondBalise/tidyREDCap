@@ -1,5 +1,5 @@
 
-#' import_instruments
+#' @title Import all instruments into individual R tables
 #' @description This function takes the url and key for a REDCap
 #' project and returns a table for each instrument/form in the project.
 #' @param url The API URL for your the instance of REDCap
@@ -154,6 +154,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 #'
 #' @importFrom stringr str_count str_sub str_extract
 #'
+#' @noRd
+#' 
 #' @return vector text changed
 #'
 #' @examples

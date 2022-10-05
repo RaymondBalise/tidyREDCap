@@ -2,6 +2,8 @@
 #' @description Cuts html tags from a variable. Used to clean labels
 #'
 #' @param x a string
+#' 
+#' @noRd
 #'
 #' @return a string
 dropTags <- function(x) {
@@ -19,6 +21,8 @@ dropTags <- function(x) {
 #' @importFrom stringr str_locate str_sub
 #' @importFrom janitor adorn_pct_formatting tabyl
 #'
+#' @noRd
+#' 
 #' @return a table
 taybull <- function(variable, subset = FALSE) {
   # grab the label attribute off the variable
@@ -55,6 +59,8 @@ taybull <- function(variable, subset = FALSE) {
 #'
 #' @importFrom dplyr pull
 #'
+#' @noRd
+#' 
 #' @return a table
 taybull2 <- function(data, aVariable, subset = FALSE) {
   # pull the variable out and into a data frame
@@ -81,7 +87,7 @@ taybull2 <- function(data, aVariable, subset = FALSE) {
     janitor::adorn_pct_formatting(digits = 0)
 }
 
-#' make_choose_one_table
+#' @title Make a frequency table for a categorical variable
 #'
 #' @description Pass this function either 1) a labeled factor or 2)
 #' a data frame and also
