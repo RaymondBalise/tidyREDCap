@@ -4,7 +4,13 @@
 \alias{import_instruments}
 \title{import_instruments}
 \usage{
-import_instruments(url, token, drop_blank = TRUE, envir = .GlobalEnv)
+import_instruments(
+  url,
+  token,
+  drop_blank = TRUE,
+  record_id = "record_id",
+  envir = .GlobalEnv
+)
 }
 \arguments{
 \item{url}{The API URL for your the instance of REDCap}
@@ -12,6 +18,8 @@ import_instruments(url, token, drop_blank = TRUE, envir = .GlobalEnv)
 \item{token}{The API security token}
 
 \item{drop_blank}{Drop records that have no data. TRUE by default.}
+
+\item{record_id}{Name of \code{record_id} variable (if it was changed in REDCap).}
 
 \item{envir}{The name of the environment where the tables should be saved.}
 }
@@ -24,9 +32,9 @@ project and returns a table for each instrument/form in the project.
 }
 \examples{
 \dontrun{
- import_instruments(
-    "https://redcap.miami.edu/api/", 
-    Sys.getenv("test_API_key")
- )
-}   
+import_instruments(
+  "https://redcap.miami.edu/api/",
+  Sys.getenv("test_API_key")
+)
+}
 }

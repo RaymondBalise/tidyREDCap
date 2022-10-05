@@ -47,14 +47,15 @@ tidyREDCap::import_instruments(
   token = "1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3" # This is BAD!
 )
 
-# The right way to do this is
+# A better way to do this is to read the API key from the .Renviron file.
+#   For instructions on saving your API key, see link below.
 tidyREDCap::import_instruments(
   url = "https://redcap.miami.edu/api/", 
-  token = Sys.getenv("nacho_anxiety_key")
+  token = Sys.getenv("nacho_anxiety_key")  # This is BETTER!
 )
 ```
 
-See the [Importing from REDCap](../doc/useAPI.html) vignette for details/information.
+See the [Importing from REDCap](../doc/useAPI.html) vignette for details/information for saving your API key in the .Renviron file.
 
 The `import_instruments()` function can be given a URL and token for a REDCap project, like the one created above and it will return one table for each instrument in a project.  By default, the function will drop all empty records. For example, the above API call is pulling data from a REDCap project that has four instruments: Enrollment, the Nacho Craving Index (NCI), the Generalized Anxiety Disorder Assessment (GAD7), and the Hamilton Anxiety Scale (HAM-A).
 

@@ -6,14 +6,16 @@
 #'
 #' @param df A data frame with the instrument
 #' @param drop_which_when Drop the `record_id` and `redcap_event_name` variables
+#' @param record_id Name of `record_id` variable (if it was changed in REDCap)
 #'
 #' @return A data frame that has an instrument (with at least one not NA value).
 #'
 #' @export
 #'
 ## @examples
-make_instrument_auto <- function(df, record_id="record_id", drop_which_when = FALSE) {
-  #browser()
+make_instrument_auto <- function(df, drop_which_when = FALSE,
+                                 record_id = "record_id") {
+  # browser()
   if (names(df)[1] != record_id) {
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
@@ -29,34 +31,41 @@ make_instrument_auto <- function(df, record_id="record_id", drop_which_when = FA
   }
 
   last_col <- length(names(df))
-  
-  #the_tibble_df <- tibble::as_tibble(df)
-  browser()
-  
-  # labelled class with hms causes 
-  #  "Error in as.character(x) : Can't convert `x` <time> to <character>.
-  
+
+  # browser()
+
+  # If variable class is both "labelled" and "hms" and "labelled" class is
+  #   before "hms", bad things happen. For example:
+  #   * "Error in as.character(x) : Can't convert `x` <time> to <character>.
+  #   * The print method with data.frame is broken, but works with tibble.
+  #   * Neither the `str()` nor `View()` function works.
+
+  # Make a list of classes for all dataframe variables
   classes_ls <- lapply(df, class)
-  
-  # check_hms <- function(x) {
-  #   "hms" %in% x
-  # }
+
+  # Creating generic function to move first element of vector to the end
   move_to_end <- function(x) {
     c(x[2:length(x)], x[1])
   }
-  
-  # has_hms <- vapply(classes_ls, FUN = check_hms, FUN.VALUE = logical(1)) 
-  
-  classes2_ls <- classes_ls
+
+  # Applying the move_to_end function to all of the class names. That is
+  #   move "labelled" to the last element of the class vector.  This
+  #   circumvents the "labelled"-"hms" bug.
+  #
+  #   WARNING: This will not fix the bug if labelled is not the first class.
+
+  # classes2_ls <- classes_ls
+
   classes2_ls <- lapply(
     X = classes_ls,
     FUN = move_to_end
   )
-  
-  for (i in 1:ncol(df)){
-    class(df[,i]) <- classes2_ls[[i]]
+
+  # Applying the change class names to the exported REDCap data.
+  for (i in 1:ncol(df)) {
+    class(df[, i]) <- classes2_ls[[i]]
   }
-    
+
   # the instrument's content
   instrument <- df[, c(first_col:last_col), drop = FALSE]
 

@@ -4,7 +4,13 @@
 \alias{make_instrument}
 \title{Extract an Instrument from an REDCap Export}
 \usage{
-make_instrument(df, first_var, last_var, drop_which_when = FALSE)
+make_instrument(
+  df,
+  first_var,
+  last_var,
+  drop_which_when = FALSE,
+  record_id = "record_id"
+)
 }
 \arguments{
 \item{df}{A data frame with the instrument}
@@ -14,6 +20,8 @@ make_instrument(df, first_var, last_var, drop_which_when = FALSE)
 \item{last_var}{The name of the last variable in an instrument}
 
 \item{drop_which_when}{Drop the \code{record_id} and \code{redcap_event_name} variables}
+
+\item{record_id}{Name of \code{record_id} variable (if it was changed in REDCap)}
 }
 \value{
 A data frame that has an instrument (with at least one not NA value)

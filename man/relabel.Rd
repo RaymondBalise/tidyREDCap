@@ -22,4 +22,5 @@ labels "choose all that apply" variables with "(choice= thingy)" vs.
 \dontrun{
 relabel("What ingredients do you currently crave? (choice=Chips)")
 }
+
 }

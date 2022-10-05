@@ -5,17 +5,19 @@
 #' @param url The API URL for your the instance of REDCap
 #' @param token The API security token
 #' @param drop_blank Drop records that have no data. TRUE by default.
+#' @param record_id Name of `record_id` variable (if it was changed in REDCap).
 #' @param envir The name of the environment where the tables should be saved.
 #'
 #' @return datasets, by default in the global environment
 #'
 #'
-#' @importFrom REDCapR redcap_read
+#' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr pull if_else
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_remove
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
+#' @importFrom cli cli_inform
 #' @export
 #'
 #' @examples
@@ -26,11 +28,16 @@
 #' )
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,
-                               record_id="record_id",
+                               record_id = "record_id",
                                envir = .GlobalEnv) {
-  # browser()
+  cli::cli_inform("Reading metadata about your project")
+  #browser()
   ds_instrument <-
-    REDCapR::redcap_metadata_read(redcap_uri = url, token = token)$data
+    suppressWarnings(
+      suppressMessages(
+        REDCapR::redcap_metadata_read(redcap_uri = url, token = token)$data
+      )
+    )
 
   # Get names of instruments
   form_name <- NULL
@@ -42,22 +49,31 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   # do the api call
   # redcap <- redcapAPI::exportRecords(connection)
-
+  cli::cli_inform("Reading variable labels for your variables")
   raw_labels <-
-    REDCapR::redcap_read(
-      redcap_uri = url,
-      token = token,
-      raw_or_label_headers = "label",
-      records = 1
-    )$data
+    suppressWarnings(
+      suppressMessages(
+          REDCapR::redcap_read(
+            redcap_uri = url,
+            token = token,
+            raw_or_label_headers = "label",
+            records = 1
+          )$data
+      )
+    )
 
   just_labels <- raw_labels
-
+  
+  cli::cli_inform(c("Reading your data", i="This may take a while if your dataset is large."))
   raw_redcapr <-
-    REDCapR::redcap_read_oneshot(
-      redcap_uri = url,
-      token = token,
-    )$data
+    suppressWarnings(
+      suppressMessages(
+          REDCapR::redcap_read_oneshot(
+            redcap_uri = url,
+            token = token,
+          )$data
+      )
+    )
 
   just_data <- raw_redcapr
 
@@ -72,11 +88,6 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
 
   redcap <- just_data
-
-
-
-
-
 
   # get the index (end) of instruments
   i <-
@@ -106,7 +117,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
     # drops blank instruments
     if (drop_blank == TRUE) {
-      processed_blank <- make_instrument_auto(drop_dot_one, record_id=record_id)
+      processed_blank <- make_instrument_auto(drop_dot_one, record_id = record_id)
     } else {
       processed_blank <- drop_dot_one
     }
