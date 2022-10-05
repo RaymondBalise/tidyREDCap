@@ -70,8 +70,6 @@
 * Updated hyperlinks to vignettes and example instrument description.
 * Added references to financial support in the ReadMe.
 
-# tidyREDCap (development version)
-
 # tidyREDCap 0.0.0.9005
 
 * Added check on number of arguments
