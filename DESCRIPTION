@@ -1,5 +1,5 @@
 Package: tidyREDCap
-Title: Helper Functions for Working with REDCap Data
+Title: Helper Functions for Working with 'REDCap' Data
 Version: 1.0.1
 Authors@R: 
     c(person(
