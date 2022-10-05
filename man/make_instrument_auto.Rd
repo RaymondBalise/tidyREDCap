@@ -4,12 +4,14 @@
 \alias{make_instrument_auto}
 \title{Extract an Instrument from an REDCap Export without specifying Variables}
 \usage{
-make_instrument_auto(df, drop_which_when = FALSE)
+make_instrument_auto(df, drop_which_when = FALSE, record_id = "record_id")
 }
 \arguments{
 \item{df}{A data frame with the instrument}
 
 \item{drop_which_when}{Drop the \code{record_id} and \code{redcap_event_name} variables}
+
+\item{record_id}{Name of \code{record_id} variable (if it was changed in REDCap)}
 }
 \value{
 A data frame that has an instrument (with at least one not NA value).

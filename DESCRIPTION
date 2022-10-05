@@ -48,6 +48,7 @@ Encoding: UTF-8
 RoxygenNote: 7.2.1
 Depends: R (>= 3.5.0)
 Imports: 
+    cli,
     dplyr,
     janitor,
     labelVector,
