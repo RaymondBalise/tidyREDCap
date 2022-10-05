@@ -1,10 +1,12 @@
   <!-- badges: start -->
   [![CRAN status](https://www.r-pkg.org/badges/version/tidyREDCap)](https://CRAN.R-project.org/package=tidyREDCap)
   [![Lifecycle: maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+  [![CRAN downloads](https://cranlogs.r-pkg.org/badges/tidyREDCap)](https://www.r-pkg.org/pkg/tidyREDCap)
   <!-- badges: end -->
 
  <!-- [![Travis build status](https://travis-ci.org/RaymondBalise/tidyREDCap.svg?branch=master)](https://travis-ci.org/RaymondBalise/tidyREDCap) -->
  
+
 # tidyREDCap <a href='https://raymondbalise.github.io/tidyREDCap/'><img src='man/figures/logo.png' align="right" width="139" /></a>
 
 tidyREDCap is an R package with functions for processing REDCap data. 
