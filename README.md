@@ -15,6 +15,10 @@ tidyREDCap is an R package with functions for processing REDCap data.
 
 ## What tidyREDCap Functions Can Do for You?
 
+#### Load All Data from REDCap into R with One Line of Code
+
+* 💥 NEW in Version 1.0 💥 `import_instruments()` will use an API call to load every instrument/questionnaire into its own R dataset.  If the REDCap project is longitudinal or has repeated instruments the function will remove blank records. 
+
 #### Working with <i>Choose One</i> Questions
 
 * `make_choose_one_table()`: print a `janitor::tabyl()` style table with a variable label.  This function lets you print one choice from a <i>choose all that apply</i> question. 
