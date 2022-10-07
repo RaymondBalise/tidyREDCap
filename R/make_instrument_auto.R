@@ -89,15 +89,24 @@ fix_class_bug <- function(df) {
   classes_ls <- lapply(df, class)
   
   # Creating generic function to move first element of vector to the end
+  # if the first element is "labelled"
   move_to_end <- function(x) {
-    c(x[2:length(x)], x[1])
+    if("labelled" %in% x & "hms" %in% x) {
+      if(which(x =="hms") > which(x == "labelled")){
+        x[c(which(x != "labelled"), which(x == "labelled"))]
+      }
+      else{
+        x <-  x
+      }
+    }
+    else {
+      x <- x
+    }
   }
   
   # Applying the move_to_end function to all of the class names. That is
   #   move "labelled" to the last element of the class vector.  This
   #   circumvents the "labelled"-"hms" bug.
-  #
-  #   WARNING: This will not fix the bug if labelled is not the first class.
   
   classes2_ls <- lapply(
     X = classes_ls,
