@@ -30,7 +30,7 @@
 import_instruments <- function(url, token, drop_blank = TRUE,
                                record_id = "record_id",
                                envir = .GlobalEnv) {
-  cli::cli_inform("Reading metadata about your project")
+  cli::cli_inform("Reading metadata about your project.... ")
   #browser()
   ds_instrument <-
     suppressWarnings(
@@ -49,7 +49,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   # do the api call
   # redcap <- redcapAPI::exportRecords(connection)
-  cli::cli_inform("Reading variable labels for your variables")
+  cli::cli_inform("Reading variable labels for your variables.... ")
   raw_labels <-
     suppressWarnings(
       suppressMessages(
@@ -64,7 +64,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   just_labels <- raw_labels
   
-  cli::cli_inform(c("Reading your data", i="This may take a while if your dataset is large."))
+  cli::cli_inform(c("Reading your data.... ", i="This may take a while if your dataset is large."))
   raw_redcapr <-
     suppressWarnings(
       suppressMessages(
