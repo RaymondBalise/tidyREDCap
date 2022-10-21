@@ -72,43 +72,49 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
 "make_instrument_auto"
 
 #' Fix labelled class bug
-#' 
-#' @description This fixes a bug if variable class is both "labelled" and 
+#' @description This fixes a bug if variable class is both "labelled" and
 #'   "hms" and "labelled" class is before "hms". For example:
 #'   * "Error in as.character(x) : Can't convert `x` \<time\> to \<character\>.
 #'   * The print method with data.frame is broken, but works with tibble.
 #'   * Neither the `str()` nor `View()` function works.
 #'
-#' @param df 
-#' 
+#' @param df
+#'
 #' @noRd
 #'
 #' @return df
 fix_class_bug <- function(df) {
   # Make a list of classes for all dataframe variables
   classes_ls <- lapply(df, class)
-  
+
   # Creating generic function to move first element of vector to the end
+  # if the first element is "labelled" and if it is before "hms"
   move_to_end <- function(x) {
-    c(x[2:length(x)], x[1])
+    if ("labelled" %in% x && "hms" %in% x) {
+      if (which(x == "hms") > which(x == "labelled")) {
+        x[c(which(x != "labelled"), which(x == "labelled"))]
+      } else {
+        x <- x
+      }
+    } else {
+      x <- x
+    }
   }
-  
+
   # Applying the move_to_end function to all of the class names. That is
   #   move "labelled" to the last element of the class vector.  This
   #   circumvents the "labelled"-"hms" bug.
-  #
-  #   WARNING: This will not fix the bug if labelled is not the first class.
-  
+
   classes2_ls <- lapply(
     X = classes_ls,
     FUN = move_to_end
   )
-  
+
   # Applying the change class names to the exported REDCap data.
   for (i in 1:ncol(df)) {
     class(df[, i]) <- classes2_ls[[i]]
   }
-  
+
   return(df)
 }
 "fix_class_bug"
