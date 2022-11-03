@@ -1,3 +1,9 @@
+
+# tidyREDCap 1.0.1.9000  (CRAN release)
+
+* Fix message display bug while `import_instruments()` runs
+* Fix bug with `import_instruments()` loading repeated instruments (the first instrument in a project was badly messed up)
+
 # tidyREDCap 1.0.1  (CRAN release)
 
 ## New features
