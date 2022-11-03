@@ -15,20 +15,58 @@
 ## @examples
 make_instrument_auto <- function(df, drop_which_when = FALSE,
                                  record_id = "record_id") {
-  # browser()
+  #browser()
   if (names(df)[1] != record_id) {
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
 
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
+  is_repeated <- any(names(df) == "redcap_repeat_instrument")
+  
+  # if there are repeated instruments check to see if this instrument has repeats
+  
+  # part of a solution for checcking to see if this is a repeated form
+  #if (is_repeated) {
+  #  has_repeat_number <- any(!is.na(df$redcap_repeat_instance))
+  #} else {
+  #  has_repeat_number <- FALSE
+  #}
 
   # Get the first column of instrument specific data
-  if (is_longitudinal) {
+  #if (is_longitudinal & is_repeated & ! has_repeat_number){
+  #  first_col <- 5
+  #} else if (is_longitudinal & is_repeated & has_repeat_number){
+  #  first_col <- 4
+  #} else if (is_repeated & ! has_repeat_number) {
+  #  first_col <- 4
+  #}  else if (is_repeated & has_repeat_number) {
+  #  first_col <- 3
+  #} else if (is_longitudinal) {
+  #  first_col <- 3
+  #} else {
+  #  first_col <- 2
+  #}
+  
+  if (is_longitudinal & is_repeated){
+    first_col <- 5
+  } else if (is_repeated ) {
+    first_col <- 4
+  } else if (is_longitudinal) {
     first_col <- 3
   } else {
     first_col <- 2
   }
+  
+  
+  
+  
+  # replaced by above
+  #if (is_longitudinal) {
+  #  first_col <- 3
+  #} else {
+  #  first_col <- 2
+  #}
 
   last_col <- length(names(df))
 

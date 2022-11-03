@@ -101,12 +101,26 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   nInstr_int <- length(bigI) - 1
 
   is_longitudinal <- any(names(redcap) == "redcap_event_name")
+  is_repeated <- any(names(df) == "redcap_repeat_instrument")
 
-  if (is_longitudinal) {
+  if (is_longitudinal & is_repeated){
+    meta <- c(1:4)
+  } else if (is_repeated) {
+    meta <- c(1:3)
+  } else if (is_longitudinal) {
     meta <- c(1:2)
   } else {
     meta <- 1
   }
+  
+  
+  
+  
+  #if (is_longitudinal) {
+  #  meta <- c(1:2)
+  #} else {
+  #  meta <- 1
+  #}
 
   # Load all datasets to the global environment
   for (dataSet in seq_len(nInstr_int)) {
