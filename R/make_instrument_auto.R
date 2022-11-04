@@ -20,15 +20,67 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
     stop("The first variable in df must be `record_id`", call. = FALSE)
   }
 
+  # Strip labels from REDCap created variables to prevent reported join (and 
+  #   perhaps pivot) issues on labeled variables.
+  df <- drop_label(df, record_id)
+  
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
+  
+  if(is_longitudinal){
+    df <- drop_label(df, "redcap_event_name")
+  }
+  
+  is_repeated <- any(names(df) == "redcap_repeat_instrument")
+
+  if(is_repeated){
+    df <- drop_label(df, "redcap_repeat_instrument")
+    df <- drop_label(df, "redcap_repeat_instance")
+  }
+
+  # if there are repeated instruments check to see if this instrument has repeats
+  
+  # part of a solution for checcking to see if this is a repeated form
+  #if (is_repeated) {
+  #  has_repeat_number <- any(!is.na(df$redcap_repeat_instance))
+  #} else {
+  #  has_repeat_number <- FALSE
+  #}
 
   # Get the first column of instrument specific data
-  if (is_longitudinal) {
+  #if (is_longitudinal & is_repeated & ! has_repeat_number){
+  #  first_col <- 5
+  #} else if (is_longitudinal & is_repeated & has_repeat_number){
+  #  first_col <- 4
+  #} else if (is_repeated & ! has_repeat_number) {
+  #  first_col <- 4
+  #}  else if (is_repeated & has_repeat_number) {
+  #  first_col <- 3
+  #} else if (is_longitudinal) {
+  #  first_col <- 3
+  #} else {
+  #  first_col <- 2
+  #}
+  
+  if (is_longitudinal & is_repeated){
+    first_col <- 5
+  } else if (is_repeated ) {
+    first_col <- 4
+  } else if (is_longitudinal) {
     first_col <- 3
   } else {
     first_col <- 2
   }
+  
+  
+  
+  
+  # replaced by above
+  #if (is_longitudinal) {
+  #  first_col <- 3
+  #} else {
+  #  first_col <- 2
+  #}
 
   last_col <- length(names(df))
 
@@ -118,3 +170,22 @@ fix_class_bug <- function(df) {
   return(df)
 }
 "fix_class_bug"
+
+
+#' Drop the label from a variable
+#' @description There is a reported issues with joins on data (without a reprex)
+#' that seem to be caused by the labels.  As a possible solution this can be 
+#' used to drop labels.
+#'
+#' @param df the name of the data frame
+#' @param x the quoted name of the variable
+#'
+#' @export
+#' 
+#'
+#' @return df
+drop_label <- function(df, x) {
+  attributes(df[, which(names(df) == x)]) <- NULL
+  df
+}
+
