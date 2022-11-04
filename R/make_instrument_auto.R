@@ -180,8 +180,8 @@ fix_class_bug <- function(df) {
 #' @param df the name of the data frame
 #' @param x the quoted name of the variable
 #'
-#' @noRd
 #' @export
+#' 
 #'
 #' @return df
 drop_label <- function(df, x) {

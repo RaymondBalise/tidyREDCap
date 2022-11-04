@@ -101,7 +101,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   nInstr_int <- length(bigI) - 1
 
   is_longitudinal <- any(names(redcap) == "redcap_event_name")
-  is_repeated <- any(names(df) == "redcap_repeat_instrument")
+  is_repeated <- any(names(redcap) == "redcap_repeat_instrument")
 
   if (is_longitudinal & is_repeated){
     meta <- c(1:4)
