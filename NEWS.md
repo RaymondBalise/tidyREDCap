@@ -1,8 +1,11 @@
 
-# tidyREDCap 1.0.1.9000
+# tidyREDCap 1.0.1.9000  (dev version)
 
 * Fix message display bug while `import_instruments()` runs
 * Fix bug with `import_instruments()` loading repeated instruments (the first instrument in a project was badly messed up)
+* Row names no longer reflect the row number of the exported data
+* Remove labels from a few automatically created REDCap variables ("record_id", "redcap_event_name", "redcap_repeat_instrument", "redcap_repeat_instance")
+  
 
 # tidyREDCap 1.0.1  (CRAN release)
 

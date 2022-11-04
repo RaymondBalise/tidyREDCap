@@ -137,6 +137,9 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       processed_blank <- drop_dot_one
     }
 
+    # without this row names reflect the repeated instrument duplicates
+    rownames(processed_blank) <- NULL
+    
     # The order of the names from exportInstruments() matches the order of the
     #   data sets from exportRecords()
 
