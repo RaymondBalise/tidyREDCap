@@ -14,7 +14,7 @@
 #' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr pull if_else
 #' @importFrom magrittr %>%
-#' @importFrom stringr str_remove
+#' @importFrom stringr str_remove str_remove_all fixed
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
 #' @importFrom cli cli_inform
@@ -31,7 +31,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                record_id = "record_id",
                                envir = .GlobalEnv) {
   cli::cli_inform("Reading metadata about your project.... ")
-  #browser()
+  
   ds_instrument <-
     suppressWarnings(
       suppressMessages(
@@ -64,6 +64,11 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   just_labels <- raw_labels
   
+  # deal with nested parentheses
+  just_labels_names <- names(just_labels) |> 
+    stringr::str_remove_all(stringr::fixed(")")) |> 
+    stringr::str_remove_all(stringr::fixed("("))
+    
   cli::cli_inform(c("Reading your data.... ", i="This may take a while if your dataset is large."))
   raw_redcapr <-
     suppressWarnings(
@@ -81,7 +86,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   just_data[] <-
     mapply(
       nm = names(just_data),
-      lab = relabel(names(just_labels)),
+      lab = relabel(just_labels_names),
       FUN = function(nm, lab) {
         labelVector::set_label(just_data[[nm]], lab)
       },
