@@ -14,7 +14,7 @@
 #' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr pull if_else
 #' @importFrom magrittr %>%
-#' @importFrom stringr str_remove
+#' @importFrom stringr str_remove str_remove_all fixed
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
 #' @importFrom cli cli_inform
@@ -31,7 +31,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                record_id = "record_id",
                                envir = .GlobalEnv) {
   cli::cli_inform("Reading metadata about your project.... ")
-  #browser()
+
   ds_instrument <-
     suppressWarnings(
       suppressMessages(
@@ -48,7 +48,6 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
 
   # do the api call
-  # redcap <- redcapAPI::exportRecords(connection)
   cli::cli_inform("Reading variable labels for your variables.... ")
   raw_labels <-
     suppressWarnings(
@@ -63,8 +62,20 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
 
   just_labels <- raw_labels
-  
-  cli::cli_inform(c("Reading your data.... ", i="This may take a while if your dataset is large."))
+
+  # deal with nested parentheses
+  # see https://stackoverflow.com/questions/74525811/how-can-i-remove-inner-parentheses-from-an-r-string/74525923#74525923
+  just_labels_names <- names(just_labels) |>
+    stringr:: str_replace("(\\(.*)\\(", "\\1") |>
+    stringr:: str_replace("\\)(.*\\))", "\\1")
+
+  cli::cli_inform(
+    c(
+      "Reading your data.... ",
+      i = "This may take a while if your dataset is large."
+    )
+  )
+
   raw_redcapr <-
     suppressWarnings(
       suppressMessages(
@@ -81,7 +92,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   just_data[] <-
     mapply(
       nm = names(just_data),
-      lab = relabel(names(just_labels)),
+      lab = relabel(just_labels_names),
       FUN = function(nm, lab) {
         labelVector::set_label(just_data[[nm]], lab)
       },
@@ -97,13 +108,13 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
 
   # add placeholder
-  bigI <- c(0, i)
-  nInstr_int <- length(bigI) - 1
+  big_i <- c(0, i)
+  n_instr_int <- length(big_i) - 1
 
   is_longitudinal <- any(names(redcap) == "redcap_event_name")
   is_repeated <- any(names(redcap) == "redcap_repeat_instrument")
 
-  if (is_longitudinal & is_repeated){
+  if (is_longitudinal && is_repeated) {
     meta <- c(1:4)
   } else if (is_repeated) {
     meta <- c(1:3)
@@ -112,46 +123,41 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   } else {
     meta <- 1
   }
-  
-  
-  
-  
-  #if (is_longitudinal) {
-  #  meta <- c(1:2)
-  #} else {
-  #  meta <- 1
-  #}
 
   # Load all datasets to the global environment
-  for (dataSet in seq_len(nInstr_int)) {
+  for (data_set in seq_len(n_instr_int)) {
     # all columns in the current instrument
-    currInstr_idx <- (bigI[dataSet] + 1):bigI[dataSet + 1]
+    curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
 
-    drop_dot_one <- redcap[, c(meta, currInstr_idx)] %>%
+    drop_dot_one <- redcap[, c(meta, curr_instr_idx)] %>%
       select(-ends_with(".1"))
 
     # drops blank instruments
     if (drop_blank == TRUE) {
-      processed_blank <- make_instrument_auto(drop_dot_one, record_id = record_id)
+      processed_blank <-
+        make_instrument_auto(drop_dot_one, record_id = record_id)
     } else {
       processed_blank <- drop_dot_one
     }
 
     # without this row names reflect the repeated instrument duplicates
     rownames(processed_blank) <- NULL
-    
+
     # The order of the names from exportInstruments() matches the order of the
     #   data sets from exportRecords()
 
     if (nrow(processed_blank > 0)) {
       assign(
-        instrument_name[dataSet],
+        instrument_name[data_set],
         processed_blank,
         envir = envir
       )
     } else {
       warning(
-        paste("The", instrument_name[dataSet], "instrument/form has 0 records and will not be imported. \n"),
+        paste(
+          "The", instrument_name[data_set],
+          "instrument/form has 0 records and will not be imported. \n"
+        ),
         call. = FALSE
       )
       # How to print warning about no records... how disruptive should this be?
@@ -173,7 +179,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 #' @importFrom stringr str_count str_sub str_extract
 #'
 #' @noRd
-#' 
+#'
 #' @return vector text changed
 #'
 #' @examples

@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with 'REDCap' Data
-Version: 1.0.1.9000
+Version: 1.0.1.9001
 Authors@R: 
     c(person(
         given = "Raymond",
@@ -51,7 +51,7 @@ Description:
     developed at Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Depends: R (>= 3.5.0)
 Imports: 
     cli,

@@ -1,5 +1,16 @@
+# tidyREDCap 1.0.1.9001  (dev version)
+
+## Fixes/Changes
+
+* Fixed bug that caused labels to be missing if they contained parentheses
 
 # tidyREDCap 1.0.1.9000  (dev version)
+
+## New features
+
+* Add drop label function
+
+## Fixes/Changes
 
 * Fix message display bug while `import_instruments()` runs
 * Fix bug with `import_instruments()` loading repeated instruments (the first instrument in a project was badly messed up)
