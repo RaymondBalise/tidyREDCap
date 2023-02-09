@@ -2,6 +2,7 @@
 
 export("%>%")
 export(drop_label)
+export(drop_labels)
 export(import_instruments)
 export(make_binary_word)
 export(make_choose_all_table)

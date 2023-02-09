@@ -1,0 +1,52 @@
+---
+title: "Drop Labels from a Table"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Drop Labels from a Table}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyREDCap)
+```
+
+# The Problem
+
+Some functions do not work well with labeled variables.  
+
+```{r, error=TRUE}
+tidyREDCap::import_instruments(
+  url = "https://bbmc.ouhsc.edu/redcap/api/",
+  token = Sys.getenv("REDCapR_test")
+)
+
+demographics |> skimr::skim()
+```
+
+So you need a way to drop the label off of a variable or to drop all the labels from all the variables in a dataset.
+
+# The Solution
+
+You can drop the label from a single variable with the drop_label() function.  For example:
+
+```{r}
+demographics_changed <- drop_label(demographics, "first_name")
+```
+
+You can drop all the labels using the `drop_labels()` function.  For example:
+
+```{r}
+demographics_without_labels <- drop_labels(demographics)
+
+demographics_without_labels |> 
+  skimr::skim()
+```
+

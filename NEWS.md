@@ -1,3 +1,13 @@
+
+
+# tidyREDCap 1.0.2  (CRAN release)
+
+* Add drop labels function for dealing with packages that don't want labeled variables.
+* Documentation fixes
+  + Supress warning caused by dplyr 1.1
+  + fix wrong function in api vignette
+* Add test on import_instruments() function call.
+
 # tidyREDCap 1.0.1.9001  (dev version)
 
 ## Fixes/Changes
