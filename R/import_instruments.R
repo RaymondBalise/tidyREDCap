@@ -6,6 +6,7 @@
 #' @param token The API security token
 #' @param drop_blank Drop records that have no data. TRUE by default.
 #' @param record_id Name of `record_id` variable (if it was changed in REDCap).
+#' @param first_record_id First instance of custom id (if changed in REDCap).
 #' @param envir The name of the environment where the tables should be saved.
 #'
 #' @return datasets, by default in the global environment
@@ -29,6 +30,7 @@
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,
                                record_id = "record_id",
+                               first_record_id = 1,
                                envir = .GlobalEnv) {
   cli::cli_inform("Reading metadata about your project.... ")
 
@@ -56,11 +58,18 @@ import_instruments <- function(url, token, drop_blank = TRUE,
             redcap_uri = url,
             token = token,
             raw_or_label_headers = "label",
-            records = 1
+            records = first_record_id
           )$data
       )
     )
-
+  
+  # Provide error for first instance of record id.
+  if (dim(raw_labels)[1]==0) {
+    stop("
+         The first 'record_id' or custom id in df must be 1; 
+         use option 'first_record_id=' to set the first id in df.", call. = FALSE)
+  }
+  
   just_labels <- raw_labels
 
   # deal with nested parentheses

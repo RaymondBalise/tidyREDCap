@@ -16,8 +16,11 @@
 make_instrument_auto <- function(df, drop_which_when = FALSE,
                                  record_id = "record_id") {
   if (names(df)[1] != record_id) {
-    stop("The first variable in df must be `record_id`", call. = FALSE)
+    stop("
+         The first variable in df must be `record_id`; 
+         use option 'record_id=' to set the name of your custom id.", call. = FALSE)
   }
+  
 
   # Strip labels from REDCap created variables to prevent reported join (and 
   #   perhaps pivot) issues on labeled variables.
