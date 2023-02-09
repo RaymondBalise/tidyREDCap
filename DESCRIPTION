@@ -71,6 +71,7 @@ Suggests:
     knitr,
     redcapAPI,
     rmarkdown,
+    skimr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://raymondbalise.github.io/tidyREDCap/index.html

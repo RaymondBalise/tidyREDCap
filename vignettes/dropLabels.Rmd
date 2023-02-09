@@ -28,7 +28,8 @@ tidyREDCap::import_instruments(
   token = Sys.getenv("REDCapR_test")
 )
 
-demographics |> skimr::skim()
+library(skimr)  # for the skim() function
+demographics |> skim()
 ```
 
 So you need a way to drop the label off of a variable or to drop all the labels from all the variables in a dataset.
@@ -47,6 +48,6 @@ You can drop all the labels using the `drop_labels()` function.  For example:
 demographics_without_labels <- drop_labels(demographics)
 
 demographics_without_labels |> 
-  skimr::skim()
+  skim()
 ```
 
