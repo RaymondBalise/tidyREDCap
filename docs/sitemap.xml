@@ -10,6 +10,9 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/dropLabels.html</loc>
+  </url>
+  <url>
     <loc>/articles/import_instruments.html</loc>
   </url>
   <url>
@@ -41,6 +44,12 @@
   </url>
   <url>
     <loc>/reference/dropTags.html</loc>
+  </url>
+  <url>
+    <loc>/reference/drop_label.html</loc>
+  </url>
+  <url>
+    <loc>/reference/drop_labels.html</loc>
   </url>
   <url>
     <loc>/reference/getLabel2.html</loc>
