@@ -71,7 +71,7 @@ When it comes time to add packages to your copy of R, the `install_cran()` funct
 After installing `usethis` you can access your ".Renviron" file by typing this in your console.
 
 ```r
-usethis::edit_r_profile()
+usethis::edit_r_environ()
 ```
 
 It will cause the file to open.  
