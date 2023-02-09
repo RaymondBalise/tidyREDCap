@@ -30,7 +30,7 @@ REDCap exports a "choose all that apply" question into a series of similarly-nam
 
 In REDCap, it is simple to get a summary of those individual variables by using the "Data Exports, Reports, and Stats" application within the REDCap interface and selecting "Stats & Charts". Once the data is in R, simple tables can be produced with the `table()` function, or beautiful tables can be created with the `tabyl()` and `adorn_pct_formatting()` functions from the `janitor` package. However, from these univariate tables, it is impossible to judge which patterns of answers are marked together. In the above example, using the univariate tables, it is difficult to tell what percentage of people are craving both chips and yellow cheese.
 
-```{r univariate}
+```{r univariate, warning=FALSE}
 redcap <- readRDS(file = "./redcap.rds")
 
 # Chips
