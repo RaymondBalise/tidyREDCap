@@ -129,7 +129,8 @@
 <span><span class="co">#&gt; Reading your data....</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> This may take a while if your dataset is large.</span></span>
 <span></span>
-<span><span class="va">demographics</span> <span class="op">|&gt;</span> <span class="fu">skimr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a></span><span class="op">)</span>  <span class="co"># for the skim() function</span></span>
+<span><span class="va">demographics</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `dplyr::summarize()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `skimmed = purrr::map2(...)`.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In group 3: `skim_type = "numeric"`.</span></span>
@@ -154,7 +155,7 @@ function. For example:</p>
 <code class="sourceCode R"><span><span class="va">demographics_without_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_labels.html">drop_labels</a></span><span class="op">(</span><span class="va">demographics</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">demographics_without_labels</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">skimr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Data summary</caption>
 <tbody>
