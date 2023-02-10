@@ -1,4 +1,3 @@
-
 #' @title Import all instruments into individual R tables
 #' @description This function takes the url and key for a REDCap
 #' project and returns a table for each instrument/form in the project.
@@ -6,10 +5,18 @@
 #' @param token The API security token
 #' @param drop_blank Drop records that have no data. TRUE by default.
 #' @param record_id Name of `record_id` variable (if it was changed in REDCap).
-#' @param first_record_id First instance of custom id (if changed in REDCap).
+#' @param first_record_id A value of the custom `record_id` variable (if
+#'   changed in REDCap).  To improve the speed of the import, tidyREDCap pulls
+#'   in a single record twice.  By default if uses the first record.  If you
+#'   have a custom `record_id` variable and if its the first record identifier
+#'   is not `1`,  specify a record identifier value here.  For example if you
+#'   are using `dude_id` instead of `record_id` and `dude_id` has a value of
+#'   "first dude" for one of its records this argument would be
+#'   `first_record_id = "first dude"`.
 #' @param envir The name of the environment where the tables should be saved.
 #'
-#' @return datasets, by default in the global environment
+#' @return one `data.frame` for each instrument/form in a REDCap project. By
+#'   default the datasets are saved into the global environment.
 #'
 #'
 #' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
@@ -54,29 +61,32 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   raw_labels <-
     suppressWarnings(
       suppressMessages(
-          REDCapR::redcap_read(
-            redcap_uri = url,
-            token = token,
-            raw_or_label_headers = "label",
-            records = first_record_id
-          )$data
+        REDCapR::redcap_read(
+          redcap_uri = url,
+          token = token,
+          raw_or_label_headers = "label",
+          records = first_record_id
+        )$data
       )
     )
-  
+
   # Provide error for first instance of record id.
-  if (dim(raw_labels)[1]==0) {
-    stop("
-         The first 'record_id' or custom id in df must be 1; 
-         use option 'first_record_id=' to set the first id in df.", call. = FALSE)
+  if (dim(raw_labels)[1] == 0) {
+    stop(
+    "
+    The first 'record_id' or custom id in df must be 1;
+    use option 'first_record_id=' to set the first id in df.",
+    call. = FALSE
+    )
   }
-  
+
   just_labels <- raw_labels
 
   # deal with nested parentheses
   # see https://stackoverflow.com/questions/74525811/how-can-i-remove-inner-parentheses-from-an-r-string/74525923#74525923
   just_labels_names <- names(just_labels) |>
-    stringr:: str_replace("(\\(.*)\\(", "\\1") |>
-    stringr:: str_replace("\\)(.*\\))", "\\1")
+    stringr::str_replace("(\\(.*)\\(", "\\1") |>
+    stringr::str_replace("\\)(.*\\))", "\\1")
 
   cli::cli_inform(
     c(
@@ -88,11 +98,11 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   raw_redcapr <-
     suppressWarnings(
       suppressMessages(
-          REDCapR::redcap_read_oneshot(
-            redcap_uri = url,
-            token = token,
-            raw_or_label = "label"
-          )$data
+        REDCapR::redcap_read_oneshot(
+          redcap_uri = url,
+          token = token,
+          raw_or_label = "label"
+        )$data
       )
     )
 

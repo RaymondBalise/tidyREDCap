@@ -51,7 +51,7 @@ Description:
     developed at Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Depends: R (>= 3.5.0)
 Imports: 
     cli,
