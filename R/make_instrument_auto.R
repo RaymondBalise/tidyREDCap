@@ -17,40 +17,40 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
                                  record_id = "record_id") {
   if (names(df)[1] != record_id) {
     stop("
-         The first variable in df must be `record_id`; 
+         The first variable in df must be `record_id`;
          use option 'record_id=' to set the name of your custom id.", call. = FALSE)
   }
-  
 
-  # Strip labels from REDCap created variables to prevent reported join (and 
+
+  # Strip labels from REDCap created variables to prevent reported join (and
   #   perhaps pivot) issues on labeled variables.
   df <- drop_label(df, record_id)
-  
+
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
-  
-  if(is_longitudinal){
+
+  if (is_longitudinal) {
     df <- drop_label(df, "redcap_event_name")
   }
-  
+
   is_repeated <- any(names(df) == "redcap_repeat_instrument")
 
-  if(is_repeated){
+  if (is_repeated) {
     df <- drop_label(df, "redcap_repeat_instrument")
     df <- drop_label(df, "redcap_repeat_instance")
   }
 
   # if there are repeated instruments check to see if this instrument has repeats
-  if (is_longitudinal & is_repeated){
+  if (is_longitudinal & is_repeated) {
     first_col <- 5
-  } else if (is_repeated ) {
+  } else if (is_repeated) {
     first_col <- 4
   } else if (is_longitudinal) {
     first_col <- 3
   } else {
     first_col <- 2
   }
-  
+
   last_col <- length(names(df))
 
   df <- fix_class_bug(df)
@@ -63,26 +63,44 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
     all(is.na(x) | x == "")
   })
 
-  # the rows that are not all missing
+  # the rows that are not all missing.
   if (drop_which_when == FALSE) {
+    # get the column number for the id and event name
+    record_id_col <- which(colnames(df) == record_id)
+    redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
+    record_repeat_inst_col <- which(colnames(df) == "redcap_repeat_instance")
+    
     if (is_longitudinal) {
-      # get the column number for the id and event name
-      record_id_col <- which(colnames(df) == record_id)
-      redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
-
-      return(df[!allMissing, c(
-        record_id_col,
-        redcap_event_name_col,
-        first_col:last_col
-      )])
+        # Select rows that have data with a repeat number     
+      if (is_repeated & !all(is.na(df[!allMissing,record_repeat_inst_col]))) {
+        return(df[!allMissing, c(
+          record_id_col,
+          redcap_event_name_col,
+          record_repeat_inst_col,
+          first_col:last_col
+        )])
+      } else {
+        # Longitudinal not repeated instruments
+        return(df[!allMissing, c(
+          record_id_col,
+          redcap_event_name_col,
+          first_col:last_col
+        )])
+      }
     } else {
-      # get the column number for the id and event name
-      record_id_col <- which(colnames(df) == record_id)
-
-      return(df[!allMissing, c(
-        record_id_col,
-        first_col:last_col
-      )])
+      # Select rows that have data with a repeat number   
+      if (is_repeated & !all(is.na(df[!allMissing,record_repeat_inst_col]))) {
+        return(df[!allMissing, c(
+          record_id_col,
+          record_repeat_inst_col,
+          first_col:last_col
+        )])
+      } else {
+        return(df[!allMissing, c(
+          record_id_col,
+          first_col:last_col
+        )])
+      }
     }
   } else {
     return(df[!allMissing, c(first_col:last_col)])
@@ -141,18 +159,17 @@ fix_class_bug <- function(df) {
 
 #' Drop the label from a variable
 #' @description There is a reported issues with joins on data (without a reprex)
-#' that seem to be caused by the labels.  As a possible solution this can be 
+#' that seem to be caused by the labels.  As a possible solution this can be
 #' used to drop labels.
 #'
 #' @param df the name of the data frame
 #' @param x the quoted name of the variable
 #'
 #' @export
-#' 
+#'
 #'
 #' @return df
 drop_label <- function(df, x) {
   attributes(df[, which(names(df) == x)]) <- NULL
   df
 }
-

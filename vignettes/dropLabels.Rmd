@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  eval = FALSE
 )
 ```
 
@@ -22,7 +23,7 @@ library(tidyREDCap)
 
 Some functions do not work well with labeled variables.  
 
-```{r, error=TRUE}
+```{r eval=FALSE}
 tidyREDCap::import_instruments(
   url = "https://bbmc.ouhsc.edu/redcap/api/",
   token = Sys.getenv("REDCapR_test")
