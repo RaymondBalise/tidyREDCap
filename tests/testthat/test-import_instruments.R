@@ -1,3 +1,10 @@
+# Tests for the import_instruments against the import from data returned by 
+#   REDCapR
+# Ray Balise and Gabriel Odom 
+# 2023-02-10
+
+
+######  Setup  ######
 target <- structure(
   list(
     record_id = c(1, 2, 3, 4, 5),
@@ -67,6 +74,10 @@ tidyREDCap::import_instruments(
   "9A81268476645C4E5F03428B8AC3AA7B"
 )
 
+
+
+######  Tests  ######
 test_that("import works", {
   expect_equal(demographics, target)
 })
+
