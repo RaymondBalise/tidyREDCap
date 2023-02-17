@@ -1,12 +1,22 @@
+# tidyREDCap 1.1.0  (CRAN release)
 
+## New features
 
-# tidyREDCap 1.0.2  (CRAN release)
+* Add `drop_labels()` function for datasets. Used to deal with packages/functions 
+  that don't want labeled variables (i.e. `dplyr::pivot_longer()` and `skimr::skim()`
+* Added options (`record_id =` and `first_record_id =` for custom record_id fields in `import_instruments()`
+* Added repeat instance numbers for repeated instruments in `import_instruments()`
 
-* Add drop labels function for dealing with packages that don't want labeled variables.
+## Fixes/Changes
+
 * Documentation fixes
-  + Supress warning caused by dplyr 1.1
+  + Suppress warning caused by dplyr 1.1
   + fix wrong function in api vignette
-* Add test on import_instruments() function call.
+
+## Minor improvements and fixes
+
+* Add unit test on import_instruments() function call.
+
 
 # tidyREDCap 1.0.1.9001  (dev version)
 
