@@ -17,7 +17,15 @@ tidyREDCap is an R package with functions for processing REDCap data.
 
 #### Load All Data from REDCap into R with One Line of Code
 
-* 💥 NEW in Version 1.0 💥 `import_instruments()` will use an API call to load every instrument/questionnaire into its own R dataset.  If the REDCap project is longitudinal or has repeated instruments the function will remove blank records. 
+* 💥 NEW in Version 1.1 💥 `import_instruments()` includes the repeat number for repeated instruments/forms/questionnaires.
+
+* `import_instruments()` will use an API call to load every instrument/questionnaire into its own R dataset.  If the REDCap project is longitudinal or has repeated instruments, the function will remove blank records. 
+
+#### Show the Field Labels Inside RStudio
+
+* After loading data into R using RStudio with the `import_instruments()` function, you can see both the variable name and the text that appears to users of REDCap.  All you need to do is click on the dataset's name in the **Environment** tab or use the View() function. The column headings will include both the variable name and the Field Label from REDCap. 
+
+* 💥 NEW in Version 1.1 💥  Functions coming from packages outside of `tidyREDCap` may not understand what to do with labeled variables.  So, `tidyREDCap` includes a new `drop_labels()` function that will allow you to strip the labels before using functions that want unlabeled data.
 
 #### Working with <i>Choose One</i> Questions
 
@@ -44,7 +52,7 @@ Development Site: https://github.com/RaymondBalise/tidyREDCap
 ## Where Can I Find tidyREDCap?
 
 #### Offical Release
-You can get the latest offical release of tidyREDCap from CRAN.
+You can get the latest official release of tidyREDCap from CRAN.
 ```
 install.packages("tidyREDCap")
 ```
