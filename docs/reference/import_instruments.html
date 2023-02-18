@@ -18,7 +18,7 @@ project and returns a table for each instrument/form in the project."><meta prop
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -88,6 +88,7 @@ project and returns a table for each instrument/form in the project.</p>
 <span>  <span class="va">token</span>,</span>
 <span>  drop_blank <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  record_id <span class="op">=</span> <span class="st">"record_id"</span>,</span>
+<span>  first_record_id <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  envir <span class="op">=</span> <span class="va">.GlobalEnv</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -110,6 +111,17 @@ project and returns a table for each instrument/form in the project.</p>
 <dd><p>Name of <code>record_id</code> variable (if it was changed in REDCap).</p></dd>
 
 
+<dt>first_record_id</dt>
+<dd><p>A value of the custom <code>record_id</code> variable (if
+changed in REDCap).  To improve the speed of the import, tidyREDCap pulls
+in a single record twice.  By default if uses the first record.  If you
+have a custom <code>record_id</code> variable and if its the first record identifier
+is not <code>1</code>,  specify a record identifier value here.  For example if you
+are using <code>dude_id</code> instead of <code>record_id</code> and <code>dude_id</code> has a value of
+"first dude" for one of its records this argument would be
+<code>first_record_id = "first dude"</code>.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The name of the environment where the tables should be saved.</p></dd>
 
@@ -118,7 +130,8 @@ project and returns a table for each instrument/form in the project.</p>
     <h2>Value</h2>
     
 
-<p>datasets, by default in the global environment</p>
+<p>one <code>data.frame</code> for each instrument/form in a REDCap project. By
+default the datasets are saved into the global environment.</p>
     </div>
 
     <div id="ref-examples">

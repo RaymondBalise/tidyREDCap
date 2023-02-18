@@ -43,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -121,7 +121,16 @@
 <h4 id="load-all-data-from-redcap-into-r-with-one-line-of-code">Load All Data from REDCap into R with One Line of Code<a class="anchor" aria-label="anchor" href="#load-all-data-from-redcap-into-r-with-one-line-of-code"></a>
 </h4>
 <ul>
-<li>💥 NEW in Version 1.0 💥 <code><a href="reference/import_instruments.html">import_instruments()</a></code> will use an API call to load every instrument/questionnaire into its own R dataset. If the REDCap project is longitudinal or has repeated instruments the function will remove blank records.</li>
+<li><p>💥 NEW in Version 1.1 💥 <code><a href="reference/import_instruments.html">import_instruments()</a></code> includes the repeat number for repeated instruments/forms/questionnaires.</p></li>
+<li><p><code><a href="reference/import_instruments.html">import_instruments()</a></code> will use an API call to load every instrument/questionnaire into its own R dataset. If the REDCap project is longitudinal or has repeated instruments, the function will remove blank records.</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="show-the-field-labels-inside-rstudio">Show the Field Labels Inside RStudio<a class="anchor" aria-label="anchor" href="#show-the-field-labels-inside-rstudio"></a>
+</h4>
+<ul>
+<li><p>After loading data into R using RStudio with the <code><a href="reference/import_instruments.html">import_instruments()</a></code> function, you can see both the variable name and the text that appears to users of REDCap. All you need to do is click on the dataset’s name in the <strong>Environment</strong> tab or use the View() function. The column headings will include both the variable name and the Field Label from REDCap.</p></li>
+<li><p>💥 NEW in Version 1.1 💥 Functions coming from packages outside of <code>tidyREDCap</code> may not understand what to do with labeled variables. So, <code>tidyREDCap</code> includes a new <code><a href="reference/drop_labels.html">drop_labels()</a></code> function that will allow you to strip the labels before using functions that want unlabeled data.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -129,7 +138,7 @@
 </h4>
 <ul>
 <li>
-<code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://rdrr.io/pkg/janitor/man/tabyl.html" class="external-link">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
+<code><a href="reference/make_choose_one_table.html">make_choose_one_table()</a></code>: print a <code><a href="https://sfirke.github.io/janitor/reference/tabyl.html" class="external-link">janitor::tabyl()</a></code> style table with a variable label. This function lets you print one choice from a <i>choose all that apply</i> question.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -165,7 +174,7 @@ Development Site: <a href="https://github.com/RaymondBalise/tidyREDCap" class="e
 <div class="section level4">
 <h4 id="offical-release">Offical Release<a class="anchor" aria-label="anchor" href="#offical-release"></a>
 </h4>
-<p>You can get the latest offical release of tidyREDCap from CRAN.</p>
+<p>You can get the latest official release of tidyREDCap from CRAN.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyREDCap"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">

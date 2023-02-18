@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -118,18 +118,22 @@
 <div class="section level2">
 <h2 id="the-problem">The Problem<a class="anchor" aria-label="anchor" href="#the-problem"></a>
 </h2>
-<p>Some functions do not work well with labeled variables.</p>
+<p>The <code>tidyREDCap</code> package creates data sets with labelled
+columns.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyREDCap</span><span class="fu">::</span><span class="fu"><a href="../reference/import_instruments.html">import_instruments</a></span><span class="op">(</span></span>
 <span>  url <span class="op">=</span> <span class="st">"https://bbmc.ouhsc.edu/redcap/api/"</span>,</span>
 <span>  token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"REDCapR_test"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Reading metadata about your project....</span></span>
-<span><span class="co">#&gt; Reading variable labels for your variables....</span></span>
-<span><span class="co">#&gt; Reading your data....</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> This may take a while if your dataset is large.</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a></span><span class="op">)</span>  <span class="co"># for the skim() function</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>If you would like to see the labels on the data set
+<code>demographics</code>, you can use the RStudio function
+<code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code>, as shown below.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">demographics</span><span class="op">)</span></span></code></pre></div>
+<p><img src="view_demog_w_labels_20230217.png" style="width:90.0%"></p>
+<p>However, some functions do not work well with labeled variables.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a></span><span class="op">)</span>  <span class="co"># for the skim() function</span></span>
 <span><span class="va">demographics</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `dplyr::summarize()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `skimmed = purrr::map2(...)`.</span></span>
@@ -147,11 +151,11 @@ the labels from all the variables in a dataset.</p>
 </h2>
 <p>You can drop the label from a single variable with the drop_label()
 function. For example:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demographics_changed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_label.html">drop_label</a></span><span class="op">(</span><span class="va">demographics</span>, <span class="st">"first_name"</span><span class="op">)</span></span></code></pre></div>
 <p>You can drop all the labels using the <code><a href="../reference/drop_labels.html">drop_labels()</a></code>
 function. For example:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demographics_without_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drop_labels.html">drop_labels</a></span><span class="op">(</span><span class="va">demographics</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">demographics_without_labels</span> <span class="op">|&gt;</span> </span>

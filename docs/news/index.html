@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -76,14 +76,28 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.0.2" id="tidyredcap-102-cran-release">tidyREDCap 1.0.2 (CRAN release)<a class="anchor" aria-label="anchor" href="#tidyredcap-102-cran-release"></a></h2>
-<ul><li>Add drop labels function for dealing with packages that don’t want labeled variables.</li>
-<li>Documentation fixes
-<ul><li>Supress warning caused by dplyr 1.1</li>
+<h2 class="page-header" data-toc-text="1.1.0" id="tidyredcap-110-cran-release">tidyREDCap 1.1.0 (CRAN release)<a class="anchor" aria-label="anchor" href="#tidyredcap-110-cran-release"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
+<ul><li>Add <code><a href="../reference/drop_labels.html">drop_labels()</a></code> function for datasets. Used to deal with packages/functions that don’t want labeled variables (i.e. <code>dplyr::pivot_longer()</code> and <code><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skimr::skim()</a></code>
+</li>
+<li>Added options (<code>record_id =</code> and <code>first_record_id =</code> for custom record_id fields in <code><a href="../reference/import_instruments.html">import_instruments()</a></code>
+</li>
+<li>Added repeat instance numbers for repeated instruments in <code><a href="../reference/import_instruments.html">import_instruments()</a></code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixeschanges-1-1-0">Fixes/Changes<a class="anchor" aria-label="anchor" href="#fixeschanges-1-1-0"></a></h3>
+<ul><li>Documentation fixes
+<ul><li>Suppress warning caused by dplyr 1.1</li>
 <li>fix wrong function in api vignette</li>
 </ul></li>
-<li>Add test on import_instruments() function call.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-fixes-1-1-0">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-1-1-0"></a></h3>
+<ul><li>Add unit test on import_instruments() function call.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1.9001" id="tidyredcap-1019001-dev-version">tidyREDCap 1.0.1.9001 (dev version)<a class="anchor" aria-label="anchor" href="#tidyredcap-1019001-dev-version"></a></h2>
 <div class="section level3">
