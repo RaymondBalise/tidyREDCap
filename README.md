@@ -58,7 +58,7 @@ install.packages("tidyREDCap")
 ```
 
 #### Development Release
-Run these two lines of code to install tidyREDCap from GitHub (this requires [RTools](https://cran.r-project.org/bin/windows/Rtools/) for Windows or [Xcode](https://developer.apple.com/xcode/) for Mac to be installed on your computer):
+Run these two lines of code to install tidyREDCap from GitHub (this requires [RTools](https://cran.r-project.org/bin/windows/Rtools/) for Windows or Xcode for Mac to be installed on your computer):
 
 ```
 if (!requireNamespace("devtools")) install.packages("devtools")
