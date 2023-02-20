@@ -11,13 +11,27 @@
 getLabel2 <- function(data, aVariable) {
   # pull the variable out and into a data frame
   variable <- {{ data }}[aVariable]
-
+  
   # grab the label attribute off the variable inside of the DF
   theLab <- dropTags(attributes(variable[, aVariable])$label)
-  stringr::str_sub(
-    theLab, stringr::str_locate(theLab, ":")[, 1] + 2,
-    nchar(theLab)
-  )
+  
+  # check for the delimiters to mark the label for the answer
+  # the manual export uses = or from the api uses: 
+  
+  if (stringr::str_detect(theLab, ":") & stringr::str_detect(theLab, "=")){
+    stop("I am confused because I see both ':' and '=' characters")
+  } else if (stringr::str_detect(theLab, ":")) {
+    stringr::str_sub(
+      theLab, stringr::str_locate(theLab, ":")[, 1] + 2,
+      nchar(theLab)
+    )
+  } else if (stringr::str_detect(theLab, "=")){
+    stringr::str_sub(
+      theLab, stringr::str_locate(theLab, "=")[, 1] + 1,
+      nchar(theLab)-1
+    )
+  }
+  
 }
 
 
@@ -55,7 +69,7 @@ make_choose_all_table <- function(df, variable) {
     dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
     dplyr::mutate(blah = "x") %>%
     tidyr::pivot_longer(-.data$blah, names_to = "thingy", values_to = "Count")
-
+  
   aTable <-
     counts %>%
     dplyr::pull(.data$thingy) %>%
