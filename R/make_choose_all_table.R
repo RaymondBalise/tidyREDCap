@@ -37,7 +37,13 @@ getLabel2 <- function(data, aVariable) {
 
 #' Count The Responses to a Choose All That Apply Question
 #'
-#' @param df The name of the data set
+#' @description This will tally the number of responses on a choose all that 
+#'   apply question.  This function extracts the option name from the variable
+#'   labels.  So the data set needs to be labeled.  See 
+#'   the [Make a 'Choose All' Table](../doc/makeChooseAllTable.html) vignette 
+#'   for help.
+#'
+#' @param df The name of the data set (it needs labels)
 #' @param variable The name of the REDCap variable
 #'
 #' @importFrom dplyr select starts_with summarise_all 
