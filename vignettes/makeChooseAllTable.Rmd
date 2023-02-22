@@ -38,6 +38,8 @@ See the [Import All Instruments from a REDCap Project](../doc/importInstruments.
 
 # The Solution
 
+## Data Loaded with `import_instruments()`
+
 If you pass the `make_choose_all_table()` function, the name of a REDCap export, and the name of the _choose all that apply question_ question in REDCap, it will produce a concise frequency count table. 
 ```{r show_results}
 make_choose_all_table(redcap, "ingredients") 
@@ -49,3 +51,19 @@ redcap %>%
   make_choose_all_table("ingredients") %>% 
   knitr::kable()
 ```
+
+
+## Data Exported with "Data Exports, Reports and Stats" in REDCap 
+
+If you export data using the point-and-click tools built into REDCap you end up with two files, one contains R code the other data.  When you run the code you end up with a dataset called `data` which contains two copies of some of the information.  For example, if you download the Nacho Craving Index you will see the ingredients variables, showing what ingredients people are craving, and a second copy of the variables that have `.factor` tagged to the end of the names.  The factor versions do not have the variable labels. So you will need to subset the data to drop them.  The example below shows the process.  Note we have copied the `data` data frame to have a more meaningful name. 
+
+```{r eval=FALSE}
+# This is the data produced by exporting using point-and-click REDCap export.
+manual_export <- data
+
+manual_export |>   
+  select(starts_with("ingredient")) |> # get all the ingredient variables
+  select(-ends_with(".factor")) |>     # drop the factor version of the ingredient variables
+  make_choose_all_table("ingredient")  # make the table
+```                 
+                 

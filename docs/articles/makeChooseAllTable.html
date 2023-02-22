@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0.9000</span>
       </span>
     </div>
 
@@ -156,6 +156,9 @@ details/information.</p>
 <div class="section level2">
 <h2 id="the-solution">The Solution<a class="anchor" aria-label="anchor" href="#the-solution"></a>
 </h2>
+<div class="section level3">
+<h3 id="data-loaded-with-import_instruments">Data Loaded with <code>import_instruments()</code><a class="anchor" aria-label="anchor" href="#data-loaded-with-import_instruments"></a>
+</h3>
 <p>If you pass the <code><a href="../reference/make_choose_all_table.html">make_choose_all_table()</a></code> function, the
 name of a REDCap export, and the name of the <em>choose all that apply
 question</em> question in REDCap, it will produce a concise frequency
@@ -220,6 +223,30 @@ use this function inside an analysis pipeline. We can add the
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level3">
+<h3 id="data-exported-with-data-exports-reports-and-stats-in-redcap">Data Exported with “Data Exports, Reports and Stats” in REDCap<a class="anchor" aria-label="anchor" href="#data-exported-with-data-exports-reports-and-stats-in-redcap"></a>
+</h3>
+<p>If you export data using the point-and-click tools built into REDCap
+you end up with two files, one contains R code the other data. When you
+run the code you end up with a dataset called <code>data</code> which
+contains two copies of some of the information. For example, if you
+download the Nacho Craving Index you will see the ingredients variables,
+showing what ingredients people are craving, and a second copy of the
+variables that have <code>.factor</code> tagged to the end of the names.
+The factor versions do not have the variable labels. So you will need to
+subset the data to drop them. The example below shows the process. Note
+we have copied the <code>data</code> data frame to have a more
+meaningful name.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># This is the data produced by exporting using point-and-click REDCap export.</span></span>
+<span><span class="va">manual_export</span> <span class="op">&lt;-</span> <span class="va">data</span></span>
+<span></span>
+<span><span class="va">manual_export</span> <span class="op">|&gt;</span>   </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ingredient"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># get all the ingredient variables</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">ends_with</a></span><span class="op">(</span><span class="st">".factor"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>     <span class="co"># drop the factor version of the ingredient variables</span></span>
+<span>  <span class="fu"><a href="../reference/make_choose_all_table.html">make_choose_all_table</a></span><span class="op">(</span><span class="st">"ingredient"</span><span class="op">)</span>  <span class="co"># make the table</span></span></code></pre></div>
+</div>
 </div>
   </div>
 

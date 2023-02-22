@@ -7,7 +7,7 @@
 make_choose_all_table(df, variable)
 }
 \arguments{
-\item{df}{The name of the data set}
+\item{df}{The name of the data set (it needs labels)}
 
 \item{variable}{The name of the REDCap variable}
 }
@@ -15,5 +15,9 @@ make_choose_all_table(df, variable)
 A variable's response label without  the choose all the question
 }
 \description{
-Count The Responses to a Choose All That Apply Question
+This will tally the number of responses on a choose all that
+apply question.  This function extracts the option name from the variable
+labels.  So the data set needs to be labeled.  See
+the \href{../doc/makeChooseAllTable.html}{Make a 'Choose All' Table} vignette
+for help.
 }
