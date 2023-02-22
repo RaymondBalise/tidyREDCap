@@ -29,7 +29,7 @@ make_yes_no <- function(x) {
         str_detect(
           x, stringr::regex("^checked", ignore_case = TRUE)
         ) == TRUE ~ "Yes",
-        TRUE ~ "No or Unknown"
+        TRUE ~ "No or Unknown" # Note: this will catch Y or y with an accent
       ),
       levels = c("No or Unknown", "Yes")
     )
@@ -44,6 +44,6 @@ make_yes_no <- function(x) {
     )
     
   } else {
-    x
+    x # not an expected atomic class
   } 
 }

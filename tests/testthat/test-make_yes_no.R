@@ -16,7 +16,7 @@ test_that("strings work", {
     target)
 })
 
-test_that("strings work", {
+test_that("numerics work", {
   expect_equal(
     make_yes_no(original_num),
     target)
