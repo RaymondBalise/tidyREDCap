@@ -65,6 +65,15 @@ if (!requireNamespace("devtools")) install.packages("devtools")
 devtools::install_github("RaymondBalise/tidyREDCap")
 ```
 
+#### What is new on the development release?
+
+* 💥 NEW in Version 1.1.0.9000 💥 adds `make_yes_no()` function to convert
+  "checked" or "yes"-like answers to "Yes" and other answers to "No or Unknown".
+* 💥 NEW in Version 1.1.0.9000 💥 adds `make_yes_no_unknown()` function to 
+  convert "checked" or "yes"-like  answers to "Yes"", unchecked or "no"-like 
+  answers to "No" and other answers to "Unknown".
+
+
 ## What if I Find a Problem?
 We are currently in active development of tidyREDCap. If one of our functions does not work the way that you expect, or if one of our functions is broken, please submit an issue ticket (using a [reproducible example](https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html)) to our [issues page](https://github.com/RaymondBalise/tidyREDCap/issues). If you have a cool idea for our next new function, also submit an issue ticket. If you are an R developer and want so contribute to this package, please submit an issue ticket or a pull request.
 
