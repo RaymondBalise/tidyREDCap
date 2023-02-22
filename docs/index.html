@@ -43,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0.9000</span>
       </span>
     </div>
 
@@ -183,6 +183,14 @@ Development Site: <a href="https://github.com/RaymondBalise/tidyREDCap" class="e
 <p>Run these two lines of code to install tidyREDCap from GitHub (this requires <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">RTools</a> for Windows or Xcode for Mac to be installed on your computer):</p>
 <pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RaymondBalise/tidyREDCap"</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="what-is-new-on-the-development-release">What is new on the development release?<a class="anchor" aria-label="anchor" href="#what-is-new-on-the-development-release"></a>
+</h4>
+<ul>
+<li>💥 NEW in Version 1.1.0.9000 💥 adds <code><a href="reference/make_yes_no.html">make_yes_no()</a></code> function to convert “checked” or “yes”-like answers to “Yes” and other answers to “No or Unknown”.</li>
+<li>💥 NEW in Version 1.1.0.9000 💥 adds <code><a href="reference/make_yes_no_unknown.html">make_yes_no_unknown()</a></code> function to convert “checked” or “yes”-like answers to “Yes”“, unchecked or”no”-like answers to “No” and other answers to “Unknown”.</li>
+</ul>
 </div>
 </div>
 <div class="section level2">
