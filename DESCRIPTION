@@ -65,7 +65,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
+    vctrs
 Roxygen: list(markdown = TRUE)
 Suggests:
     knitr,
