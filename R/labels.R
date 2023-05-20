@@ -1,44 +1,71 @@
 # These are S3 methods for the labelled objects coming from {labelVector}
-# The {vctrs} package needs these for working in dplyr 
+# The {vctrs} package needs these for working in {dplyr} 
 
 #' @importFrom vctrs vec_cast
 #' @importFrom vctrs vec_ptype2
 
-# both labelled
+#### Checking types of objects ####
+
+##### both labelled #####
 #' @export
 vec_ptype2.labelled.labelled <- function(x, y, ...) {
   x
 }
 
-# char
+##### char #####
+#' @export
+vec_ptype2.labelled.character <- function(x, y, ...) {
+  x
+}
+
 #' @export
 vec_ptype2.character.labelled <- function(x, y, ...) {
   y
 }
 
-# integer
+##### integer ##### 
+#' @export
+vec_ptype2.labelled.integer <- function(x, y, ...) {
+  x
+}
+
 #' @export
 vec_ptype2.integer.labelled <- function(x, y, ...) {
   y
 }
 
-# double
+##### double ##### 
+#' @export
+vec_ptype2.labelled.double <- function(x, y, ...) {
+  x
+}
+
 #' @export
 vec_ptype2.double.labelled <- function(x, y, ...) {
   y
 }
 
-# logical
+
+##### logical #####
+#' @export
+vec_ptype2.labelled.logical <- function(x, y, ...) {
+  x
+}
+
 #' @export
 vec_ptype2.logical.labelled <- function(x, y, ...) {
   y
 }
 
+#### Casting to fix attributes ####
+# These functions all return the object `x` itself if it was already labelled 
+#   or `x` with the label from the `to` object.
 
-# both labelled
+##### both labelled #####
 #' @export
 vec_cast.labelled.labelled <- function(x, to, ...) {
-  if (identical(attributes(x), attributes(to))) {
+  # if the labels match return identity(x) otherwise explode
+  if (identical(attributes(x)[["label"]], attributes(to)[["label"]])) {
     return(x)
   } else {
     cli::cli_abort(
@@ -48,49 +75,45 @@ vec_cast.labelled.labelled <- function(x, to, ...) {
   }
 }
 
-# char
+##### char #####
 #' @export
 vec_cast.character.labelled <- function(x, to, ...) {
   labelVector::set_label(x, labelVector::get_label(to))
 }
 
-# char
 #' @export
 vec_cast.labelled.character <- function(x, to, ...) {
   x
 } 
 
-# integer
+##### integer #####
 #' @export
 vec_cast.integer.labelled <- function(x, to, ...) {
   labelVector::set_label(x, labelVector::get_label(to))
 }
 
-# integer
 #' @export
 vec_cast.labelled.integer <- function(x, to, ...) {
   x
 } 
 
-# double
+##### double #####
 #' @export
 vec_cast.double.labelled <- function(x, to, ...) {
   labelVector::set_label(x, labelVector::get_label(to))
 }
 
-# double
 #' @export
 vec_cast.labelled.double <- function(x, to, ...) {
   x
 } 
 
-# logical
+##### logical #####
 #' @export
 vec_cast.logical.labelled <- function(x, to, ...) {
   labelVector::set_label(x, labelVector::get_label(to))
 }
 
-# logical
 #' @export
 vec_cast.labelled.logical <- function(x, to, ...) {
   x
