@@ -1,4 +1,4 @@
-# tidyREDCap 1.1.0.9000
+# tidyREDCap 1.1.1 (CRAN release)
 
 ## New features
 
@@ -11,6 +11,7 @@
 ## Fixes/Changes
 * `make_choose_all_table()` now works with api or manual/point-and-click 
   exports.
+## Added S3 methods so dplyr (and friends) can work with labelled objects
 
 # tidyREDCap 1.1.0  (CRAN release)
 
