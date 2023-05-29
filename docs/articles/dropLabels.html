@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyREDCap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -134,15 +134,234 @@ columns.</p>
 <p>However, some functions do not work well with labeled variables.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a></span><span class="op">)</span>  <span class="co"># for the skim() function</span></span>
-<span><span class="va">demographics</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `dplyr::summarize()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `skimmed = purrr::map2(...)`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In group 3: `skim_type = "numeric"`.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error in `purrr::map2()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In index: 1.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> With name: numeric.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error in `list_unchop()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't combine `..1` &lt;double&gt; and `..2` &lt;labelled&gt;.</span></span></code></pre></div>
+<span><span class="va">demographics</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">demographics</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">10</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table">
+<colgroup>
+<col width="27%">
+<col width="12%">
+<col width="17%">
+<col width="5%">
+<col width="5%">
+<col width="7%">
+<col width="11%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">name_first</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">name_last</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">address</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">29</td>
+<td align="right">38</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">telephone</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">email</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">12</td>
+<td align="right">19</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">demographics_complete</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="12%">
+<col width="17%">
+<col width="13%">
+<col width="13%">
+<col width="13%">
+<col width="11%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">dob</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">1934-04-09</td>
+<td align="left">2003-08-30</td>
+<td align="left">1955-04-15</td>
+<td align="right">5</td>
+</tr></tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table">
+<colgroup>
+<col width="18%">
+<col width="13%">
+<col width="18%">
+<col width="6%">
+<col width="8%">
+<col width="4%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="6%">
+<col width="8%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">record_id</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3.0</td>
+<td align="right">1.58</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">age</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">44.4</td>
+<td align="right">31.57</td>
+<td align="right">11</td>
+<td align="right">11</td>
+<td align="right">59</td>
+<td align="right">61</td>
+<td align="right">80</td>
+<td align="left">▇▁▁▇▃</td>
+</tr>
+</tbody>
+</table>
 <p>So you need a way to drop the label off of a variable or to drop all
 the labels from all the variables in a dataset.</p>
 </div>
@@ -381,7 +600,7 @@ function. For example:</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Raymond Balise, Gabriel Odom, Anna Calderon, Layla Bouzoubaa, Wayne DeFreitas.</p>
+<p>Developed by Raymond Balise, Gabriel Odom, Anna Calderon, Layla Bouzoubaa, Wayne DeFreitas, Kyle Grealis.</p>
 </div>
 
 <div class="pkgdown">
