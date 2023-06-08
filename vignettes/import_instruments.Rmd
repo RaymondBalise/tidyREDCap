@@ -24,6 +24,10 @@ p.caption {
   color: gray;
   font-style: italic;
 }
+
+.customIndent{
+  margin-left: 15px;
+}
 ```
 
 
@@ -68,3 +72,54 @@ Notice that each repeat of the HAM-A is its own record.
 ![](./hama.jpg)
 
 If a person has only done the baseline assessment they will only have one record.
+
+
+# What could possibly go wrong?
+
+If you see:
+
+<ul>
+<li>
+<div style="color: red">
+Error in inherits(ds, "data.frame") : object 'ds' not found
+</div>
+</li>
+
+You likely have a problem in the web-address/URL. Make sure you have included the http:// at the beginning and /api/ at the end. It is easy to forget the / after api.
+
+
+<li>
+<div style="color: red">
+Error in REDCapR::redcap_metadata_read(redcap_uri = url, token = token) : 
+
+<span class="customIndent">Assertion on 'token' failed: Must comply to pattern '^.{1,}$'.</span>
+</div>
+</li>
+
+`tidyREDCap` can't find the name of the API key in your .Renviron file. Check for inconsistency (a typo) between the two places where the name is typed.
+
+
+<li>
+<div style="color: red">
+Error in sanitize_token(token) : 
+
+<span class="customIndent">The token is not a valid 32-character hexademical value.</span>
+</div>
+</li>
+
+The API key is invalid. Try to copy and paste it again. <b><i>Restart R.</i></b>
+
+
+<li>
+<div style="color: red">
+Error in \`pull()`:
+
+! \`!!enquo(var)`  must select exactly one column.
+
+Run \`rlang::last_error()` to see where the error occurred.
+</div>
+</li>
+
+The API key is not associated with a REDCap project. Try to copy and paste it again. <b><i>Restart R.</i></b>
+
+</ul>
