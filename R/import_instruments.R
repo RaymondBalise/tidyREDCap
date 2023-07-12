@@ -147,8 +147,12 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   for (data_set in seq_len(n_instr_int)) {
     # all columns in the current instrument
     curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
-
-    drop_dot_one <- redcap[, c(meta, curr_instr_idx)] %>%
+    
+    column_index <-
+      c(meta, curr_instr_idx) %>%
+      unique()
+      
+    drop_dot_one <- redcap[, column_index] %>%
       select(-ends_with(".1"))
 
     # drops blank instruments
