@@ -3,11 +3,16 @@
 # Ray Balise and Gabriel Odom 
 # 2023-02-10
 
+library(testthat)
 
 ######  Setup  ######
 target <- structure(
   list(
-    record_id = c(1, 2, 3, 4, 5),
+    record_id = structure(
+      c(1, 2, 3, 4, 5), 
+      label = "Study ID", 
+      class = c("labelled", "numeric")
+    ), 
     name_first = structure(
       c(
         "Nutmeg", "Tumtum", "Marcus", "Trudy", "John Lee"
@@ -65,7 +70,7 @@ target <- structure(
       "character"
     ))
   ),
-  row.names = c(NA, -5L), class = "data.frame"
+  row.names = c(NA, -5L), class = c("tbl_df", "tbl", "data.frame")
 )
 
 # creates demographics
@@ -78,6 +83,10 @@ tidyREDCap::import_instruments(
 
 ######  Tests  ######
 test_that("import works", {
-  expect_equal(demographics, target)
+  if (packageVersion("REDCapR") <= "1.1.0") {
+    expect_equal(demographics, target, ignore_attr = TRUE)
+  } else {
+    expect_equal(demographics, target)
+  }
 })
 

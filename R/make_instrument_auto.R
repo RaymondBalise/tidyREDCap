@@ -149,7 +149,7 @@ fix_class_bug <- function(df) {
 
   # Applying the change class names to the exported REDCap data.
   for (i in 1:ncol(df)) {
-    class(df[, i]) <- classes2_ls[[i]]
+    class(df[[i]]) <- classes2_ls[[i]]
   }
 
   return(df)

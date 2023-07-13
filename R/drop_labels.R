@@ -17,7 +17,6 @@
 #'   skimr::skim()
 #' }
 drop_labels <- function(df) {
-  # browser()
   old_class_char <- class(df)
   if (!("data.frame" %in% old_class_char)) {
     stop("df must have class data.frame", call. = FALSE)
