@@ -83,6 +83,10 @@ tidyREDCap::import_instruments(
 
 ######  Tests  ######
 test_that("import works", {
-  expect_equal(demographics, target)
+  if (packageVersion("REDCapR") <= "1.1.0") {
+    expect_equal(demographics, target, ignore_attr = TRUE)
+  } else {
+    expect_equal(demographics, target)
+  }
 })
 

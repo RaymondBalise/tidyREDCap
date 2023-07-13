@@ -150,7 +150,10 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     
     column_index <-
       c(meta, curr_instr_idx) %>%
-      unique()
+      # Sometimes the `record_id` can appear in both 
+      # the metadata columns and the current instrument. 
+      # See https://github.com/RaymondBalise/tidyREDCap/pull/61
+      unique() 
       
     drop_dot_one <- redcap[, column_index] %>%
       select(-ends_with(".1"))
