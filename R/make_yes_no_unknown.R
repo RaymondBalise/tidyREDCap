@@ -7,9 +7,9 @@
 #'     case), 0 or FALSE are converted to "No".  All other values are set to
 #'     "Unknown". Also see `make_yes_no()`.
 #'
-#' @param x variable to be converted to hold "No", "Yes", or Unknown"
+#' @param x variable to be converted to hold "No", "Yes", or "Unknown"
 #'
-#' @return a factor with "No", "Yes", or Unknown"
+#' @return a factor with "No", "Yes", or "Unknown"
 #' 
 #' @importFrom stringr str_detect regex
 #' @importFrom dplyr case_when
