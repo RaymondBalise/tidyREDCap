@@ -92,7 +92,7 @@ make_choose_all_table <- function(df, variable) {
     )) %>%
     dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
     dplyr::mutate(blah = "x") %>%
-    tidyr::pivot_longer(-.data$blah, names_to = "thingy", values_to = "Count")
+    tidyr::pivot_longer(-`blah`, names_to = "thingy", values_to = "Count")
   
   aTable <-
     counts %>%
@@ -101,8 +101,8 @@ make_choose_all_table <- function(df, variable) {
       getLabel2(df, .x)
     }) %>%
     tibble::enframe(name = NULL) %>% # new variable is value
-    dplyr::rename("What" = .data$value) %>%
+    dplyr::rename("What" = `value`) %>%
     dplyr::bind_cols(counts) %>%
-    dplyr::select(.data$What, .data$Count)
+    dplyr::select(`What`, `Count`)
   aTable
 }
