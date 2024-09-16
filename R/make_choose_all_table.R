@@ -82,6 +82,12 @@ make_choose_all_table <- function(df, variable) {
     
   }
   
+  # fix no visible bindings for global variables in CRAN check
+  blah <- NULL
+  value <- NULL
+  What <- NULL
+  Count <- NULL
+  
   counts <- the_vars_df |> 
     dplyr::mutate(dplyr::across(tidyselect::everything(), ~ . %in% c("1", "Checked"))) %>%
     dplyr::mutate(dplyr::across(
