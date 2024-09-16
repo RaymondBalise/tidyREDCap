@@ -67,7 +67,7 @@ Imports:
     labelVector,
     magrittr,
     purrr,
-    REDCapR (<= 1.2.0),
+    REDCapR,
     rlang,
     stringr,
     tibble,
