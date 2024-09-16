@@ -1,3 +1,16 @@
+# tidyREDCap 1.1.2 (CRAN release)
+
+* Fix issues reported by CRAN with Linux and old R Windows (4.3.3) saying 
+
+```
+✖ These names are duplicated:
+    * "record_id" at locations 1 and 2.
+```
+
++ Update roxygen2 version (Thank you for Will Beasley)
++ Fix .data$ was depreciated in `tidyselect` (https://github.com/r-lib/tidyselect/issues/169)
++ Fixed missing global bindings caused by `tidyselect` fix.
+
 # tidyREDCap 1.1.1 (CRAN release)
 
 ## New features
@@ -5,7 +18,7 @@
 * Add `make_yes_no()` function to convert "checked" or "yes"-like answers to 
   "Yes" and other answers to "No or Unknown".
 * Add `make_yes_no_unknown()` function to convert "checked" or "yes"-like 
-  answers to "Yes"", unchecked or "no"-like answers to "No" and other answers to
+  answers to "Yes", unchecked or "no"-like answers to "No" and other answers to
   "Unknown".
   
 ## Fixes/Changes
