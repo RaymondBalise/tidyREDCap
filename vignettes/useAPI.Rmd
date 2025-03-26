@@ -23,8 +23,6 @@ While most people use the "Data Exports, Reports and Stats" Application built in
 
 We have used two R packages to access our REDCap projects,`redcapAPI` and `REDCapR`.  Unfortunately, `redcapAPI` is no longer being actively developed, and we have run into problems with it.  It had the lovely benefit of exporting variables, basically using the same variable names as you see in REDCap, then tagging the variables with the "labels" subjects viewed when completing the forms.
 
-that people taking REDCap surveys or viewing other forms see.  
-
 We have taken the labeling functionality and added it in tidyREDCap.
 
 ### Getting an API Token
