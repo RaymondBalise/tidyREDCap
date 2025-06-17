@@ -79,14 +79,13 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   # internal function to apply filters
   apply_instrument_filter <- function(drop_dot_one, filtered_ids, filter_function,
-                                      duckdb, data_set, record_id, for_env = FALSE) {
+                                      duckdb, data_set, record_id) {
     if (!is.null(filtered_ids)) {
       return(drop_dot_one |> filter(!!sym(record_id) %in% filtered_ids))
     }
 
     if (!is.null(filter_function)) {
-      suffix <- if (for_env) "_env" else ""
-      temp_table_name <- paste0("instrument", suffix, "_", data_set)
+      temp_table_name <- paste0("instrument_", data_set)
       dbWriteTable(duckdb, temp_table_name, drop_dot_one, overwrite = TRUE)
 
       filtered_data <- tbl(duckdb, temp_table_name) |>
@@ -270,8 +269,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       filtered_data <- apply_instrument_filter(
         instrument_data, filtered_ids, filter_function,
-        duckdb, data_set, record_id,
-        for_env = FALSE
+        duckdb, data_set, record_id
       )
 
       processed_data <- process_instrument(filtered_data, drop_blank, record_id)
@@ -298,8 +296,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       filtered_data <- apply_instrument_filter(
         instrument_data, filtered_ids, filter_function,
-        duckdb, data_set, record_id,
-        for_env = TRUE
+        duckdb, data_set, record_id
       )
 
       processed_data <- process_instrument(filtered_data, drop_blank, record_id)
