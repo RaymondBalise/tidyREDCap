@@ -10,7 +10,10 @@ import_instruments(
   drop_blank = TRUE,
   record_id = "record_id",
   first_record_id = 1,
-  envir = .GlobalEnv
+  envir = .GlobalEnv,
+  return_list = FALSE,
+  filter_instrument = NULL,
+  filter_table = NULL
 )
 }
 \arguments{
@@ -32,10 +35,24 @@ are using \code{dude_id} instead of \code{record_id} and \code{dude_id} has a va
 \code{first_record_id = "first dude"}.}
 
 \item{envir}{The name of the environment where the tables should be saved.}
+
+\item{return_list}{If TRUE, returns a named list. If FALSE (default), assigns to environment.}
+
+\item{filter_instrument}{Optional character string specifying which instrument
+to use for filtering. If provided with filter_table, this instrument will be
+filtered first, and the resulting record IDs will be used to filter all
+other instruments.}
+
+\item{filter_table}{Optional function that takes a tbl object and returns
+a modified tbl object. If filter_instrument is specified, this filter is
+applied only to that instrument, and resulting record IDs filter all others.
+If filter_instrument is NULL, filter applies to each instrument separately.
+Example: \code{function(x) x |> filter(age >= 18)}}
 }
 \value{
-one \code{data.frame} for each instrument/form in a REDCap project. By
-default the datasets are saved into the global environment.
+one \code{data.frame} for each instrument/form in a REDCap project. If
+assigned to a variable or return_list=TRUE, returns a named list. Otherwise,
+datasets are saved into the specified environment.
 }
 \description{
 This function takes the url and key for a REDCap
@@ -43,9 +60,24 @@ project and returns a table for each instrument/form in the project.
 }
 \examples{
 \dontrun{
+# Import each instrument to multiple tables
 import_instruments(
   "https://redcap.miami.edu/api/",
   Sys.getenv("test_API_key")
+)
+
+# Import each instrument to a single list
+instruments <- import_instruments(
+  "https://redcap.miami.edu/api/",
+  Sys.getenv("test_API_key")
+)
+
+# Filter all instruments based on demographics
+instruments <- import_instruments(
+  "https://redcap.miami.edu/api/",
+  Sys.getenv("test_API_key"),
+  filter_instrument = "demographics",
+  filter_table = \(x) x |> filter(age >= 18)
 )
 }
 }
