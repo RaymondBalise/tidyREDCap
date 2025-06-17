@@ -16,18 +16,18 @@
 #' @param envir The name of the environment where the tables should be saved.
 #' @param return_list If TRUE, returns a named list. If FALSE (default), assigns to environment.
 #' @param filter_instrument Optional character string specifying which instrument
-#'   to use for filtering. If provided with filter_table, this instrument will be
+#'   to use for filtering. If provided with filter_function, this instrument will be
 #'   filtered first, and the resulting record IDs will be used to filter all
 #'   other instruments.
-#' @param filter_table Optional function that takes a tbl object and returns
+#' @param filter_function Optional function that takes a tbl object and returns
 #'   a modified tbl object. If filter_instrument is specified, this filter is
 #'   applied only to that instrument, and resulting record IDs filter all others.
 #'   If filter_instrument is NULL, filter applies to each instrument separately.
 #'   Example: \code{function(x) x |> filter(age >= 18)}
 #'
-#' @return one `data.frame` for each instrument/form in a REDCap project. If
-#'   assigned to a variable or return_list=TRUE, returns a named list. Otherwise,
-#'   datasets are saved into the specified environment.
+#' @return one table (`data.frame`) for each instrument/form in a REDCap project.
+#' If assigned to a variable or return_list=TRUE, returns a named list.
+#' Otherwise, datasets are saved into the specified environment.
 #'
 #' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr pull if_else collect tbl select all_of filter distinct sym
@@ -60,7 +60,7 @@
 #'   "https://redcap.miami.edu/api/",
 #'   Sys.getenv("test_API_key"),
 #'   filter_instrument = "demographics",
-#'   filter_table = \(x) x |> filter(age >= 18)
+#'   filter_function = \(x) x |> filter(age >= 18)
 #' )
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,
@@ -69,7 +69,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                envir = .GlobalEnv,
                                return_list = FALSE,
                                filter_instrument = NULL,
-                               filter_table = NULL) {
+                               filter_function = NULL) {
   # internal function to extract instrument data
   extract_instrument_data <- function(data_set, big_i, meta, just_data) {
     curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
@@ -78,19 +78,19 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   }
 
   # internal function to apply filters
-  apply_instrument_filter <- function(drop_dot_one, filtered_ids, filter_table,
+  apply_instrument_filter <- function(drop_dot_one, filtered_ids, filter_function,
                                       duckdb, data_set, record_id, for_env = FALSE) {
     if (!is.null(filtered_ids)) {
       return(drop_dot_one |> filter(!!sym(record_id) %in% filtered_ids))
     }
 
-    if (!is.null(filter_table)) {
+    if (!is.null(filter_function)) {
       suffix <- if (for_env) "_env" else ""
       temp_table_name <- paste0("instrument", suffix, "_", data_set)
       dbWriteTable(duckdb, temp_table_name, drop_dot_one, overwrite = TRUE)
 
       filtered_data <- tbl(duckdb, temp_table_name) |>
-        filter_table() |>
+        filter_function() |>
         collect()
 
       # preserve labels
@@ -228,7 +228,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
   # get filtered record IDs if filter_instrument is specified
   filtered_ids <- NULL
-  if (!is.null(filter_instrument) && !is.null(filter_table)) {
+  if (!is.null(filter_instrument) && !is.null(filter_function)) {
     filter_idx <- which(instrument_name == filter_instrument)
     if (length(filter_idx) == 0) {
       stop("filter_instrument '", filter_instrument, "' not found", call. = FALSE)
@@ -242,7 +242,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     dbWriteTable(duckdb, temp_table_name, filter_data, overwrite = TRUE)
 
     filter_tbl <- tbl(duckdb, temp_table_name) |>
-      filter_table() |>
+      filter_function() |>
       select(all_of(record_id)) |>
       distinct()
 
@@ -269,7 +269,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       instrument_data <- extract_instrument_data(data_set, big_i, meta, just_data)
 
       filtered_data <- apply_instrument_filter(
-        instrument_data, filtered_ids, filter_table,
+        instrument_data, filtered_ids, filter_function,
         duckdb, data_set, record_id,
         for_env = FALSE
       )
@@ -297,7 +297,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       instrument_data <- extract_instrument_data(data_set, big_i, meta, just_data)
 
       filtered_data <- apply_instrument_filter(
-        instrument_data, filtered_ids, filter_table,
+        instrument_data, filtered_ids, filter_function,
         duckdb, data_set, record_id,
         for_env = TRUE
       )
