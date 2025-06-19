@@ -29,14 +29,14 @@
 #' If assigned to a variable or return_list=TRUE, returns a named list.
 #' Otherwise, datasets are saved into the specified environment.
 #'
-#' @importFrom REDCapR redcap_read redcap_read_oneshot redcap_metadata_read
+#' @importFrom REDCapR redcap_read redcap_metadata_read
 #' @importFrom dplyr pull if_else collect tbl select all_of filter distinct sym
-#' @importFrom stringr str_remove str_remove_all fixed str_replace str_count str_sub str_extract str_locate
+#' @importFrom stringr str_replace str_count str_sub str_extract str_locate
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
-#' @importFrom cli cli_inform
+#' @importFrom cli cli_inform cli_warn
 #' @importFrom redquack redcap_to_db
-#' @importFrom DBI dbConnect dbDisconnect dbWriteTable dbRemoveTable dbExistsTable
+#' @importFrom DBI dbConnect dbDisconnect
 #' @importFrom duckdb duckdb
 #' @importFrom rlang !!
 #' @export
@@ -70,72 +70,48 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                return_list = FALSE,
                                filter_instrument = NULL,
                                filter_function = NULL) {
-  # internal function to extract instrument data
-  extract_instrument_data <- function(data_set, big_i, meta, just_data) {
+  # internal function to extract instrument columns (indices only)
+  get_instrument_columns <- function(data_set, big_i, meta) {
     curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
-    column_index <- c(meta, curr_instr_idx) |> unique()
-    just_data[, column_index] |> select(-ends_with(".1"))
+    c(meta, curr_instr_idx) |> unique()
   }
 
-  # internal function to apply filters
-  apply_instrument_filter <- function(drop_dot_one, filtered_ids, filter_function,
-                                      duckdb, data_set, record_id) {
-    if (!is.null(filtered_ids)) {
-      return(drop_dot_one |> filter(!!sym(record_id) %in% filtered_ids))
+  # internal function to apply labels to collected data
+  apply_labels_to_data <- function(data, full_labeled_structure) {
+    # copy labels from full structure to matching columns in data
+    for (col_name in names(data)) {
+      if (col_name %in% names(full_labeled_structure)) {
+        attr(data[[col_name]], "label") <- attr(full_labeled_structure[[col_name]], "label")
+      }
     }
+    data
+  }
 
-    if (!is.null(filter_function)) {
-      temp_table_name <- paste0("instrument_", data_set)
-      dbWriteTable(duckdb, temp_table_name, drop_dot_one, overwrite = TRUE)
-
-      filtered_data <- tbl(duckdb, temp_table_name) |>
-        filter_function() |>
-        collect()
-
-      # preserve labels
-      for (col_name in names(filtered_data)) {
-        if (col_name %in% names(drop_dot_one)) {
-          attr(filtered_data[[col_name]], "label") <- attr(drop_dot_one[[col_name]], "label")
+  # internal function to safely collect data with memory error handling
+  safe_collect <- function(query) {
+    tryCatch(
+      query |> collect(),
+      error = function(e) {
+        if (grepl("vector memory limit", e$message, ignore.case = TRUE)) {
+          cli::cli_warn("Your REDCap project size exceeded memory constraints. Use the {.arg filter_instrument} and {.arg filter_function} arguments to filter your data.")
         }
+        stop(e)
       }
-
-      if (dbExistsTable(duckdb, temp_table_name)) {
-        dbRemoveTable(duckdb, temp_table_name)
-      }
-
-      return(filtered_data)
-    }
-
-    drop_dot_one
-  }
-
-  # internal function to process instrument
-  process_instrument <- function(instrument_data, drop_blank, record_id) {
-    processed <- if (drop_blank) {
-      make_instrument_auto(instrument_data, record_id = record_id)
-    } else {
-      instrument_data
-    }
-    rownames(processed) <- NULL
-    processed
-  }
-
-  cli_inform("Reading metadata about your project.... ")
-
-  ds_instrument <-
-    suppressWarnings(
-      suppressMessages(
-        redcap_metadata_read(redcap_uri = url, token = token)$data
-      )
     )
+  }
 
-  # get names of instruments
-  form_name <- NULL
+  cli::cli_inform("Reading metadata about your project...")
+
+  ds_instrument <- suppressWarnings(suppressMessages(
+    redcap_metadata_read(redcap_uri = url, token = token)$data
+  ))
+
+  # get instrument names
   instrument_name <- ds_instrument |>
     pull(form_name) |>
     unique()
 
-  # validate filter_instrument if provided
+  # validate filter_instrument
   if (!is.null(filter_instrument) && !filter_instrument %in% instrument_name) {
     stop("filter_instrument '", filter_instrument, "' not found in project instruments: ",
       paste(instrument_name, collapse = ", "),
@@ -143,39 +119,30 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
   }
 
-  cli_inform("Reading variable labels for your variables.... ")
-  raw_labels <-
-    suppressWarnings(
-      suppressMessages(
-        redcap_read(
-          redcap_uri = url,
-          token = token,
-          raw_or_label_headers = "label",
-          records = first_record_id
-        )$data
-      )
-    )
+  cli::cli_inform("Reading variable labels...")
+  raw_labels <- suppressWarnings(suppressMessages(
+    redcap_read(
+      redcap_uri = url, token = token,
+      raw_or_label_headers = "label",
+      records = first_record_id
+    )$data
+  ))
 
-  # provide error for first instance of record id
-  if (dim(raw_labels)[1] == 0) {
-    stop(
-      "
-    The first 'record_id' or custom id in df must be 1;
-    use option 'first_record_id=' to set the first id in df.",
+  if (nrow(raw_labels) == 0) {
+    stop("The first 'record_id' must be 1; use 'first_record_id=' to set first id",
       call. = FALSE
     )
   }
 
-  just_labels <- raw_labels
-
-  # deal with nested parentheses
-  just_labels_names <- names(just_labels) |>
+  # prepare labels
+  label_names <- names(raw_labels) |>
     str_replace("(\\(.*)\\(", "\\1") |>
     str_replace("\\)(.*\\))", "\\1")
+  names(label_names) <- names(raw_labels)
 
-  cli_inform(c("Reading your data.... "))
+  cli::cli_inform("Reading your data...")
 
-  # create temporary DuckDB connection
+  # create temporary duckdb connection
   db_file <- tempfile(fileext = ".duckdb")
   duckdb <- dbConnect(duckdb(), db_file)
 
@@ -184,36 +151,36 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     if (file.exists(db_file)) file.remove(db_file)
   })
 
-  # import REDCap data to DuckDB
-  duckdb_result <- redcap_to_db(
-    conn = duckdb,
-    redcap_uri = url,
-    token = token,
-    record_id_name = record_id,
-    beep = FALSE
+  # import redcap data to duckdb
+  redcap_to_db(
+    conn = duckdb, redcap_uri = url, token = token,
+    record_id_name = record_id, beep = FALSE
   )
 
-  just_data <- tbl(duckdb, "data") |> collect()
+  # get data table reference and apply labels to full structure
+  data_tbl <- tbl(duckdb, "data")
 
-  # apply labels
-  just_data[] <-
-    mapply(
-      nm = names(just_data),
-      lab = relabel(just_labels_names),
-      FUN = function(nm, lab) {
-        set_label(just_data[[nm]], lab)
-      },
-      SIMPLIFY = FALSE
-    )
+  # collect a sample to get full column structure for labeling
+  full_structure <- data_tbl |>
+    head(1) |>
+    collect()
 
-  # get the index (end) of instruments
-  i <- which(names(just_data) %in% paste0(instrument_name, "_complete"))
+  # apply labels to the full structure template
+  full_structure[] <- mapply(
+    nm = names(full_structure),
+    lab = relabel(label_names),
+    FUN = function(nm, lab) set_label(full_structure[[nm]], lab),
+    SIMPLIFY = FALSE
+  )
+
+  # get instrument indices
+  i <- which(names(full_structure) %in% paste0(instrument_name, "_complete"))
   big_i <- c(0, i)
   n_instr_int <- length(big_i) - 1
 
   # determine metadata columns
-  is_longitudinal <- any(names(just_data) == "redcap_event_name")
-  is_repeated <- any(names(just_data) == "redcap_repeat_instrument")
+  is_longitudinal <- any(names(full_structure) == "redcap_event_name")
+  is_repeated <- any(names(full_structure) == "redcap_repeat_instrument")
 
   meta <- if (is_longitudinal && is_repeated) {
     c(1:4)
@@ -225,63 +192,76 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     1
   }
 
-  # get filtered record IDs if filter_instrument is specified
+  # get filtered record ids if filter specified
   filtered_ids <- NULL
   if (!is.null(filter_instrument) && !is.null(filter_function)) {
     filter_idx <- which(instrument_name == filter_instrument)
-    if (length(filter_idx) == 0) {
-      stop("filter_instrument '", filter_instrument, "' not found", call. = FALSE)
-    }
 
-    filter_data <- extract_instrument_data(filter_idx, big_i, meta, just_data)
+    cli::cli_inform("Applying filter to '{filter_instrument}' instrument...")
 
-    cli_inform("Applying filter to '{filter_instrument}' instrument....")
+    # get column indices for filter instrument
+    filter_columns <- get_instrument_columns(filter_idx, big_i, meta)
 
-    temp_table_name <- "filter_temp"
-    dbWriteTable(duckdb, temp_table_name, filter_data, overwrite = TRUE)
-
-    filter_tbl <- tbl(duckdb, temp_table_name) |>
+    # apply filter directly on database table
+    filtered_ids <- data_tbl |>
+      select(all_of(filter_columns)) |>
+      select(-ends_with(".1")) |>
       filter_function() |>
       select(all_of(record_id)) |>
-      distinct()
-
-    filtered_ids <- filter_tbl |>
+      distinct() |>
       collect() |>
       pull(!!sym(record_id))
 
-    cli_inform("Filter resulted in {length(filtered_ids)} records")
-    dbRemoveTable(duckdb, temp_table_name)
+    cli::cli_inform("Filter resulted in {length(filtered_ids)} records")
   }
 
   if (n_instr_int == 0) {
-    cli_inform("No instruments found in the project.")
+    cli::cli_inform("No instruments found in project")
     return(if (return_list) list() else invisible())
   }
 
-  # process instruments
+  # process instruments with memory-efficient approach
   if (return_list) {
-    # return as list
     instruments_list <- vector("list", length = n_instr_int)
     names(instruments_list) <- instrument_name[1:n_instr_int]
 
     for (data_set in seq_len(n_instr_int)) {
-      instrument_data <- extract_instrument_data(data_set, big_i, meta, just_data)
+      # get column indices for this instrument
+      column_index <- get_instrument_columns(data_set, big_i, meta)
 
-      filtered_data <- apply_instrument_filter(
-        instrument_data, filtered_ids, filter_function,
-        duckdb, data_set, record_id
-      )
+      # build query starting from database table
+      instrument_query <- data_tbl |>
+        select(all_of(column_index)) |>
+        select(-ends_with(".1"))
 
-      processed_data <- process_instrument(filtered_data, drop_blank, record_id)
+      # apply filtering if needed
+      if (!is.null(filtered_ids)) {
+        instrument_query <- instrument_query |>
+          filter(!!sym(record_id) %in% filtered_ids)
+      } else if (!is.null(filter_function)) {
+        instrument_query <- instrument_query |> filter_function()
+      }
+
+      # collect only the filtered/processed data with memory error handling
+      instrument_data <- safe_collect(instrument_query)
+
+      # apply labels
+      instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+
+      # process (drop blank if needed)
+      processed_data <- if (drop_blank) {
+        make_instrument_auto(instrument_data, record_id = record_id)
+      } else {
+        instrument_data
+      }
+
+      rownames(processed_data) <- NULL
 
       if (nrow(processed_data) > 0) {
         instruments_list[[instrument_name[data_set]]] <- processed_data
       } else {
-        warning(
-          paste(
-            "The", instrument_name[data_set],
-            "instrument/form has 0 records and will be set to NULL in the list. \n"
-          ),
+        warning("The ", instrument_name[data_set],
+          " instrument has 0 records and will be set to null",
           call. = FALSE
         )
         instruments_list[[instrument_name[data_set]]] <- NULL
@@ -292,23 +272,37 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   } else {
     # assign to environment
     for (data_set in seq_len(n_instr_int)) {
-      instrument_data <- extract_instrument_data(data_set, big_i, meta, just_data)
+      column_index <- get_instrument_columns(data_set, big_i, meta)
 
-      filtered_data <- apply_instrument_filter(
-        instrument_data, filtered_ids, filter_function,
-        duckdb, data_set, record_id
-      )
+      instrument_query <- data_tbl |>
+        select(all_of(column_index)) |>
+        select(-ends_with(".1"))
 
-      processed_data <- process_instrument(filtered_data, drop_blank, record_id)
+      if (!is.null(filtered_ids)) {
+        instrument_query <- instrument_query |>
+          filter(!!sym(record_id) %in% filtered_ids)
+      } else if (!is.null(filter_function)) {
+        instrument_query <- instrument_query |> filter_function()
+      }
+
+      # collect data with memory error handling
+      instrument_data <- safe_collect(instrument_query)
+
+      instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+
+      processed_data <- if (drop_blank) {
+        make_instrument_auto(instrument_data, record_id = record_id)
+      } else {
+        instrument_data
+      }
+
+      rownames(processed_data) <- NULL
 
       if (nrow(processed_data) > 0) {
         assign(instrument_name[data_set], processed_data, envir = envir)
       } else {
-        warning(
-          paste(
-            "The", instrument_name[data_set],
-            "instrument/form has 0 records and will not be imported. \n"
-          ),
+        warning("The ", instrument_name[data_set],
+          " instrument has 0 records and will not be imported",
           call. = FALSE
         )
       }
