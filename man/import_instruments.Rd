@@ -36,7 +36,7 @@ are using \code{dude_id} instead of \code{record_id} and \code{dude_id} has a va
 
 \item{envir}{The name of the environment where the tables should be saved.}
 
-\item{return_list}{If TRUE, returns a named list. If FALSE (default), assigns to environment.}
+\item{return_list}{If TRUE, returns instrument data in a named list. If FALSE (default), assigns instrument data to environment.}
 
 \item{filter_instrument}{Optional character string specifying which instrument
 to use for filtering. If provided with filter_function, this instrument will be
@@ -44,15 +44,14 @@ filtered first, and the resulting record IDs will be used to filter all
 other instruments.}
 
 \item{filter_function}{Optional function that takes a tbl object and returns
-a modified tbl object. If filter_instrument is specified, this filter is
+a modified instrument. If \code{filter_instrument} is specified, this filter is
 applied only to that instrument, and resulting record IDs filter all others.
-If filter_instrument is NULL, filter applies to each instrument separately.
+If \code{filter_instrument} is NULL (default), filter applies to each instrument separately.
 Example: \code{function(x) x |> filter(age >= 18)}}
 }
 \value{
-one table (\code{data.frame}) for each instrument/form in a REDCap project.
-If assigned to a variable or return_list=TRUE, returns a named list.
-Otherwise, datasets are saved into the specified environment.
+One table (\code{data.frame}) for each instrument/form in a REDCap project.
+If \code{return_list} = TRUE, returns a named list.
 }
 \description{
 This function takes the url and key for a REDCap

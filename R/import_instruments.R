@@ -14,27 +14,26 @@
 #'   "first dude" for one of its records this argument would be
 #'   `first_record_id = "first dude"`.
 #' @param envir The name of the environment where the tables should be saved.
-#' @param return_list If TRUE, returns a named list. If FALSE (default), assigns to environment.
+#' @param return_list If TRUE, returns instrument data in a named list. If FALSE (default), assigns instrument data to environment.
 #' @param filter_instrument Optional character string specifying which instrument
 #'   to use for filtering. If provided with filter_function, this instrument will be
 #'   filtered first, and the resulting record IDs will be used to filter all
 #'   other instruments.
 #' @param filter_function Optional function that takes a tbl object and returns
-#'   a modified tbl object. If filter_instrument is specified, this filter is
+#'   a modified instrument. If `filter_instrument` is specified, this filter is
 #'   applied only to that instrument, and resulting record IDs filter all others.
-#'   If filter_instrument is NULL, filter applies to each instrument separately.
+#'   If `filter_instrument` is NULL (default), filter applies to each instrument separately.
 #'   Example: \code{function(x) x |> filter(age >= 18)}
 #'
-#' @return one table (`data.frame`) for each instrument/form in a REDCap project.
-#' If assigned to a variable or return_list=TRUE, returns a named list.
-#' Otherwise, datasets are saved into the specified environment.
+#' @return One table (`data.frame`) for each instrument/form in a REDCap project.
+#' If `return_list` = TRUE, returns a named list.
 #'
 #' @importFrom REDCapR redcap_read redcap_metadata_read
-#' @importFrom dplyr pull if_else collect tbl select all_of filter distinct sym
+#' @importFrom dplyr pull if_else collect tbl select all_of filter distinct sym count
 #' @importFrom stringr str_replace str_count str_sub str_extract str_locate
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
-#' @importFrom cli cli_inform cli_warn
+#' @importFrom cli cli_inform cli_abort cli_warn
 #' @importFrom redquack redcap_to_db
 #' @importFrom DBI dbConnect dbDisconnect
 #' @importFrom duckdb duckdb
@@ -87,17 +86,24 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     data
   }
 
-  # internal function to safely collect data with memory error handling
-  safe_collect <- function(query) {
-    tryCatch(
-      query |> collect(),
-      error = function(e) {
-        if (grepl("vector memory limit", e$message, ignore.case = TRUE)) {
-          cli::cli_warn("Your REDCap project size exceeded memory constraints. Use the {.arg filter_instrument} and {.arg filter_function} arguments to filter your data.")
-        }
-        stop(e)
-      }
-    )
+  # internal function to check data size with tiered warnings
+  check_data_size <- function(tbl_query, filter_in_use = FALSE) {
+    if (filter_in_use) {
+      return(invisible())
+    }
+
+    n_rows <- tbl_query |>
+      count() |>
+      collect() |>
+      pull(n)
+    n_cols <- length(colnames(tbl_query))
+    total_elements <- n_rows * n_cols
+
+    if (total_elements >= 100000000) { # 100m elements - serious warning
+      cli::cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
+    } else if (total_elements >= 25000000) { # 25m elements - suggestion
+      cli::cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
+    }
   }
 
   cli::cli_inform("Reading metadata about your project...")
@@ -154,11 +160,14 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   # import redcap data to duckdb
   redcap_to_db(
     conn = duckdb, redcap_uri = url, token = token,
-    record_id_name = record_id, beep = FALSE
+    record_id_name = record_id, echo = "progress", beep = FALSE
   )
 
   # get data table reference and apply labels to full structure
   data_tbl <- tbl(duckdb, "data")
+
+  # check data size and warn if big
+  check_data_size(data_tbl, filter_in_use = !is.null(filter_instrument) || !is.null(filter_function))
 
   # collect a sample to get full column structure for labeling
   full_structure <- data_tbl |>
@@ -242,8 +251,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
         instrument_query <- instrument_query |> filter_function()
       }
 
-      # collect only the filtered/processed data with memory error handling
-      instrument_data <- safe_collect(instrument_query)
+      # collect data
+      instrument_data <- instrument_query |> collect()
 
       # apply labels
       instrument_data <- apply_labels_to_data(instrument_data, full_structure)
@@ -285,8 +294,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
         instrument_query <- instrument_query |> filter_function()
       }
 
-      # collect data with memory error handling
-      instrument_data <- safe_collect(instrument_query)
+      # collect data
+      instrument_data <- instrument_query |> collect()
 
       instrument_data <- apply_labels_to_data(instrument_data, full_structure)
 
@@ -301,9 +310,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       if (nrow(processed_data) > 0) {
         assign(instrument_name[data_set], processed_data, envir = envir)
       } else {
-        warning("The ", instrument_name[data_set],
-          " instrument has 0 records and will not be imported",
-          call. = FALSE
+        cli::cli_warn(
+          "The {instrument_name[data_set]} instrument has 0 records and will not be imported"
         )
       }
     }
