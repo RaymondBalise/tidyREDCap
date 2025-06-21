@@ -86,26 +86,6 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     data
   }
 
-  # internal function to check data size with tiered warnings
-  check_data_size <- function(tbl_query, filter_in_use = FALSE) {
-    if (filter_in_use) {
-      return(invisible())
-    }
-
-    n_rows <- tbl_query |>
-      count() |>
-      collect() |>
-      pull(n)
-    n_cols <- length(colnames(tbl_query))
-    total_elements <- n_rows * n_cols
-
-    if (total_elements >= 100000000) { # 100m elements - serious warning
-      cli::cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
-    } else if (total_elements >= 25000000) { # 25m elements - suggestion
-      cli::cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
-    }
-  }
-
   cli::cli_inform("Reading metadata about your project...")
 
   ds_instrument <- suppressWarnings(suppressMessages(
@@ -135,7 +115,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   ))
 
   if (nrow(raw_labels) == 0) {
-    stop("The first 'record_id' must be 1; use 'first_record_id=' to set first id",
+    stop("The first 'record_id' must be 1; use argument 'first_record_id' to set first id",
       call. = FALSE
     )
   }
@@ -167,7 +147,21 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   data_tbl <- tbl(duckdb, "data")
 
   # check data size and warn if big
-  check_data_size(data_tbl, filter_in_use = !is.null(filter_instrument) || !is.null(filter_function))
+  filter_in_use <- !is.null(filter_instrument) || !is.null(filter_function)
+  if (!filter_in_use) {
+    n_rows <- data_tbl |>
+      count() |>
+      collect() |>
+      pull(n)
+    n_cols <- length(colnames(data_tbl))
+    total_elements <- n_rows * n_cols
+
+    if (total_elements >= 100000000) { # 100m elements - serious warning
+      cli::cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
+    } else if (total_elements >= 25000000) { # 25m elements - suggestion
+      cli::cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
+    }
+  }
 
   # collect a sample to get full column structure for labeling
   full_structure <- data_tbl |>
