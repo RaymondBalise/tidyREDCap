@@ -209,5 +209,7 @@ drop_label <- function(df, ...) {
     attributes(df[[col_idx]]) <- NULL
   }
 
+  # TODO: investigate if labelled class needs to be dropped
+
   df
 }
