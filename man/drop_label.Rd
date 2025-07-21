@@ -9,8 +9,8 @@ drop_label(df, ...)
 \arguments{
 \item{df}{the name of the data frame}
 
-\item{...}{Variable selection using tidyselect helpers (e.g., contains(),
-starts_with()) or column names as symbols or strings}
+\item{...}{Variable selection using tidyselect helpers (e.g., \code{contains()},
+\code{starts_with()}) or column names as symbols or strings}
 }
 \value{
 df with labels removed from selected variables

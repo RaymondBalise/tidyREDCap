@@ -179,8 +179,8 @@ fix_class_bug <- function(df) {
 #' used to drop labels from one or more variables.
 #'
 #' @param df the name of the data frame
-#' @param ... Variable selection using tidyselect helpers (e.g., contains(),
-#' starts_with()) or column names as symbols or strings
+#' @param ... Variable selection using tidyselect helpers (e.g., `contains()`,
+#'   `starts_with()`) or column names as symbols or strings
 #'
 #' @examples
 #' \dontrun{
