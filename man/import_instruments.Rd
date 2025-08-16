@@ -68,7 +68,8 @@ import_instruments(
 # Import each instrument to a single list
 instruments <- import_instruments(
   "https://redcap.miami.edu/api/",
-  Sys.getenv("test_API_key")
+  Sys.getenv("test_API_key"),
+  return_list = TRUE
 )
 
 # Filter all instruments based on demographics
