@@ -60,7 +60,7 @@
 #'   "https://redcap.miami.edu/api/",
 #'   Sys.getenv("test_API_key"),
 #'   filter_instrument = "demographics",
-#'   filter_function = \(x) x |> filter(age >= 18)
+#'   filter_function = \(x) x |> dplyr::filter(age >= 18)
 #' )
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,
