@@ -33,7 +33,7 @@
 #' @importFrom stringr str_replace str_count str_sub str_extract str_locate
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
-#' @importFrom cli cli_inform cli_abort cli_warn
+#' @importFrom cli cli_inform cli_alert_info cli_warn
 #' @importFrom redquack redcap_to_db
 #' @importFrom DBI dbConnect dbDisconnect
 #' @importFrom duckdb duckdb
@@ -87,7 +87,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     data
   }
 
-  cli::cli_inform("Reading metadata about your project...")
+  cli_inform("Reading metadata about your project...")
 
   ds_instrument <- suppressWarnings(suppressMessages(
     redcap_metadata_read(redcap_uri = url, token = token)$data
@@ -106,7 +106,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
   }
 
-  cli::cli_inform("Reading variable labels...")
+  cli_inform("Reading variable labels...")
   raw_labels <- suppressWarnings(suppressMessages(
     redcap_read(
       redcap_uri = url, token = token,
@@ -127,7 +127,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     str_replace("\\)(.*\\))", "\\1")
   names(label_names) <- names(raw_labels)
 
-  cli::cli_inform("Reading your data...")
+  cli_inform("Reading your data...")
 
   # create temporary duckdb connection
   db_file <- tempfile(fileext = ".duckdb")
@@ -158,9 +158,9 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     total_elements <- n_rows * n_cols
 
     if (total_elements >= 100000000) { # 100m elements - serious warning
-      cli::cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
+      cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
     } else if (total_elements >= 25000000) { # 25m elements - suggestion
-      cli::cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
+      cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
     }
   }
 
@@ -201,7 +201,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
   if (!is.null(filter_instrument) && !is.null(filter_function)) {
     filter_idx <- which(instrument_name == filter_instrument)
 
-    cli::cli_inform("Applying filter to '{filter_instrument}' instrument...")
+    cli_inform("Applying filter to '{filter_instrument}' instrument...")
 
     # get column indices for filter instrument
     filter_columns <- get_instrument_columns(filter_idx, big_i, meta)
@@ -216,11 +216,11 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       collect() |>
       pull(!!sym(record_id))
 
-    cli::cli_inform("Filter resulted in {length(filtered_ids)} records")
+    cli_inform("Filter resulted in {length(filtered_ids)} records")
   }
 
   if (n_instr_int == 0) {
-    cli::cli_inform("No instruments found in project")
+    cli_inform("No instruments found in project")
     return(if (return_list) list() else invisible())
   }
 
@@ -305,7 +305,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       if (nrow(processed_data) > 0) {
         assign(instrument_name[data_set], processed_data, envir = envir)
       } else {
-        cli::cli_warn(
+        cli_warn(
           "The {instrument_name[data_set]} instrument has 0 records and will not be imported"
         )
       }
