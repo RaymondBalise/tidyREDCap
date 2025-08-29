@@ -15,6 +15,7 @@
 #'   `first_record_id = "first dude"`.
 #' @param envir The name of the environment where the tables should be saved.
 #' @param return_list If TRUE, returns instrument data in a named list. If FALSE (default), assigns instrument data to environment.
+#' @param labels If TRUE (default), applies variable labels to columns. If FALSE, columns will not have labels.
 #' @param filter_instrument Optional character string specifying which instrument
 #'   to use for filtering. If provided with filter_function, this instrument will be
 #'   filtered first, and the resulting record IDs will be used to filter all
@@ -55,6 +56,13 @@
 #'   return_list = TRUE
 #' )
 #'
+#' # Import without labels
+#' instruments <- import_instruments(
+#'   "https://redcap.miami.edu/api/",
+#'   Sys.getenv("test_API_key"),
+#'   labels = FALSE
+#' )
+#'
 #' # Filter all instruments based on demographics
 #' instruments <- import_instruments(
 #'   "https://redcap.miami.edu/api/",
@@ -68,6 +76,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                first_record_id = 1,
                                envir = .GlobalEnv,
                                return_list = FALSE,
+                               labels = TRUE,
                                filter_instrument = NULL,
                                filter_function = NULL) {
   # internal function to extract instrument columns (indices only)
@@ -106,26 +115,30 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     )
   }
 
-  cli_inform("Reading variable labels...")
-  raw_labels <- suppressWarnings(suppressMessages(
-    redcap_read(
-      redcap_uri = url, token = token,
-      raw_or_label_headers = "label",
-      records = first_record_id
-    )$data
-  ))
+  # read variable labels if needed
+  label_names <- NULL
+  if (labels) {
+    cli_inform("Reading variable labels...")
+    raw_labels <- suppressWarnings(suppressMessages(
+      redcap_read(
+        redcap_uri = url, token = token,
+        raw_or_label_headers = "label",
+        records = first_record_id
+      )$data
+    ))
 
-  if (nrow(raw_labels) == 0) {
-    stop("The first 'record_id' must be 1; use argument 'first_record_id' to set first id",
-      call. = FALSE
-    )
+    if (nrow(raw_labels) == 0) {
+      stop("The first 'record_id' must be 1; use argument 'first_record_id' to set first id",
+        call. = FALSE
+      )
+    }
+
+    # prepare labels
+    label_names <- names(raw_labels) |>
+      str_replace("(\\(.*)\\(", "\\1") |>
+      str_replace("\\)(.*\\))", "\\1")
+    names(label_names) <- names(raw_labels)
   }
-
-  # prepare labels
-  label_names <- names(raw_labels) |>
-    str_replace("(\\(.*)\\(", "\\1") |>
-    str_replace("\\)(.*\\))", "\\1")
-  names(label_names) <- names(raw_labels)
 
   cli_inform("Reading your data...")
 
@@ -160,7 +173,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     if (total_elements >= 100000000) { # 100m elements - serious warning
       cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
     } else if (total_elements >= 25000000) { # 25m elements - suggestion
-      cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for better performance")
+      cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for optimized memory management")
     }
   }
 
@@ -169,13 +182,15 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     head(1) |>
     collect()
 
-  # apply labels to the full structure template
-  full_structure[] <- mapply(
-    nm = names(full_structure),
-    lab = relabel(label_names),
-    FUN = function(nm, lab) set_label(full_structure[[nm]], lab),
-    SIMPLIFY = FALSE
-  )
+  # apply labels to the full structure template if labels requested
+  if (labels) {
+    full_structure[] <- mapply(
+      nm = names(full_structure),
+      lab = relabel(label_names),
+      FUN = function(nm, lab) set_label(full_structure[[nm]], lab),
+      SIMPLIFY = FALSE
+    )
+  }
 
   # get instrument indices
   i <- which(names(full_structure) %in% paste0(instrument_name, "_complete"))
@@ -249,8 +264,10 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       # collect data
       instrument_data <- instrument_query |> collect()
 
-      # apply labels
-      instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+      # apply labels if requested
+      if (labels) {
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+      }
 
       # process (drop blank if needed)
       processed_data <- if (drop_blank) {
@@ -292,7 +309,10 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       # collect data
       instrument_data <- instrument_query |> collect()
 
-      instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+      # apply labels if requested
+      if (labels) {
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+      }
 
       processed_data <- if (drop_blank) {
         make_instrument_auto(instrument_data, record_id = record_id)
