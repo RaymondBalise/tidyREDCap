@@ -45,13 +45,13 @@ Leaders in the REDCap community have developed techniques for safely storing you
 
 #### NEVER DO THIS!
 
-The functions that allow you to export data need you to give them your API token. Remember, this is the same information as your username and password.  **NEVER** type that directly in your code. That is if your REDCap API key is "1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3" do NOT do this:
+The functions that allow you to export data need you to give them your API token. Remember, this is the same information as your username and password.  **NEVER** type that directly in your code. That is if your REDCap API key is "9A81268476645C4E5F03428B8AC3AA7B" do NOT do this:
 
 ```r
 # Do not type your API token directly into your code
 tidyREDCap::import_instruments(
-  "https://redcap.miami.edu/api/",
-  "1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3" # This is BAD!
+  "https://bbmc.ouhsc.edu/redcap/api/",
+  "9A81268476645C4E5F03428B8AC3AA7B" # This is BAD!
 )
 ```
 
@@ -79,7 +79,7 @@ It will cause the file to open.
 Create a name for your API key and add a like like this to your .Renviron file:
 
 ```
-nacho_anxiety_key="1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3"
+redcap_token="9A81268476645C4E5F03428B8AC3AA7B"
 ```
 
 After adding the line, remember to save the file and completely restart R/RStudio.
@@ -88,8 +88,8 @@ Once R restarts, you can access the key like this:
 
 ```r
 tidyREDCap::import_instruments(
-  "https://redcap.miami.edu/api/", 
-  Sys.getenv("nacho_anxiety_key")
+  "https://bbmc.ouhsc.edu/redcap/api/", 
+  Sys.getenv("redcap_token")
 )
 ```
 
@@ -97,8 +97,8 @@ If you want to use the redcapAPI or the REDCapR packages directly you can use th
 
 ```r
 rcon <- redcapAPI::redcapConnection(
-  url = 'https://redcap.miami.edu/api/', 
-  token = Sys.getenv("nacho_anxiety_key")
+  url = 'https://bbmc.ouhsc.edu/redcap/api/', 
+  token = Sys.getenv("redcap_token")
 )
 
 redcap <- redcapAPI::exportRecords(rcon)
@@ -111,8 +111,8 @@ If you are curious, when we made these help files, we saved the data using the `
 
 ```{r getData, eval=FALSE}
 rcon <- redcapAPI::redcapConnection(
-  url = 'https://redcap.miami.edu/api/', 
-  token = Sys.getenv("nacho_anxiety_key")
+  url = 'https://bbmc.ouhsc.edu/redcap/api/', 
+  token = Sys.getenv("redcap_token")
 )
 
 redcap <- redcapAPI::exportRecords(rcon)

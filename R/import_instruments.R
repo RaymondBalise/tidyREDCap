@@ -45,28 +45,28 @@
 #' \dontrun{
 #' # Import each instrument to multiple tables
 #' import_instruments(
-#'   "https://redcap.miami.edu/api/",
-#'   Sys.getenv("test_API_key")
+#'   "https://bbmc.ouhsc.edu/redcap/api/",
+#'   Sys.getenv("redcap_token")
 #' )
 #'
 #' # Import each instrument to a single list
 #' instruments <- import_instruments(
-#'   "https://redcap.miami.edu/api/",
-#'   Sys.getenv("test_API_key"),
+#'   "https://bbmc.ouhsc.edu/redcap/api/",
+#'   Sys.getenv("redcap_token"),
 #'   return_list = TRUE
 #' )
 #'
 #' # Import without labels
 #' instruments <- import_instruments(
-#'   "https://redcap.miami.edu/api/",
-#'   Sys.getenv("test_API_key"),
+#'   "https://bbmc.ouhsc.edu/redcap/api/",
+#'   Sys.getenv("redcap_token"),
 #'   labels = FALSE
 #' )
 #'
 #' # Filter all instruments based on demographics
 #' instruments <- import_instruments(
-#'   "https://redcap.miami.edu/api/",
-#'   Sys.getenv("test_API_key"),
+#'   "https://bbmc.ouhsc.edu/redcap/api/",
+#'   Sys.getenv("redcap_token"),
 #'   filter_instrument = "demographics",
 #'   filter_function = \(x) x |> dplyr::filter(age >= 18)
 #' )
@@ -271,7 +271,12 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       # process (drop blank if needed)
       processed_data <- if (drop_blank) {
-        make_instrument_auto(instrument_data, record_id = record_id)
+        result <- make_instrument_auto(instrument_data, record_id = record_id)
+        # Preserve record_id label if labels are requested
+        if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
+          attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
+        }
+        result
       } else {
         instrument_data
       }
@@ -281,15 +286,12 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       if (nrow(processed_data) > 0) {
         instruments_list[[instrument_name[data_set]]] <- processed_data
       } else {
-        warning("The ", instrument_name[data_set],
-          " instrument has 0 records and will be set to null",
-          call. = FALSE
-        )
-        instruments_list[[instrument_name[data_set]]] <- NULL
+        # Keep empty data.frame structure instead of setting to NULL
+        instruments_list[[instrument_name[data_set]]] <- processed_data
       }
     }
 
-    return(instruments_list[!sapply(instruments_list, is.null)])
+    return(instruments_list)
   } else {
     # assign to environment
     for (data_set in seq_len(n_instr_int)) {
@@ -315,7 +317,12 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       }
 
       processed_data <- if (drop_blank) {
-        make_instrument_auto(instrument_data, record_id = record_id)
+        result <- make_instrument_auto(instrument_data, record_id = record_id)
+        # Preserve record_id label if labels are requested
+        if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
+          attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
+        }
+        result
       } else {
         instrument_data
       }

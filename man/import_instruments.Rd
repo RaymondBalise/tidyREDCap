@@ -12,6 +12,7 @@ import_instruments(
   first_record_id = 1,
   envir = .GlobalEnv,
   return_list = FALSE,
+  labels = TRUE,
   filter_instrument = NULL,
   filter_function = NULL
 )
@@ -38,6 +39,8 @@ are using \code{dude_id} instead of \code{record_id} and \code{dude_id} has a va
 
 \item{return_list}{If TRUE, returns instrument data in a named list. If FALSE (default), assigns instrument data to environment.}
 
+\item{labels}{If TRUE (default), applies variable labels to columns. If FALSE, columns will not have labels.}
+
 \item{filter_instrument}{Optional character string specifying which instrument
 to use for filtering. If provided with filter_function, this instrument will be
 filtered first, and the resulting record IDs will be used to filter all
@@ -61,21 +64,28 @@ project and returns a table for each instrument/form in the project.
 \dontrun{
 # Import each instrument to multiple tables
 import_instruments(
-  "https://redcap.miami.edu/api/",
-  Sys.getenv("test_API_key")
+  "https://bbmc.ouhsc.edu/redcap/api/",
+  Sys.getenv("redcap_token")
 )
 
 # Import each instrument to a single list
 instruments <- import_instruments(
-  "https://redcap.miami.edu/api/",
-  Sys.getenv("test_API_key"),
+  "https://bbmc.ouhsc.edu/redcap/api/",
+  Sys.getenv("redcap_token"),
   return_list = TRUE
+)
+
+# Import without labels
+instruments <- import_instruments(
+  "https://bbmc.ouhsc.edu/redcap/api/",
+  Sys.getenv("redcap_token"),
+  labels = FALSE
 )
 
 # Filter all instruments based on demographics
 instruments <- import_instruments(
-  "https://redcap.miami.edu/api/",
-  Sys.getenv("test_API_key"),
+  "https://bbmc.ouhsc.edu/redcap/api/",
+  Sys.getenv("redcap_token"),
   filter_instrument = "demographics",
   filter_function = \(x) x |> dplyr::filter(age >= 18)
 )

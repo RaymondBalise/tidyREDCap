@@ -26,6 +26,7 @@ tidyREDCap is an R package with functions for processing REDCap data.
 
 * After loading data into R using RStudio with the `import_instruments()` function, you can see both the variable name and the text that appears to users of REDCap.  All you need to do is click on the dataset's name in the **Environment** tab or use the View() function. The column headings will include both the variable name and the Field Label from REDCap. 
 
+* 💥 NEW in Version 1.2 💥 changes import package to [redquack](https://github.com/dylanpieper/redquack/tree/main/R) and adds parameters to function `import_instruments()`: **filter_instrument** and **filter_function** for lazy data filtering, **return_list** for returning a list of instrument data.frames, and **labels** for adding column labels.
 * 💥 NEW in Version 1.1 💥  Functions coming from packages outside of `tidyREDCap` may not understand what to do with labeled variables.  So, `tidyREDCap` includes a new `drop_labels()` function that will allow you to strip the labels before using functions that want unlabeled data.
 
 #### Working with <i>Choose One</i> Questions
@@ -68,16 +69,7 @@ devtools::install_github("RaymondBalise/tidyREDCap")
 
 #### What is new on the development release?
 
-* 💥 NEW in **Version 1.2** 💥 changes import package to 
-  [redquack](https://github.com/dylanpieper/redquack/tree/main/R)
-  and adds parameters to function `import_instruments()`:
-  **filter_instrument** and **filter_function** for lazy data filtering, **return_list** for returning a 
-  list of instrument data.frames, and **labels** for adding column labels.
-* 💥 NEW in **Version 1.1.0.9000** 💥 adds `make_yes_no()` function to convert
-  "checked" or "yes"-like answers to "Yes" and other answers to "No or Unknown".
-* 💥 NEW in **Version 1.1.0.9000** 💥 adds `make_yes_no_unknown()` function to 
-  convert "checked" or "yes"-like  answers to "Yes"", unchecked or "no"-like 
-  answers to "No" and other answers to "Unknown".
+* 💥 NEW in **Version 1.2** 💥 changes import package to [redquack](https://github.com/dylanpieper/redquack/tree/main/R) and adds parameters to function `import_instruments()`: `filter_instrument` and `filter_function` for lazy data filtering, `return_list` for returning a list of instrument data.frames, and `labels` for adding/removing column labels.
 
 ## What if I Find a Problem?
 We are currently in active development of tidyREDCap. If one of our functions does not work the way that you expect, or if one of our functions is broken, please submit an issue ticket (using a [reproducible example](https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html)) to our [issues page](https://github.com/RaymondBalise/tidyREDCap/issues). If you have a cool idea for our next new function, also submit an issue ticket. If you are an R developer and want so contribute to this package, please submit an issue ticket or a pull request.
