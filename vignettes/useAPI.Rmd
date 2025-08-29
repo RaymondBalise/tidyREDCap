@@ -124,4 +124,4 @@ saveRDS(redcap, file = "redcap.rds")
 </br>
 
 ### Even Better Options
-If somebody gets access to the files on your machine, they could find and read your .Renviron file.  A more secure option is to use the r `keyring` package.  It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
+If somebody gets access to the files on your machine, they could find and read your .Renviron file.  A more secure option is to use the `keyring` package.  It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).

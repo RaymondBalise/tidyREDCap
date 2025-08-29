@@ -24,7 +24,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
 
   # Strip labels from REDCap created variables to prevent reported join (and
   #   perhaps pivot) issues on labeled variables.
-  df <- drop_label(df, record_id)
+  df <- drop_label(df, !!record_id)
 
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
@@ -36,8 +36,7 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
   is_repeated <- any(names(df) == "redcap_repeat_instrument")
 
   if (is_repeated) {
-    df <- drop_label(df, "redcap_repeat_instrument")
-    df <- drop_label(df, "redcap_repeat_instance")
+    df <- drop_label(df, "redcap_repeat_instrument", "redcap_repeat_instance")
   }
 
   # if there are repeated instruments check to see if this instrument has repeats
@@ -163,13 +162,36 @@ fix_class_bug <- function(df) {
 #' used to drop labels.
 #'
 #' @param df the name of the data frame
-#' @param x the quoted name of the variable
+#' @param ... Variables to select. You can use:
+#'   * Variable names as strings: `c("var1", "var2")`
+#'   * Bare variable names: `c(var1, var2)`
+#'   * Select helpers like `starts_with()`, `ends_with()`, `contains()`, `matches()`, etc.
 #'
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' # Remove labels from single variable
+#' df <- drop_label(df, "variable_name")
+#' 
+#' # Remove labels from multiple variables
+#' df <- drop_label(df, c("var1", "var2", "var3"))
+#' 
+#' # Use tidyselect helpers
+#' df <- drop_label(df, starts_with("redcap_"))
+#' }
 #'
 #' @return df
-drop_label <- function(df, x) {
-  attributes(df[, which(names(df) == x)]) <- NULL
+drop_label <- function(df, ...) {
+  # Use tidyselect to handle variable selection
+  selected_vars <- names(dplyr::select(df, ...))
+  
+  # Remove labels from selected variables
+  for (var in selected_vars) {
+    if (var %in% names(df)) {
+      attributes(df[[var]]) <- NULL
+    }
+  }
+  
   df
 }

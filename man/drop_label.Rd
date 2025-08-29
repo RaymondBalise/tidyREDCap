@@ -4,12 +4,17 @@
 \alias{drop_label}
 \title{Drop the label from a variable}
 \usage{
-drop_label(df, x)
+drop_label(df, ...)
 }
 \arguments{
 \item{df}{the name of the data frame}
 
-\item{x}{the quoted name of the variable}
+\item{...}{Variables to select. You can use:
+\itemize{
+\item Variable names as strings: \code{c("var1", "var2")}
+\item Bare variable names: \code{c(var1, var2)}
+\item Select helpers like \code{starts_with()}, \code{ends_with()}, \code{contains()}, \code{matches()}, etc.
+}}
 }
 \value{
 df
@@ -18,4 +23,17 @@ df
 There is a reported issues with joins on data (without a reprex)
 that seem to be caused by the labels.  As a possible solution this can be
 used to drop labels.
+}
+\examples{
+\dontrun{
+# Remove labels from single variable
+df <- drop_label(df, "variable_name")
+
+# Remove labels from multiple variables
+df <- drop_label(df, c("var1", "var2", "var3"))
+
+# Use tidyselect helpers
+df <- drop_label(df, starts_with("redcap_"))
+}
+
 }
