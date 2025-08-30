@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with 'REDCap' Data
-Version: 1.2
+Version: 1.2.0
 Authors@R: 
     c(person(
         given = "Raymond",
