@@ -19,13 +19,12 @@ library(tidyREDCap)
 ```
 
 # Loading REDCap Data into R with an API request
-While most people use the "Data Exports, Reports and Stats" Application built into REDCap, another handy method to get data out of REDCap is an API request. An API allows one program to request data from another program.  For example, an add-on package in R can request data from your instance of REDCap.  Obviously, an R package can not *type* your user name and password.  Instead, you will store an API token, a password, on your machine and then ask R to look up that token and pass it to REDCap whenever you want data.
 
-We have used two R packages to access our REDCap projects,`redcapAPI` and `REDCapR`.  Unfortunately, `redcapAPI` is no longer being actively developed, and we have run into problems with it. It had the lovely benefit of exporting variables, basically using the same variable names as you see in REDCap, then tagging the variables with the "labels" subjects viewed when completing the forms. We have taken the labeling functionality and added it in tidyREDCap.
+While most people use the "Data Exports, Reports and Stats" Application built into REDCap, another handy method to get data out of REDCap is an API request. An API allows one program to request data from another program. For example, an package in R can request data from your instance of REDCap. To access it, you will store an API token on your machine and then ask R to look up that token and pass it to REDCap whenever you want data.
 
 ### Getting an API Token
 
-If your REDCap project has API access enabled, you will see it in the applications on the left side of the screen. 
+If your REDCap project has API access enabled, you will see it in the applications on the left side of the screen.
 
 ![](./key.jpg)
 
@@ -89,18 +88,7 @@ tidyREDCap::import_instruments(
 )
 ```
 
-If you want to use the redcapAPI or the REDCapR packages directly you can use the same trickery to pass your API key to their functions. For example:
-
-```r
-rcon <- redcapAPI::redcapConnection(
-  url = 'https://bbmc.ouhsc.edu/redcap/api/', 
-  token = Sys.getenv("redcap_token")
-)
-
-redcap <- redcapAPI::exportRecords(rcon)
-```
-
-This includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). 
+This includes a call to `Sys.getenv()` to grab the key. To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). 
 
 
 If you are curious, when we made these help files, we generated sample data using the `tidyREDCap::import_instruments()` function and saved it for use in our examples.
@@ -122,4 +110,34 @@ saveRDS(instruments$race_and_ethnicity, file = "sample_race_ethnicity.rds")
 </br>
 
 ### Even Better Options
-If somebody gets access to the files on your machine, they could find and read your .Renviron file.  A more secure option is to use the `keyring` package.  It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
+
+If somebody gets access to the files on your machine, they could find and read your .Renviron file. A more secure option is to use the `keyring` package. It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.).
+
+#### Using keyring for Secure Token Storage
+
+First, install the keyring package:
+
+```r
+install.packages("keyring")
+```
+
+Set up your API token securely (run this once):
+
+```r
+library(keyring)
+keyring::key_set("redcap", "project")
+```
+
+Then use it in your REDCap imports:
+
+```r
+library(keyring)
+library(tidyREDCap)
+
+import_instruments(
+  url = "https://bbmc.ouhsc.edu/redcap/api/", 
+  token = keyring::key_get("redcap", "project")
+)
+```
+
+This approach stores your token in your system's secure credential store. If your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
