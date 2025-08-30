@@ -225,7 +225,6 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     # apply filter directly on database table
     filtered_ids <- data_tbl |>
       select(all_of(filter_columns)) |>
-      select(-ends_with(".1")) |>
       filter_function() |>
       select(all_of(record_id)) |>
       distinct() |>
@@ -251,8 +250,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       # build query starting from database table
       instrument_query <- data_tbl |>
-        select(all_of(column_index)) |>
-        select(-ends_with(".1"))
+        select(all_of(column_index))
 
       # apply filtering if needed
       if (!is.null(filtered_ids)) {
@@ -299,8 +297,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
       column_index <- get_instrument_columns(data_set, big_i, meta)
 
       instrument_query <- data_tbl |>
-        select(all_of(column_index)) |>
-        select(-ends_with(".1"))
+        select(all_of(column_index))
 
       if (!is.null(filtered_ids)) {
         instrument_query <- instrument_query |>
