@@ -50,6 +50,13 @@ Authors@R:
         role = "aut",
         email = "kxg679@miami.edu",
         comment = c(ORCID = "0000-0002-9223-8854")
+      ),
+      person(
+        given = "Dylan",
+        family = "Pieper",
+        role = "aut",
+        email = "dylanpieper@gmail.com",
+        comment = c(ORCID = "0000-0002-2834-7351")
       )
     )
 Description:
@@ -64,7 +71,7 @@ Imports:
     cli,
     dplyr,
     janitor,
-    labelVector,
+    labelled,
     magrittr,
     purrr,
     REDCapR,

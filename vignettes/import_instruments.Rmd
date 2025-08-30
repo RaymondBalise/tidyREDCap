@@ -130,6 +130,16 @@ tidyREDCap::import_instruments(
 This can be useful when labels interfere with other functions or you
 prefer working with unlabeled data frames.
 
+You can also remove labels from data that has already been imported using the `drop_labels()` function:
+
+```{r eval=FALSE}
+# Remove labels from imported data
+demographics_without_labels <- drop_labels(demographics)
+
+# Or remove a single label
+demographics_no_age_label <- drop_label(demographics, "age")
+```
+
 ## Working with Lists Instead of Environment Tables
 
 By default, `import_instruments()` creates separate tables in your

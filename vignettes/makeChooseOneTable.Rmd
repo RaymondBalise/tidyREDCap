@@ -24,15 +24,15 @@ library(tidyREDCap)
 # The Problem
 It is often desirable to print variable labels above a summary table that shows the count of factor labels. The labels exported on _choose all that apply_ questions, including the question and whichever response was chosen. This redundancy is often unwanted, and the results are not presented professionally.
 
-For example, in the Nacho Craving Index data, the first ingredient is "Chips". We see how R presents this information by simply printing the components of the `ingredients___1` column.
+For example, in the race/ethnicity data, the first race option is "American Indian/Alaska Native". We see how R presents this information by simply printing the components of the `race___1` column.
 ```{r}
-redcap <- readRDS(file = "./redcap.rds")
-redcap$ingredients___1
+sample_data <- readRDS(file = "./sample_race_ethnicity.rds")
+sample_data$race___1
 ```
 
-As we can see, this information is quite ugly, so we want to tabulate the results instead. However, if we use the simple `table()` function to clean up this information, we lose the original question and the answer label for `ingredients___1`.
+As we can see, this information is quite ugly, so we want to tabulate the results instead. However, if we use the simple `table()` function to clean up this information, we lose the original question and the answer label for `race___1`.
 ```{r}
-table(redcap$ingredients___1)
+table(sample_data$race___1)
 ```
 We no longer know what the question was or which "select all" option this information represents.
 
@@ -42,12 +42,12 @@ See the [Import All Instruments from a REDCap Project](../doc/importInstruments.
 # The Solution
 The `make_choose_one_table()` function can be used with a factor variable to tabulate the response *while preserving the question and checked option context*.
 ```{r example_raw}
-make_choose_one_table(redcap$ingredients___1) 
+make_choose_one_table(sample_data$race___1) 
 ```
 
 Further, this output can be molded into a publication-ready table with a single additional function call.
 ```{r example_pretty, results="asis"}
-make_choose_one_table(redcap$ingredients___1) %>% 
+make_choose_one_table(sample_data$race___1) %>% 
   knitr::kable()
 ```
 

@@ -78,7 +78,8 @@ vec_cast.labelled.labelled <- function(x, to, ...) {
 ##### char #####
 #' @export
 vec_cast.character.labelled <- function(x, to, ...) {
-  labelVector::set_label(x, labelVector::get_label(to))
+  var_label(x) <- var_label(to)
+  x
 }
 
 #' @export
@@ -89,7 +90,8 @@ vec_cast.labelled.character <- function(x, to, ...) {
 ##### integer #####
 #' @export
 vec_cast.integer.labelled <- function(x, to, ...) {
-  labelVector::set_label(x, labelVector::get_label(to))
+  var_label(x) <- var_label(to)
+  x
 }
 
 #' @export
@@ -100,7 +102,8 @@ vec_cast.labelled.integer <- function(x, to, ...) {
 ##### double #####
 #' @export
 vec_cast.double.labelled <- function(x, to, ...) {
-  labelVector::set_label(x, labelVector::get_label(to))
+  var_label(x) <- var_label(to)
+  x
 }
 
 #' @export
@@ -111,7 +114,8 @@ vec_cast.labelled.double <- function(x, to, ...) {
 ##### logical #####
 #' @export
 vec_cast.logical.labelled <- function(x, to, ...) {
-  labelVector::set_label(x, labelVector::get_label(to))
+  var_label(x) <- var_label(to)
+  x
 }
 
 #' @export

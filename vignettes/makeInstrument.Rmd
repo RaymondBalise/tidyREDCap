@@ -24,23 +24,20 @@ library(dplyr)
 
 # The Problem 
 
-REDCap exports longitudinal projects with one record (a line of data) per assessment (typically 1 line per day).  This works well when every instrument/questionnaire is given at every assessment. Still, for projects with different instruments/questionnaires given on different days, REDCap exports empty values (represented by the value `NA` in R).
+REDCap exports data from projects with multiple instruments, where some participants may have completed different instruments. This can result in incomplete records where some instruments have missing data (represented by the value `NA` in R).
 
-> **Example:** In the Nachos for Anxiety project, three instruments were used; they each had a different administration schedule. Subjects' anxiety was assessed at baseline with the Generalized Anxiety Disorder 7-item (GAD-7) scale. Every day, it was assessed with the Hamilton Anxiety Scale (HAM-A), but the Nacho Craving Index was administered only at the baseline and at the end of the study (see the figure below for clarification).  
-![](./schedule.png)
-
-The instruments that are not assessed every day appear as entirely blank questionnaires when the data is exported.  For example, values from the NCI instrument are shown as missing for Day 1, Day 2, and Day 3 (because it was not administered during those visits). 
+> **Example:** In a typical survey project, participants may complete different sets of questionnaires. Some may complete all sections (demographics, health, race/ethnicity), while others may only complete certain sections. This results in incomplete records for some instruments. 
 
 In R, this data is displayed as
 ```{r}
-redcap <- readRDS(file = "./redcap_nacho_anxiety.rds")
+sample_data <- readRDS(file = "./sample_survey_data.rds")
 
-redcap %>% 
+sample_data %>% 
   select(
-    # Select these two columns
-    record_id, redcap_event_name,
-    # And also select all columns between "nachos" and "nci_complete"
-    nachos:nci_complete
+    # Select record ID and health instrument columns
+    record_id,
+    # Select all columns for the health instrument
+    height:health_complete
   ) %>% 
   # Make the table pretty
   knitr::kable()
@@ -51,29 +48,28 @@ It is often helpful to make a different data table that has the values for each 
 ## Aside: Loading REDCap Data into R
 See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
 
-
 # The Solution
 
-Pass the `make_instrument()` function to the name of a dataset and the names of the first and last variables in an instrument, and it will return a table that has the non-empty records for the instrument.  For example, to extract the enrollment/consent instrument:
+Pass the `make_instrument()` function to the name of a dataset and the names of the first and last variables in an instrument, and it will return a table that has the non-empty records for the instrument.  For example, to extract the demographics instrument:
 
 ```{r}
-make_instrument(redcap, "concented", "enrollment_complete") %>% 
+make_instrument(sample_data, "name_first", "demographics_complete") %>% 
   knitr::kable()
 ```
 
-To extract nacho craving information:
+To extract health information:
 
 ```{r}
-make_instrument(redcap, "nachos", "nci_complete") %>% 
+make_instrument(sample_data, "height", "health_complete") %>% 
   knitr::kable()
 ```
 
-To make an analysis dataset containing the NCI values **without** the subject ID and the event name:
+To make an analysis dataset containing the race/ethnicity values **without** the subject ID:
 
 ```{r}
 make_instrument(
-  redcap,
-  "nachos", "nci_complete",
+  sample_data,
+  "race___1", "race_and_ethnicity_complete",
   drop_which_when = TRUE
 ) %>% 
   knitr::kable()

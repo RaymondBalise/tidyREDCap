@@ -33,7 +33,7 @@
 #' @importFrom dplyr pull if_else collect tbl select all_of filter distinct sym count
 #' @importFrom stringr str_replace str_count str_sub str_extract str_locate
 #' @importFrom tidyselect ends_with
-#' @importFrom labelVector set_label
+#' @importFrom labelled var_label<-
 #' @importFrom cli cli_inform cli_alert_info cli_warn
 #' @importFrom redquack redcap_to_db
 #' @importFrom DBI dbConnect dbDisconnect
@@ -136,7 +136,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     # prepare labels
     label_names <- names(raw_labels) |>
       str_replace("(\\(.*)\\(", "\\1") |>
-      str_replace("\\)(.*\\))", "\\1")
+      str_replace("\\)(.*\\))", "\\1") |>
+      str_replace("\\.\\.\\.\\d+$", "")
     names(label_names) <- names(raw_labels)
   }
 
@@ -187,7 +188,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     full_structure[] <- mapply(
       nm = names(full_structure),
       lab = relabel(label_names),
-      FUN = function(nm, lab) set_label(full_structure[[nm]], lab),
+      FUN = function(nm, lab) { var_label(full_structure[[nm]]) <- lab; full_structure[[nm]] },
       SIMPLIFY = FALSE
     )
   }

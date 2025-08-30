@@ -98,7 +98,7 @@ test_that("import works", {
   expect_equal(attr(demographics$dob, "label"), "Date of birth")
   expect_equal(attr(demographics$age, "label"), "Age (years)")
   expect_equal(attr(demographics$sex, "label"), "Gender")
-  expect_equal(attr(demographics$demographics_complete, "label"), "Complete?...10")
+  expect_equal(attr(demographics$demographics_complete, "label"), "Complete?")
   
   # Test data values (ignoring class differences and attributes)
   expect_equal(as.numeric(demographics$record_id), c(1, 2, 3, 4, 5))

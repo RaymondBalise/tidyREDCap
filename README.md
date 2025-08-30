@@ -13,14 +13,12 @@ tidyREDCap is an R package with functions for processing REDCap data.
 
 'REDCap' (Research Electronic Data CAPture; <https://projectredcap.org>) is a web-enabled application for building and managing surveys and databases developed at Vanderbilt University.
 
-## What tidyREDCap Functions Can Do for You?
+## What tidyREDCap Do for You?
 
-#### Load All Data from REDCap into R with One Function
-
-**EVEN. BIG DATA.**
+#### Load All Data from REDCap into R with One Line of Code
 
 * `import_instruments()` uses an API call to load every instrument into a separate tidy R dataset or list of data.frames, labeling the columns and removing blank records. 
-*  Import big REDCap project data that is larger than memory and won't load via an API call. The function [duckdb](https://duckdb.org) to lazily store data and filter for only the data you need to load.
+*  Import big REDCap project data that is larger than memory and won't load via an API call. The function uses [duckdb](https://duckdb.org) to lazily store data and filter for only the data you need to load.
 
 #### Show the Field Labels Inside RStudio
 

@@ -55,7 +55,6 @@ getLabel2 <- function(data, aVariable) {
 #' @importFrom tibble enframe
 #' @importFrom tidyselect everything vars_select_helpers starts_with
 #' @importFrom rlang .data
-#' @importFrom labelVector is_labelled
 #' @export
 #'
 #' @return A variable's response label without  the choose all the question
@@ -69,7 +68,7 @@ make_choose_all_table <- function(df, variable) {
   the_vars_df <- df %>%
     dplyr::select(dplyr::starts_with(variable))
   
-  are_vars_labelled <- purrr::map_lgl(the_vars_df, labelVector::is_labelled)
+  are_vars_labelled <- purrr::map_lgl(the_vars_df, function(x) inherits(x, "labelled"))
   
   
   if (! all(are_vars_labelled)) {

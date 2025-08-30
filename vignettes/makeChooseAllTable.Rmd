@@ -24,11 +24,11 @@ library(dplyr)
 
 # The Problem 
 
-REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). For example, the following data represents a sample of responses to the Nacho Craving Index.
+REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). For example, the following data represents a sample of responses to a race/ethnicity question with multiple checkboxes.
 ```{r}
-redcap <- readRDS(file = "./redcap.rds")
-redcap %>% 
-  select(starts_with("ingredients___")) %>% 
+sample_data <- readRDS(file = "./sample_race_ethnicity.rds")
+sample_data %>% 
+  select(starts_with("race___")) %>% 
   head()
 ```
 It is desirable to have a concise table showing how often each option was chosen.
@@ -42,13 +42,13 @@ See the [Import All Instruments from a REDCap Project](../doc/importInstruments.
 
 If you pass the `make_choose_all_table()` function, the name of a REDCap export, and the name of the _choose all that apply question_ question in REDCap, it will produce a concise frequency count table. 
 ```{r show_results}
-make_choose_all_table(redcap, "ingredients") 
+make_choose_all_table(sample_data, "race") 
 ```
 
 Similar to the `make_choose_one_table()` function, we can use this function inside an analysis pipeline. We can add the `kable()` call to make the table publication quality.
 ```{r show_results_pretty, results='asis'}
-redcap %>% 
-  make_choose_all_table("ingredients") %>% 
+sample_data %>% 
+  make_choose_all_table("race") %>% 
   knitr::kable()
 ```
 
