@@ -231,10 +231,13 @@ instruments <- tidyREDCap::import_instruments(
 
 ### Benefits of Filtering
 
-Filtering is especially useful for: - **Large projects**: Reducing
-memory usage and import time - **Longitudinal studies**: Importing only
-specific timepoints or visits - **Multi-site studies**: Importing data
-from specific sites - **Quality control**: Excluding incomplete or
+Filtering is especially useful for:
+
+-   **Large projects**: Reducing memory usage and import time
+-   **Longitudinal studies**: Importing only
+-   **Multi-site studies**: Importing data
+from specific sites
+-   **Quality control**: Excluding incomplete or
 problematic records
 
 The filtering happens at the database level before data is loaded into R
