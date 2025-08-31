@@ -32,13 +32,13 @@ In R, this data is displayed as
 ```{r}
 sample_data <- readRDS(file = "./sample_survey_data.rds")
 
-# To demonstrate the make_instrument function properly, let's simulate some 
-# incomplete records by setting some health instrument values to NA
-sample_data_with_nas <- sample_data
-# Make records 2 and 5 have completely missing health data
-sample_data_with_nas[c(2, 5), c("height", "weight", "bmi", "comments", "mugshot", "health_complete")] <- NA
+# To demonstrate the make_instrument function properly, 
+# let's simulate incomplete records by setting some health instrument values to NA
+sample_data <- sample_data
+sample_data[c(2, 5), 
+            c("height", "weight", "bmi", "comments", "mugshot", "health_complete")] <- NA
 
-sample_data_with_nas %>% 
+sample_data %>% 
   select(
     # Select record ID and health instrument columns
     record_id,
@@ -59,14 +59,14 @@ See the [Import All Instruments from a REDCap Project](../doc/importInstruments.
 Pass the `make_instrument()` function to the name of a dataset and the names of the first and last variables in an instrument, and it will return a table that has the non-empty records for the instrument. For example, to extract the demographics instrument:
 
 ```{r}
-make_instrument(sample_data_with_nas, "name_first", "demographics_complete") %>% 
+make_instrument(sample_data, "name_first", "demographics_complete") %>% 
   knitr::kable()
 ```
 
 To extract health information:
 
 ```{r}
-make_instrument(sample_data_with_nas, "height", "health_complete") %>% 
+make_instrument(sample_data, "height", "health_complete") %>% 
   knitr::kable()
 ```
 
@@ -76,7 +76,7 @@ To make an analysis dataset containing the race/ethnicity values **without** the
 
 ```{r}
 make_instrument(
-  sample_data_with_nas,
+  sample_data,
   "race___1", "race_and_ethnicity_complete",
   drop_which_when = TRUE
 ) %>% 
