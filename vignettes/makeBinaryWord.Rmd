@@ -38,8 +38,8 @@ janitor::tabyl(sample_data$race___1) %>%
   janitor::adorn_pct_formatting() %>% 
   knitr::kable()
 
-# Yellow cheese
-janitor::tabyl(redcap$ingredients___2) %>% 
+# Asian
+janitor::tabyl(sample_data$race___2) %>% 
   janitor::adorn_pct_formatting() %>% 
   knitr::kable()
 
