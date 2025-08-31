@@ -51,7 +51,7 @@ make_choose_one_table(sample_data$race___1) %>%
   knitr::kable()
 ```
 
-The `subset` option, if set to `TRUE,` will cause the function to remove the label's text and only show the response option (i.e., not repeat the "What ingredients do you currently crave?" question).
+The `subset` option, if set to `TRUE,` will cause the function to remove the label's text and only show the response option (i.e., not repeat the question).
 ```{r example2, results="asis", }
 make_choose_one_table(
   sample_data$race___2,
