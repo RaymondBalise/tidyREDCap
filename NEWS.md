@@ -15,6 +15,10 @@ editor_options:
     -   `labels` for adding/removing column labels
 -   Add `codebook()` function for generating structured metadata
     documentation
+-   Add `codebook_convert()` function for converting coded values to
+    labeled equivalents using stored metadata
+-   Add `has_redcap_values()` helper function for identifying columns
+    with REDCap value labels
 
 # tidyREDCap 1.1.2 (CRAN release)
 

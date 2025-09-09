@@ -26,7 +26,8 @@ After loading data into R using RStudio with the `import_instruments()` function
 
 #### Generate Data Codebooks
 
-`codebook()`: generates structured metadata documentation for REDCap data, displaying variable labels, types, and value labels for categorical variables.
+* `codebook()`: generates structured metadata documentation for REDCap data, displaying variable labels, types, and value labels for categorical variables.
+* `codebook_convert()`: converts coded values in REDCap data to their labeled equivalents using stored metadata. Useful for converting numeric codes (e.g., 1, 2, 3) to descriptive labels (e.g., "Male", "Female", "Non-binary").
 
 #### Working with *Choose One* Questions
 

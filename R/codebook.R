@@ -22,11 +22,10 @@ codebook <- function(data, field_name = NULL) {
   UseMethod("codebook")
 }
 
-#' @export
 codebook.data.frame <- function(data, field_name = NULL) {
   if (!is.null(field_name)) {
     if (!field_name %in% names(data)) {
-      stop("Field '", field_name, "' not found in data", call. = FALSE)
+      cli_abort("Field {.val {field_name}} not found in data")
     }
     return(codebook(data[[field_name]], field_name = field_name))
   }
@@ -69,7 +68,6 @@ codebook.data.frame <- function(data, field_name = NULL) {
   structure(result, class = "codebook")
 }
 
-#' @export
 codebook.default <- function(data, field_name = NULL) {
   # For individual columns
   if (is.null(field_name)) {
@@ -95,8 +93,7 @@ codebook.default <- function(data, field_name = NULL) {
   ), class = "codebook")
 }
 
-#' @importFrom cli cli_text cli_ul cli_li cli_h1
-#' @export
+#' @importFrom cli cli_text cli_ul cli_li cli_h1 cli_abort
 print.codebook <- function(x, ...) {
   if (!is.null(x$name)) {
     cli_h1("Variable: {.field {x$name}}")
@@ -142,6 +139,124 @@ print.codebook <- function(x, ...) {
     }
   }
   invisible(x)
+}
+
+#' @title Convert coded values using codebook metadata
+#' @description Converts coded values in REDCap data to their labeled equivalents
+#' using the metadata stored in column attributes. Both syntaxes return the converted
+#' column vector for consistency with codebook(). For data.frame operations, use
+#' standard tidy patterns with mutate().
+#'
+#' @param data A data.frame, single column, or data.frame with column name specification
+#' @param col_name Character string specifying column name when `data` is a data.frame
+#'
+#' @return Converted column vector with coded values replaced by labels
+#'
+#' @examples
+#' \dontrun{
+#' # Both return converted column vector
+#' codebook_convert(demographics$sex)
+#' codebook_convert(demographics, "sex")
+#'
+#' # For data.frame operations, use tidy patterns:
+#' demographics |>
+#'   mutate(sex = codebook_convert(sex))
+#'
+#' # Convert multiple columns
+#' demographics |>
+#'   mutate(across(where(has_redcap_values), codebook_convert))
+#'
+#' # Convert specific columns
+#' demographics |>
+#'   mutate(
+#'     sex = codebook_convert(sex),
+#'     race = codebook_convert(race)
+#'   )
+#' }
+#'
+#' @export
+codebook_convert <- function(data, col_name = NULL) {
+  UseMethod("codebook_convert")
+}
+
+codebook_convert.data.frame <- function(data, col_name = NULL) {
+  if (!is.null(col_name)) {
+    if (!col_name %in% names(data)) {
+      cli_abort("Column {.val {col_name}} not found in data")
+    }
+    # Return just the converted column to maintain consistency with codebook()
+    return(codebook_convert(data[[col_name]]))
+  }
+
+  # When no column specified, error with helpful message about tidy approach
+  cli_abort(c(
+    "When converting multiple columns, use dplyr patterns like:",
+    "i" = "data |> mutate(across(where(has_redcap_values), codebook_convert))",
+    "i" = "data |> mutate(col1 = codebook_convert(col1), col2 = codebook_convert(col2))"
+  ))
+}
+
+codebook_convert.default <- function(data, col_name = NULL) {
+  value_labels <- attr(data, "redcap_values")
+
+  if (is.null(value_labels) || length(value_labels) == 0) {
+    return(data)
+  }
+
+  # Convert to character to handle case_when-like logic
+  result <- as.character(data)
+
+  # Handle the case where logical values need to be treated as numeric (0/1)
+  # This happens when REDCap 0/1 codes get converted to logical by import process
+  lookup_data <- data
+  if (is.logical(data)) {
+    # Convert logical to numeric for lookup: FALSE = 0, TRUE = 1
+    lookup_data <- as.numeric(data)
+  }
+
+  # Apply conversions for each coded value
+  for (code in names(value_labels)) {
+    # Try both string and numeric comparison for robust matching
+    code_numeric <- suppressWarnings(as.numeric(code))
+    if (!is.na(code_numeric)) {
+      # For numeric codes, match against numeric conversion of the data
+      result[lookup_data == code_numeric] <- value_labels[[code]]
+    } else {
+      # For string codes, match against character conversion
+      result[as.character(lookup_data) == code] <- value_labels[[code]]
+    }
+  }
+
+  # Handle NAs appropriately - keep as NA if original was NA
+  result[is.na(data)] <- NA_character_
+
+  # Preserve original attributes except redcap_values (since we've converted)
+  attributes_to_keep <- attributes(data)
+  attributes_to_keep$redcap_values <- NULL
+
+  attributes(result) <- c(attributes(result), attributes_to_keep)
+
+  result
+}
+
+#' @title Check if column has REDCap value labels
+#' @description Helper function to identify columns with redcap_values attributes.
+#' Useful with dplyr::across() for selective conversion.
+#'
+#' @param x A column/vector to check
+#'
+#' @return Logical indicating whether column has redcap_values attribute
+#'
+#' @examples
+#' \dontrun{
+#' # Convert only columns with value labels
+#' demographics |>
+#'   mutate(across(where(has_redcap_values), codebook_convert))
+#' }
+#'
+#' @export
+has_redcap_values <- function(x) {
+  !is.null(attr(x, "redcap_values"))
 }
 
 # Helper function to parse REDCap choice strings

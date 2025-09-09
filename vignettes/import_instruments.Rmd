@@ -256,3 +256,31 @@ codebook(demographics$age)
 ```
 
 The codebook displays variable labels, data types, and value labels for categorical variables, helping you understand your REDCap data structure.
+
+## Converting Coded Values to Labels
+
+REDCap often stores categorical data as numeric codes (e.g., 1, 2, 3) with corresponding labels (e.g., "Male", "Female", "Non-binary"). The `codebook_convert()` function transforms these coded values into their descriptive labels:
+
+```{r eval=FALSE}
+# Convert a single column (both options work the same way)
+codebook_convert(demographics$sex)
+codebook_convert(demographics, "sex")
+
+# For data.frame operations, use standard dplyr patterns:
+demographics |>
+  mutate(sex = codebook_convert(sex))
+
+# Convert multiple columns at once using the has_redcap_values() helper
+demographics |>
+  mutate(across(where(has_redcap_values), codebook_convert))
+
+# Convert specific columns
+demographics |>
+  mutate(
+    sex = codebook_convert(sex),
+    race = codebook_convert(race),
+    ethnicity = codebook_convert(ethnicity)
+  )
+```
+
+The `has_redcap_values()` helper function identifies which columns contain REDCap value labels, making it easy to selectively convert only the appropriate columns.
