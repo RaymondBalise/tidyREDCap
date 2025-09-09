@@ -46,11 +46,10 @@ to use for filtering. If provided with filter_function, this instrument will be
 filtered first, and the resulting record IDs will be used to filter all
 other instruments.}
 
-\item{filter_function}{Optional function that takes a tbl object and returns
-a modified instrument. If \code{filter_instrument} is specified, this filter is
-applied only to that instrument, and resulting record IDs filter all others.
-If \code{filter_instrument} is NULL (default), filter applies to each instrument separately.
-Example: \code{function(x) x |> filter(age >= 18)}}
+\item{filter_function}{Optional function that filters REDCap data.
+If \code{filter_instrument} is specified, filter is applied only to that instrument,
+and returned record IDs are used to filter all other instruments.
+If \code{filter_instrument} is NULL (default), filter applies to each instrument separately.}
 }
 \value{
 One table (\code{data.frame}) for each instrument/form in a REDCap project.

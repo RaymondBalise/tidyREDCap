@@ -20,11 +20,10 @@
 #'   to use for filtering. If provided with filter_function, this instrument will be
 #'   filtered first, and the resulting record IDs will be used to filter all
 #'   other instruments.
-#' @param filter_function Optional function that takes a tbl object and returns
-#'   a modified instrument. If `filter_instrument` is specified, this filter is
-#'   applied only to that instrument, and resulting record IDs filter all others.
+#' @param filter_function Optional function that filters REDCap data.
+#'   If `filter_instrument` is specified, filter is applied only to that instrument,
+#'   and returned record IDs are used to filter all other instruments.
 #'   If `filter_instrument` is NULL (default), filter applies to each instrument separately.
-#'   Example: \code{function(x) x |> filter(age >= 18)}
 #'
 #' @return One table (`data.frame`) for each instrument/form in a REDCap project.
 #' If `return_list` = TRUE, returns a named list.
@@ -188,7 +187,10 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     full_structure[] <- mapply(
       nm = names(full_structure),
       lab = relabel(label_names),
-      FUN = function(nm, lab) { var_label(full_structure[[nm]]) <- lab; full_structure[[nm]] },
+      FUN = function(nm, lab) {
+        var_label(full_structure[[nm]]) <- lab
+        full_structure[[nm]]
+      },
       SIMPLIFY = FALSE
     )
   }
