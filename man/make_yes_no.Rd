@@ -13,7 +13,7 @@ make_yes_no(x)
 a factor with "Yes" or "No or Unknown"
 }
 \description{
-Convert a "Yes-No", "True-False" or "Checkboxes (Multiple
+Convert a "Yes-No", "True-False", or "Checkboxes (Multiple
 Answers)" question in REDCap to a factor holding "Yes" or
 "No or Unknown". Technically "yes" or "checked" (ignoring case), 1 or
 TRUE responses are converted to "Yes" and all other values to

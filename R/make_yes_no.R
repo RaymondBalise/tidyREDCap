@@ -1,26 +1,25 @@
 #' @title make_yes_no
 #'
-#' @description Convert a "Yes-No", "True-False" or "Checkboxes (Multiple 
+#' @description Convert a "Yes-No", "True-False", or "Checkboxes (Multiple
 #'     Answers)" question in REDCap to a factor holding "Yes" or
-#'     "No or Unknown". Technically "yes" or "checked" (ignoring case), 1 or 
-#'     TRUE responses are converted to "Yes" and all other values to 
+#'     "No or Unknown". Technically "yes" or "checked" (ignoring case), 1 or
+#'     TRUE responses are converted to "Yes" and all other values to
 #'     "No or Unknown". Also see `make_yes_no_unknown()`.
 #'
 #' @param x x variable to be converted to hold "Yes" or "No or Unknown"
 #'
 #' @return a factor with "Yes" or "No or Unknown"
-#' 
+#'
 #' @importFrom stringr str_detect regex
 #' @importFrom dplyr case_when
-#' 
+#'
 #' @export
 #'
-#' @examples 
+#' @examples
 #' make_yes_no(c(0, 1, NA))
 #' make_yes_no(c("unchecked", "Checked", NA))
-
 make_yes_no <- function(x) {
-  if(is.factor(x) | is.character(x)){
+  if (is.factor(x) | is.character(x)) {
     factor(
       case_when(
         str_detect(
@@ -42,8 +41,7 @@ make_yes_no <- function(x) {
       ),
       levels = c("No or Unknown", "Yes")
     )
-    
   } else {
     x # not an expected atomic class
-  } 
+  }
 }

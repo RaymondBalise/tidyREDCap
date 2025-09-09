@@ -44,7 +44,13 @@ REDCap exports the responses to a *choose all that apply* question into many sim
 
 Projects that have repeated assessments with different instruments export with holes in the CSV.  tidyREDCap will parse the export and create tables for any of the instruments:
 
-* `make_instrument()`: makes a tibble for a questionnaire/instrument
+* `make_instrument()`: makes a tibble for an instrument based on the variable names
+* `make_instrument_auto()`: extracts an instrument from REDCap data without specifying variables, automatically detecting longitudinal and repeated measure structures
+
+#### Working with Yes/No Questions
+
+* `make_yes_no()`: converts Yes-No, True-False, or checkbox questions to a factor with "Yes" or "No or Unknown"
+* `make_yes_no_unknown()`: converts Yes-No, True-False, or checkbox questions to a factor with "No", "Yes", or "Unknown"
 
 ## What are the tidyREDCap Websites?
 Main Page: https://raymondbalise.github.io/tidyREDCap/   

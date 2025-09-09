@@ -7,13 +7,13 @@
 make_yes_no_unknown(x)
 }
 \arguments{
-\item{x}{variable to be converted to hold "No", "Yes", or Unknown"}
+\item{x}{variable to be converted to hold "No", "Yes", or "Unknown"}
 }
 \value{
-a factor with "No", "Yes", or Unknown"
+a factor with "No", "Yes", or "Unknown"
 }
 \description{
-Convert a "Yes-No", "True-False" or "Checkboxes (Multiple
+Convert a "Yes-No", "True-False", or "Checkboxes (Multiple
 Answers)" question in REDCap to a factor holding "No" or
 "Yes" or "Unknown". Technically "yes" or "checked" (ignoring case), 1 or
 TRUE responses are converted to "Yes". "No" or "unchecked" (ignoring
