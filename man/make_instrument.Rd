@@ -28,5 +28,5 @@ A data frame that has an instrument (with at least one not NA value)
 }
 \description{
 This function takes a data frame and the names of the first and
-last variables in an instrumnt and returns a data frame with the instrument.
+last variables in an instrument and returns a data frame with the instrument.
 }

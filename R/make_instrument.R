@@ -1,7 +1,7 @@
 #' Extract an Instrument from an REDCap Export
 #'
 #' @description This function takes a data frame and the names of the first and
-#' last variables in an instrumnt and returns a data frame with the instrument.
+#' last variables in an instrument and returns a data frame with the instrument.
 #'
 #' @param df A data frame with the instrument
 #' @param first_var The name of the first variable in an instrument
@@ -46,7 +46,6 @@ make_instrument <- function(df, first_var, last_var, drop_which_when = FALSE,
 
   # the rows that are not all missing
   if (drop_which_when == FALSE) {
-
     # get the column number for the id and event name
     record_id_col <- which(colnames(df) == record_id)
     redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
