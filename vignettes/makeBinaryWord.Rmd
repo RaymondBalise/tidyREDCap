@@ -34,13 +34,13 @@ In REDCap, it is simple to get a summary of those individual variables by using 
 sample_data <- readRDS(file = "./sample_race_ethnicity.rds")
 
 # American Indian/Alaska Native
-janitor::tabyl(sample_data$race___1) %>% 
-  janitor::adorn_pct_formatting() %>% 
+janitor::tabyl(sample_data$race___1) |> 
+  janitor::adorn_pct_formatting() |> 
   knitr::kable()
 
 # Asian
-janitor::tabyl(sample_data$race___2) %>% 
-  janitor::adorn_pct_formatting() %>% 
+janitor::tabyl(sample_data$race___2) |> 
+  janitor::adorn_pct_formatting() |> 
   knitr::kable()
 
 ```
@@ -55,7 +55,7 @@ Even after subsetting the REDCap data to only include the ingredients variables,
 ```{r loadData}
 sample_data <- readRDS(file = "./sample_race_ethnicity.rds")
 
-analysis <- sample_data %>% 
+analysis <- sample_data |> 
   select(starts_with("race___")) 
   
 knitr::kable(tail(analysis))

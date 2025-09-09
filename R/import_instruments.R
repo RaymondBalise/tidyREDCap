@@ -38,6 +38,7 @@
 #' @importFrom DBI dbConnect dbDisconnect
 #' @importFrom duckdb duckdb
 #' @importFrom rlang !!
+#' @importFrom utils head
 #' @export
 #'
 #' @examples

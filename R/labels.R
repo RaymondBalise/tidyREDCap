@@ -3,6 +3,7 @@
 
 #' @importFrom vctrs vec_cast
 #' @importFrom vctrs vec_ptype2
+#' @importFrom labelled var_label
 
 #### Checking types of objects ####
 

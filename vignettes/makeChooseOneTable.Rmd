@@ -47,7 +47,7 @@ make_choose_one_table(sample_data$race___1)
 
 Further, this output can be molded into a publication-ready table with a single additional function call.
 ```{r example_pretty, results="asis"}
-make_choose_one_table(sample_data$race___1) %>% 
+make_choose_one_table(sample_data$race___1) |> 
   knitr::kable()
 ```
 
@@ -56,14 +56,14 @@ The `subset` option, if set to `TRUE,` will cause the function to remove the lab
 make_choose_one_table(
   sample_data$race___2,
   subset = TRUE
-) %>% 
+) |> 
   knitr::kable()
 ```
 
 This function can also be used in an analysis pipeline with a data frame name and the name of the factor inside that data frame. For example:
 ```{r example3,  results="asis", fig.align="left"}
-sample_data %>% 
-  make_choose_one_table(race___3) %>% 
+sample_data |> 
+  make_choose_one_table(race___3) |> 
   knitr::kable() 
 ```
 

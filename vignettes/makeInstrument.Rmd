@@ -38,13 +38,13 @@ sample_data <- sample_data
 sample_data[c(2, 5), 
             c("height", "weight", "bmi", "comments", "mugshot", "health_complete")] <- NA
 
-sample_data %>% 
+sample_data |> 
   select(
     # Select record ID and health instrument columns
     record_id,
     # Select all columns for the health instrument
     height:health_complete
-  ) %>% 
+  ) |> 
   # Make the table pretty
   knitr::kable()
 ```
@@ -59,14 +59,14 @@ See the [Import All Instruments from a REDCap Project](../doc/importInstruments.
 Pass the `make_instrument()` function to the name of a dataset and the names of the first and last variables in an instrument, and it will return a table that has the non-empty records for the instrument. For example, to extract the demographics instrument:
 
 ```{r}
-make_instrument(sample_data, "name_first", "demographics_complete") %>% 
+make_instrument(sample_data, "name_first", "demographics_complete") |> 
   knitr::kable()
 ```
 
 To extract health information:
 
 ```{r}
-make_instrument(sample_data, "height", "health_complete") %>% 
+make_instrument(sample_data, "height", "health_complete") |> 
   knitr::kable()
 ```
 
@@ -79,7 +79,7 @@ make_instrument(
   sample_data,
   "race___1", "race_and_ethnicity_complete",
   drop_which_when = TRUE
-) %>% 
+) |> 
   knitr::kable()
 ```
 

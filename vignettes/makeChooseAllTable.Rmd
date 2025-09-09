@@ -27,8 +27,8 @@ library(dplyr)
 REDCap exports a "choose all that apply" question into a series of similarly-named, binary indicator variables (i.e., the variables are equal to either "checked" or "unchecked"). For example, the following data represents a sample of responses to a race/ethnicity question with multiple checkboxes.
 ```{r}
 sample_data <- readRDS(file = "./sample_race_ethnicity.rds")
-sample_data %>% 
-  select(starts_with("race___")) %>% 
+sample_data |> 
+  select(starts_with("race___")) |> 
   head()
 ```
 It is desirable to have a concise table showing how often each option was chosen.
@@ -47,8 +47,8 @@ make_choose_all_table(sample_data, "race")
 
 Similar to the `make_choose_one_table()` function, we can use this function inside an analysis pipeline. We can add the `kable()` call to make the table publication quality.
 ```{r show_results_pretty, results='asis'}
-sample_data %>% 
-  make_choose_all_table("race") %>% 
+sample_data |> 
+  make_choose_all_table("race") |> 
   knitr::kable()
 ```
 

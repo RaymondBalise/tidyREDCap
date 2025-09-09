@@ -95,7 +95,7 @@ codebook.default <- function(data, field_name = NULL) {
   ), class = "codebook")
 }
 
-#' @importFrom cli cli_text cli_ul cli_li
+#' @importFrom cli cli_text cli_ul cli_li cli_h1
 #' @export
 print.codebook <- function(x, ...) {
   if (!is.null(x$name)) {

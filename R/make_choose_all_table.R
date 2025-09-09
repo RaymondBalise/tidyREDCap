@@ -65,7 +65,7 @@ getLabel2 <- function(data, aVariable) {
 ##  }
 make_choose_all_table <- function(df, variable) {
   # . <- NULL # kludge to get CMD Check to pass with nonstandard evaluation
-  the_vars_df <- df %>%
+  the_vars_df <- df |>
     dplyr::select(dplyr::starts_with(variable))
   
   are_vars_labelled <- purrr::map_lgl(the_vars_df, function(x) inherits(x, "labelled"))
@@ -88,26 +88,26 @@ make_choose_all_table <- function(df, variable) {
   Count <- NULL
   
   counts <- the_vars_df |> 
-    dplyr::mutate(dplyr::across(tidyselect::everything(), ~ . %in% c("1", "Checked"))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::everything(), ~ . %in% c("1", "Checked"))) |>
     dplyr::mutate(dplyr::across(
       tidyselect::vars_select_helpers$where(
         is.logical
       ),
       as.numeric
-    )) %>%
-    dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) %>%
-    dplyr::mutate(blah = "x") %>%
+    )) |>
+    dplyr::summarise(across(everything(), ~ sum(.x, na.rm = TRUE))) |>
+    dplyr::mutate(blah = "x") |>
     tidyr::pivot_longer(-`blah`, names_to = "thingy", values_to = "Count")
   
   aTable <-
-    counts %>%
-    dplyr::pull(.data$thingy) %>%
+    counts |>
+    dplyr::pull(.data$thingy) |>
     purrr::map_chr(.f = ~ {
       getLabel2(df, .x)
-    }) %>%
-    tibble::enframe(name = NULL) %>% # new variable is value
-    dplyr::rename("What" = `value`) %>%
-    dplyr::bind_cols(counts) %>%
+    }) |>
+    tibble::enframe(name = NULL) |> # new variable is value
+    dplyr::rename("What" = `value`) |>
+    dplyr::bind_cols(counts) |>
     dplyr::select(`What`, `Count`)
   aTable
 }

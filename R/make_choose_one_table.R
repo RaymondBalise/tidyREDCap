@@ -26,7 +26,7 @@ dropTags <- function(x) {
 #' @return a table
 taybull <- function(variable, subset = FALSE) {
   # grab the label attribute off the variable
-  theLab <- attr(variable, "label") %>%
+  theLab <- attr(variable, "label") |>
     dropTags()
 
   # print the label
@@ -42,7 +42,7 @@ taybull <- function(variable, subset = FALSE) {
     cat(paste(theLab2, "\n"))
   }
   Response <- variable
-  janitor::tabyl(Response) %>%
+  janitor::tabyl(Response) |>
     janitor::adorn_pct_formatting(digits = 0)
 }
 
@@ -64,7 +64,7 @@ taybull <- function(variable, subset = FALSE) {
 #' @return a table
 taybull2 <- function(data, aVariable, subset = FALSE) {
   # pull the variable out and into a data frame
-  Response <- data %>%
+  Response <- data |>
     dplyr::pull({{ aVariable }})
 
   # grab the label attribute off the variable inside of the DF
@@ -83,7 +83,7 @@ taybull2 <- function(data, aVariable, subset = FALSE) {
     cat(paste(theLab2, "\n"))
   }
 
-  janitor::tabyl(Response) %>%
+  janitor::tabyl(Response) |>
     janitor::adorn_pct_formatting(digits = 0)
 }
 

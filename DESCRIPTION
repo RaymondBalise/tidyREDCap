@@ -69,11 +69,13 @@ RoxygenNote: 7.3.2
 Depends: R (>= 3.5.0)
 Imports: 
     cli,
+    DBI,
     dplyr,
+    duckdb,
     janitor,
     labelled,
-    magrittr,
     purrr,
+    redquack,
     REDCapR,
     rlang,
     stringr,
