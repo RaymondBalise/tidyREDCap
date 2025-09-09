@@ -22,6 +22,7 @@ codebook <- function(data, field_name = NULL) {
   UseMethod("codebook")
 }
 
+#' @export
 codebook.data.frame <- function(data, field_name = NULL) {
   if (!is.null(field_name)) {
     if (!field_name %in% names(data)) {
@@ -68,6 +69,7 @@ codebook.data.frame <- function(data, field_name = NULL) {
   structure(result, class = "codebook")
 }
 
+#' @export
 codebook.default <- function(data, field_name = NULL) {
   # For individual columns
   if (is.null(field_name)) {
@@ -179,6 +181,7 @@ codebook_convert <- function(data, col_name = NULL) {
   UseMethod("codebook_convert")
 }
 
+#' @export
 codebook_convert.data.frame <- function(data, col_name = NULL) {
   if (!is.null(col_name)) {
     if (!col_name %in% names(data)) {
@@ -196,6 +199,7 @@ codebook_convert.data.frame <- function(data, col_name = NULL) {
   ))
 }
 
+#' @export
 codebook_convert.default <- function(data, col_name = NULL) {
   value_labels <- attr(data, "redcap_values")
 
