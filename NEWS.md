@@ -13,6 +13,8 @@ editor_options:
         filtering
     -   `return_list` for returning a list of instrument data.frames
     -   `labels` for adding/removing column labels
+-   Add `codebook()` function for generating structured metadata
+    documentation
 
 # tidyREDCap 1.1.2 (CRAN release)
 

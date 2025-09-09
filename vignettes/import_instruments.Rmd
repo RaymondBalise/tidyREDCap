@@ -242,3 +242,17 @@ problematic records
 
 The filtering happens at the database level before data is loaded into R
 memory, making it very efficient even for large datasets.
+
+## Exploring Your Data with Codebooks
+
+After importing instruments, you can generate structured documentation using the `codebook()` function:
+
+```{r eval=FALSE}
+# Generate codebook for an entire instrument
+codebook(demographics)
+
+# Generate codebook for a specific variable
+codebook(demographics$age)
+```
+
+The codebook displays variable labels, data types, and value labels for categorical variables, helping you understand your REDCap data structure.

@@ -84,15 +84,54 @@ import_instruments <- function(url, token, drop_blank = TRUE,
     c(meta, curr_instr_idx) |> unique()
   }
 
-  # internal function to apply labels to collected data
-  apply_labels_to_data <- function(data, full_labeled_structure) {
+  # internal function to apply labels and metadata to collected data
+  apply_labels_to_data <- function(data, full_labeled_structure, metadata = NULL) {
     # copy labels from full structure to matching columns in data
     for (col_name in names(data)) {
       if (col_name %in% names(full_labeled_structure)) {
         attr(data[[col_name]], "label") <- attr(full_labeled_structure[[col_name]], "label")
       }
     }
+    
+    # Add value labels for categorical variables if metadata available
+    if (!is.null(metadata)) {
+      for (col_name in names(data)) {
+        field_meta <- metadata[metadata$field_name == col_name, ]
+        if (nrow(field_meta) == 1 && !is.na(field_meta$select_choices_or_calculations)) {
+          value_labels <- parse_redcap_choices(field_meta$select_choices_or_calculations)
+          if (!is.null(value_labels)) {
+            attr(data[[col_name]], "redcap_values") <- value_labels
+          }
+        }
+      }
+      # Store full metadata as dataset attribute
+      attr(data, "redcap_metadata") <- metadata
+    }
+    
     data
+  }
+  
+  # Helper function to parse REDCap choice strings
+  parse_redcap_choices <- function(choices_string) {
+    if (is.na(choices_string) || choices_string == "") {
+      return(NULL)
+    }
+    
+    # Split by | and then by comma  
+    choices <- strsplit(choices_string, " \\| ")[[1]]
+    result <- list()
+    
+    for (choice in choices) {
+      if (grepl(",", choice)) {
+        parts <- strsplit(choice, ", ", 2)[[1]]
+        if (length(parts) == 2) {
+          result[[parts[1]]] <- parts[2]
+        }
+      }
+    }
+    
+    if (length(result) == 0) return(NULL)
+    result
   }
 
   cli_inform("Reading metadata about your project...")
@@ -267,7 +306,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       # apply labels if requested
       if (labels) {
-        instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
       }
 
       # process (drop blank if needed)
@@ -313,7 +352,7 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 
       # apply labels if requested
       if (labels) {
-        instrument_data <- apply_labels_to_data(instrument_data, full_structure)
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
       }
 
       processed_data <- if (drop_blank) {
