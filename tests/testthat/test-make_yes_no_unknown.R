@@ -71,3 +71,66 @@ test_that("processing works across a df", {
     target_df
   )
 })
+
+test_that("labels are preserved for strings", {
+  library(labelled)
+  original_with_label <- original_str
+  var_label(original_with_label) <- "Test question about agreement"
+  
+  result <- make_yes_no_unknown(original_with_label)
+  
+  expect_equal(var_label(result), "Test question about agreement")
+  expect_equal(as.character(result), as.character(target))
+})
+
+test_that("labels are preserved for numerics", {
+  library(labelled)
+  original_with_label <- original_num
+  var_label(original_with_label) <- "Numeric yes/no/unknown response"
+  
+  result <- make_yes_no_unknown(original_with_label)
+  
+  expect_equal(var_label(result), "Numeric yes/no/unknown response")
+  expect_equal(as.character(result), as.character(target))
+})
+
+test_that("labels are preserved for logicals", {
+  library(labelled)
+  original_with_label <- original_lgl
+  var_label(original_with_label) <- "Logical true/false/unknown response"
+  
+  result <- make_yes_no_unknown(original_with_label)
+  
+  expect_equal(var_label(result), "Logical true/false/unknown response")
+  expect_equal(as.character(result), as.character(target))
+})
+
+test_that("function works when no label is present", {
+  result <- make_yes_no_unknown(original_str)
+  expect_equal(result, target)
+  expect_null(var_label(result))
+})
+
+test_that("labels are preserved in data frame processing", {
+  library(labelled)
+  
+  # Create labeled data
+  labeled_df <- original_df
+  var_label(labeled_df$original_str) <- "String responses"
+  var_label(labeled_df$original_num) <- "Numeric responses"
+  var_label(labeled_df$original_lgl) <- "Logical responses"
+  
+  # Process with function
+  result_df <- labeled_df |>
+    mutate(across(everything(), make_yes_no_unknown))
+  
+  # Check that labels are preserved
+  expect_equal(var_label(result_df$original_str), "String responses")
+  expect_equal(var_label(result_df$original_num), "Numeric responses")
+  expect_equal(var_label(result_df$original_lgl), "Logical responses")
+  
+  # Check that values are correct
+  expect_equal(as.character(result_df$original_str), as.character(target))
+  expect_equal(as.character(result_df$original_num), as.character(target))
+  expect_equal(as.character(result_df$original_lgl), as.character(target))
+})

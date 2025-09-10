@@ -13,6 +13,7 @@
 #'
 #' @importFrom stringr str_detect regex
 #' @importFrom dplyr case_when
+#' @importFrom labelled var_label
 #'
 #' @export
 #'
@@ -20,8 +21,11 @@
 #' make_yes_no_unknown(c(0, 1, NA))
 #' make_yes_no_unknown(c("unchecked", "Checked", NA))
 make_yes_no_unknown <- function(x) {
+  # Store original label
+  original_label <- var_label(x)
+  
   if (is.factor(x) | is.character(x)) {
-    factor(
+    result <- factor(
       dplyr::case_when(
         str_detect(
           x, stringr::regex("^yes", ignore_case = TRUE)
@@ -40,7 +44,7 @@ make_yes_no_unknown <- function(x) {
       levels = c("No", "Yes", "Unknown")
     )
   } else if (is.numeric(x) | is.logical(x)) {
-    factor(
+    result <- factor(
       dplyr::case_when(
         x == 1 ~ "Yes",
         x == 0 ~ "No",
@@ -49,6 +53,13 @@ make_yes_no_unknown <- function(x) {
       levels = c("No", "Yes", "Unknown")
     )
   } else {
-    x
+    result <- x
   }
+  
+  # Restore original label if it existed
+  if (!is.null(original_label)) {
+    var_label(result) <- original_label
+  }
+  
+  result
 }
