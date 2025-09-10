@@ -79,352 +79,334 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                labels = TRUE,
                                filter_instrument = NULL,
                                filter_function = NULL) {
-      # internal function to extract instrument columns (indices only)
-      get_instrument_columns <- function(data_set, big_i, meta) {
-        curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
-        c(meta, curr_instr_idx) |> unique()
+  # internal function to extract instrument columns (indices only)
+  get_instrument_columns <- function(data_set, big_i, meta) {
+    curr_instr_idx <- (big_i[data_set] + 1):big_i[data_set + 1]
+    c(meta, curr_instr_idx) |> unique()
+  }
+
+  # internal function to apply labels and metadata to collected data
+  apply_labels_to_data <- function(data, full_labeled_structure, metadata = NULL) {
+    # copy labels from full structure to matching columns in data
+    for (col_name in names(data)) {
+      if (col_name %in% names(full_labeled_structure)) {
+        attr(data[[col_name]], "label") <- attr(full_labeled_structure[[col_name]], "label")
+      }
+    }
+
+    # Add value labels for categorical variables if metadata available
+    if (!is.null(metadata)) {
+      for (col_name in names(data)) {
+        field_meta <- metadata[metadata$field_name == col_name, ]
+        if (nrow(field_meta) == 1 && !is.na(field_meta$select_choices_or_calculations)) {
+          value_labels <- parse_redcap_choices(field_meta$select_choices_or_calculations)
+          if (!is.null(value_labels)) {
+            attr(data[[col_name]], "redcap_values") <- value_labels
+          }
+        }
+      }
+      # Store full metadata as dataset attribute
+      attr(data, "redcap_metadata") <- metadata
+    }
+
+    data
+  }
+
+  # Helper function to parse REDCap choice strings
+  parse_redcap_choices <- function(choices_string) {
+    if (is.na(choices_string) || choices_string == "") {
+      return(NULL)
+    }
+
+    # Split by | and then by comma
+    choices <- strsplit(choices_string, " \\| ")[[1]]
+    result <- list()
+
+    for (choice in choices) {
+      if (grepl(",", choice)) {
+        parts <- strsplit(choice, ", ", 2)[[1]]
+        if (length(parts) == 2) {
+          result[[parts[1]]] <- parts[2]
+        }
+      }
+    }
+
+    if (length(result) == 0) {
+      return(NULL)
+    }
+    result
+  }
+
+  cli_inform("Reading metadata about your project...")
+
+  metadata_result <- tryCatch({
+    suppressWarnings(suppressMessages(
+      redcap_metadata_read(redcap_uri = url, token = token)
+    ))
+  }, error = function(e) {
+    stop("Metadata read failed: ", e$message, call. = FALSE)
+  })
+
+  # Check if metadata read was successful
+  if (!metadata_result$success) {
+    stop("Metadata read failed: ", metadata_result$outcome_message, call. = FALSE)
+  }
+
+  ds_instrument <- metadata_result$data
+
+  # get instrument names
+  instrument_name <- ds_instrument |>
+    pull(form_name) |>
+    unique()
+
+  # validate filter_instrument
+  if (!is.null(filter_instrument) && !filter_instrument %in% instrument_name) {
+    stop("filter_instrument '", filter_instrument, "' not found in project instruments: ",
+      paste(instrument_name, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  # read variable labels if needed
+  label_names <- NULL
+  if (labels) {
+    cli_inform("Reading variable labels...")
+    labels_result <- tryCatch({
+      suppressWarnings(suppressMessages(
+        redcap_read(
+          redcap_uri = url, token = token,
+          raw_or_label_headers = "label",
+          records = first_record_id
+        )
+      ))
+    }, error = function(e) {
+      stop("Labels read failed: ", e$message, call. = FALSE)
+    })
+
+    # Check if label read was successful
+    if (!labels_result$success) {
+      stop("Labels read failed: ", labels_result$outcome_message, call. = FALSE)
+    }
+
+    raw_labels <- labels_result$data
+    if (nrow(raw_labels) == 0) {
+      stop("The first 'record_id' must be 1; use argument 'first_record_id' to set first id",
+        call. = FALSE
+      )
+    }
+
+    # prepare labels
+    label_names <- names(raw_labels) |>
+      str_replace("(\\(.*)\\(", "\\1") |>
+      str_replace("\\)(.*\\))", "\\1") |>
+      str_replace("\\.\\.\\.\\d+$", "")
+    names(label_names) <- names(raw_labels)
+  }
+
+  cli_inform("Reading your data...")
+
+  # create temporary duckdb connection
+  db_file <- tempfile(fileext = ".duckdb")
+  duckdb <- dbConnect(duckdb(), db_file)
+
+  on.exit({
+    dbDisconnect(duckdb)
+    if (file.exists(db_file)) file.remove(db_file)
+  })
+
+  # import redcap data to duckdb
+  tryCatch({
+    redcap_to_db(
+      conn = duckdb, redcap_uri = url, token = token,
+      record_id_name = record_id, echo = "progress", beep = FALSE
+    )
+  }, error = function(e) {
+    stop("Data import failed: ", e$message, call. = FALSE)
+  })
+
+  # get data table reference and apply labels to full structure
+  data_tbl <- tbl(duckdb, "data")
+
+  # check data size and warn if big
+  filter_in_use <- !is.null(filter_instrument) || !is.null(filter_function)
+  if (!filter_in_use) {
+    n_rows <- data_tbl |>
+      count() |>
+      collect() |>
+      pull(n)
+    n_cols <- length(colnames(data_tbl))
+    total_elements <- n_rows * n_cols
+
+    if (total_elements >= 100000000) { # 100m elements - serious warning
+      cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
+    } else if (total_elements >= 25000000) { # 25m elements - suggestion
+      cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for optimized memory management")
+    }
+  }
+
+  # collect a sample to get full column structure for labeling
+  full_structure <- data_tbl |>
+    head(1) |>
+    collect()
+
+  # apply labels to the full structure template if labels requested
+  if (labels) {
+    full_structure[] <- mapply(
+      nm = names(full_structure),
+      lab = relabel(label_names),
+      FUN = function(nm, lab) {
+        var_label(full_structure[[nm]]) <- lab
+        full_structure[[nm]]
+      },
+      SIMPLIFY = FALSE
+    )
+  }
+
+  # get instrument indices
+  i <- which(names(full_structure) %in% paste0(instrument_name, "_complete"))
+  big_i <- c(0, i)
+  n_instr_int <- length(big_i) - 1
+
+  # determine metadata columns
+  is_longitudinal <- any(names(full_structure) == "redcap_event_name")
+  is_repeated <- any(names(full_structure) == "redcap_repeat_instrument")
+
+  meta <- if (is_longitudinal && is_repeated) {
+    c(1:4)
+  } else if (is_repeated) {
+    c(1:3)
+  } else if (is_longitudinal) {
+    c(1:2)
+  } else {
+    1
+  }
+
+  # get filtered record ids if filter specified
+  filtered_ids <- NULL
+  if (!is.null(filter_instrument) && !is.null(filter_function)) {
+    filter_idx <- which(instrument_name == filter_instrument)
+
+    cli_inform("Applying filter to '{filter_instrument}' instrument...")
+
+    # get column indices for filter instrument
+    filter_columns <- get_instrument_columns(filter_idx, big_i, meta)
+
+    # apply filter directly on database table
+    filtered_ids <- data_tbl |>
+      select(all_of(filter_columns)) |>
+      filter_function() |>
+      select(all_of(record_id)) |>
+      distinct() |>
+      collect() |>
+      pull(!!sym(record_id))
+
+    cli_inform("Filter resulted in {length(filtered_ids)} records")
+  }
+
+  if (n_instr_int == 0) {
+    cli_inform("No instruments found in project")
+    return(if (return_list) list() else invisible())
+  }
+
+  # process instruments with memory-efficient approach
+  if (return_list) {
+    instruments_list <- vector("list", length = n_instr_int)
+    names(instruments_list) <- instrument_name[1:n_instr_int]
+
+    for (data_set in seq_len(n_instr_int)) {
+      # get column indices for this instrument
+      column_index <- get_instrument_columns(data_set, big_i, meta)
+
+      # build query starting from database table
+      instrument_query <- data_tbl |>
+        select(all_of(column_index))
+
+      # apply filtering if needed
+      if (!is.null(filtered_ids)) {
+        instrument_query <- instrument_query |>
+          filter(!!sym(record_id) %in% filtered_ids)
+      } else if (!is.null(filter_function)) {
+        instrument_query <- instrument_query |> filter_function()
       }
 
-      # internal function to apply labels and metadata to collected data
-      apply_labels_to_data <- function(data, full_labeled_structure, metadata = NULL) {
-        # copy labels from full structure to matching columns in data
-        for (col_name in names(data)) {
-          if (col_name %in% names(full_labeled_structure)) {
-            attr(data[[col_name]], "label") <- attr(full_labeled_structure[[col_name]], "label")
-          }
-        }
+      # collect data
+      instrument_data <- instrument_query |> collect()
 
-        # Add value labels for categorical variables if metadata available
-        if (!is.null(metadata)) {
-          for (col_name in names(data)) {
-            field_meta <- metadata[metadata$field_name == col_name, ]
-            if (nrow(field_meta) == 1 && !is.na(field_meta$select_choices_or_calculations)) {
-              value_labels <- parse_redcap_choices(field_meta$select_choices_or_calculations)
-              if (!is.null(value_labels)) {
-                attr(data[[col_name]], "redcap_values") <- value_labels
-              }
-            }
-          }
-          # Store full metadata as dataset attribute
-          attr(data, "redcap_metadata") <- metadata
-        }
-
-        data
+      # apply labels if requested
+      if (labels) {
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
       }
 
-      # Helper function to parse REDCap choice strings
-      parse_redcap_choices <- function(choices_string) {
-        if (is.na(choices_string) || choices_string == "") {
-          return(NULL)
-        }
-
-        # Split by | and then by comma
-        choices <- strsplit(choices_string, " \\| ")[[1]]
-        result <- list()
-
-        for (choice in choices) {
-          if (grepl(",", choice)) {
-            parts <- strsplit(choice, ", ", 2)[[1]]
-            if (length(parts) == 2) {
-              result[[parts[1]]] <- parts[2]
-            }
-          }
-        }
-
-        if (length(result) == 0) {
-          return(NULL)
+      # process (drop blank if needed)
+      processed_data <- if (drop_blank) {
+        result <- make_instrument_auto(instrument_data, record_id = record_id)
+        # Preserve record_id label if labels are requested
+        if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
+          attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
         }
         result
+      } else {
+        instrument_data
       }
 
-      cli_inform("Reading metadata about your project...")
+      rownames(processed_data) <- NULL
 
-      metadata_result <- suppressWarnings(suppressMessages(
-        redcap_metadata_read(redcap_uri = url, token = token)
-      ))
-      
-      # Check if metadata read was successful
-      if (!metadata_result$success) {
-        # Extract meaningful error message from REDCap response
-        if (metadata_result$status_code == 403) {
-          stop("API access denied. Check your token permissions.", call. = FALSE)
-        } else if (metadata_result$status_code == 404) {
-          stop("REDCap project not found. Check your URL.", call. = FALSE)  
-        } else if (nchar(trimws(metadata_result$raw_text)) > 0) {
-          # Try to extract error from JSON response
-          error_text <- metadata_result$raw_text
-          if (grepl('"error":', error_text)) {
-            # Extract error message from JSON
-            error_msg <- gsub('.*"error":"([^"]+)".*', '\\1', error_text)
-            stop("REDCap API error: ", error_msg, call. = FALSE)
-          } else {
-            stop("REDCap API error (HTTP ", metadata_result$status_code, "): ", 
-                 metadata_result$outcome_message, call. = FALSE)
-          }
-        } else {
-          stop("REDCap API request failed (HTTP ", metadata_result$status_code, ")", call. = FALSE)
+      if (nrow(processed_data) > 0) {
+        instruments_list[[instrument_name[data_set]]] <- processed_data
+      } else {
+        # Keep empty data.frame structure instead of setting to NULL
+        instruments_list[[instrument_name[data_set]]] <- processed_data
+      }
+    }
+
+    return(instruments_list)
+  } else {
+    # assign to environment
+    for (data_set in seq_len(n_instr_int)) {
+      column_index <- get_instrument_columns(data_set, big_i, meta)
+
+      instrument_query <- data_tbl |>
+        select(all_of(column_index))
+
+      if (!is.null(filtered_ids)) {
+        instrument_query <- instrument_query |>
+          filter(!!sym(record_id) %in% filtered_ids)
+      } else if (!is.null(filter_function)) {
+        instrument_query <- instrument_query |> filter_function()
+      }
+
+      # collect data
+      instrument_data <- instrument_query |> collect()
+
+      # apply labels if requested
+      if (labels) {
+        instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
+      }
+
+      processed_data <- if (drop_blank) {
+        result <- make_instrument_auto(instrument_data, record_id = record_id)
+        # Preserve record_id label if labels are requested
+        if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
+          attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
         }
+        result
+      } else {
+        instrument_data
       }
-      
-      ds_instrument <- metadata_result$data
 
-      # get instrument names
-      instrument_name <- ds_instrument |>
-        pull(form_name) |>
-        unique()
+      rownames(processed_data) <- NULL
 
-      # validate filter_instrument
-      if (!is.null(filter_instrument) && !filter_instrument %in% instrument_name) {
-        stop("filter_instrument '", filter_instrument, "' not found in project instruments: ",
-          paste(instrument_name, collapse = ", "),
-          call. = FALSE
+      if (nrow(processed_data) > 0) {
+        assign(instrument_name[data_set], processed_data, envir = envir)
+      } else {
+        cli_warn(
+          "The {instrument_name[data_set]} instrument has 0 records and will not be imported"
         )
       }
+    }
 
-      # read variable labels if needed
-      label_names <- NULL
-      if (labels) {
-        cli_inform("Reading variable labels...")
-        labels_result <- suppressWarnings(suppressMessages(
-          redcap_read(
-            redcap_uri = url, token = token,
-            raw_or_label_headers = "label",
-            records = first_record_id
-          )
-        ))
-        
-        # Check if label read was successful
-        if (!labels_result$success) {
-          if (labels_result$status_code == 403) {
-            stop("API access denied for data read. Check your token permissions.", call. = FALSE)
-          } else if (nchar(trimws(labels_result$raw_text)) > 0) {
-            error_text <- labels_result$raw_text
-            if (grepl('"error":', error_text)) {
-              error_msg <- gsub('.*"error":"([^"]+)".*', '\\1', error_text)
-              stop("REDCap API error: ", error_msg, call. = FALSE)
-            } else {
-              stop("REDCap data read failed (HTTP ", labels_result$status_code, ")", call. = FALSE)
-            }
-          } else {
-            stop("REDCap data read failed (HTTP ", labels_result$status_code, ")", call. = FALSE)
-          }
-        }
-
-        raw_labels <- labels_result$data
-        if (nrow(raw_labels) == 0) {
-          stop("The first 'record_id' must be 1; use argument 'first_record_id' to set first id",
-            call. = FALSE
-          )
-        }
-
-        # prepare labels
-        label_names <- names(raw_labels) |>
-          str_replace("(\\(.*)\\(", "\\1") |>
-          str_replace("\\)(.*\\))", "\\1") |>
-          str_replace("\\.\\.\\.\\d+$", "")
-        names(label_names) <- names(raw_labels)
-      }
-
-      cli_inform("Reading your data...")
-
-      # create temporary duckdb connection
-      db_file <- tempfile(fileext = ".duckdb")
-      duckdb <- dbConnect(duckdb(), db_file)
-
-      on.exit({
-        dbDisconnect(duckdb)
-        if (file.exists(db_file)) file.remove(db_file)
-      })
-
-      # import redcap data to duckdb
-      redcap_to_db(
-        conn = duckdb, redcap_uri = url, token = token,
-        record_id_name = record_id, echo = "progress", beep = FALSE
-      )
-
-      # get data table reference and apply labels to full structure
-      data_tbl <- tbl(duckdb, "data")
-
-      # check data size and warn if big
-      filter_in_use <- !is.null(filter_instrument) || !is.null(filter_function)
-      if (!filter_in_use) {
-        n_rows <- data_tbl |>
-          count() |>
-          collect() |>
-          pull(n)
-        n_cols <- length(colnames(data_tbl))
-        total_elements <- n_rows * n_cols
-
-        if (total_elements >= 100000000) { # 100m elements - serious warning
-          cli_warn("Your very large REDCap project ({n_rows} obs. of {n_cols} variables) may exceed memory and require arguments {.arg filter_function} and {.arg filter_instrument} to import filtered data")
-        } else if (total_elements >= 25000000) { # 25m elements - suggestion
-          cli_alert_info("Consider filtering your somewhat large REDCap project ({n_rows} obs. of {n_cols} variables) using arguments {.arg filter_function} and {.arg filter_instrument} for optimized memory management")
-        }
-      }
-
-      # collect a sample to get full column structure for labeling
-      full_structure <- data_tbl |>
-        head(1) |>
-        collect()
-
-      # apply labels to the full structure template if labels requested
-      if (labels) {
-        full_structure[] <- mapply(
-          nm = names(full_structure),
-          lab = relabel(label_names),
-          FUN = function(nm, lab) {
-            var_label(full_structure[[nm]]) <- lab
-            full_structure[[nm]]
-          },
-          SIMPLIFY = FALSE
-        )
-      }
-
-      # get instrument indices
-      i <- which(names(full_structure) %in% paste0(instrument_name, "_complete"))
-      big_i <- c(0, i)
-      n_instr_int <- length(big_i) - 1
-
-      # determine metadata columns
-      is_longitudinal <- any(names(full_structure) == "redcap_event_name")
-      is_repeated <- any(names(full_structure) == "redcap_repeat_instrument")
-
-      meta <- if (is_longitudinal && is_repeated) {
-        c(1:4)
-      } else if (is_repeated) {
-        c(1:3)
-      } else if (is_longitudinal) {
-        c(1:2)
-      } else {
-        1
-      }
-
-      # get filtered record ids if filter specified
-      filtered_ids <- NULL
-      if (!is.null(filter_instrument) && !is.null(filter_function)) {
-        filter_idx <- which(instrument_name == filter_instrument)
-
-        cli_inform("Applying filter to '{filter_instrument}' instrument...")
-
-        # get column indices for filter instrument
-        filter_columns <- get_instrument_columns(filter_idx, big_i, meta)
-
-        # apply filter directly on database table
-        filtered_ids <- data_tbl |>
-          select(all_of(filter_columns)) |>
-          filter_function() |>
-          select(all_of(record_id)) |>
-          distinct() |>
-          collect() |>
-          pull(!!sym(record_id))
-
-        cli_inform("Filter resulted in {length(filtered_ids)} records")
-      }
-
-      if (n_instr_int == 0) {
-        cli_inform("No instruments found in project")
-        return(if (return_list) list() else invisible())
-      }
-
-      # process instruments with memory-efficient approach
-      if (return_list) {
-        instruments_list <- vector("list", length = n_instr_int)
-        names(instruments_list) <- instrument_name[1:n_instr_int]
-
-        for (data_set in seq_len(n_instr_int)) {
-          # get column indices for this instrument
-          column_index <- get_instrument_columns(data_set, big_i, meta)
-
-          # build query starting from database table
-          instrument_query <- data_tbl |>
-            select(all_of(column_index))
-
-          # apply filtering if needed
-          if (!is.null(filtered_ids)) {
-            instrument_query <- instrument_query |>
-              filter(!!sym(record_id) %in% filtered_ids)
-          } else if (!is.null(filter_function)) {
-            instrument_query <- instrument_query |> filter_function()
-          }
-
-          # collect data
-          instrument_data <- instrument_query |> collect()
-
-          # apply labels if requested
-          if (labels) {
-            instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
-          }
-
-          # process (drop blank if needed)
-          processed_data <- if (drop_blank) {
-            result <- make_instrument_auto(instrument_data, record_id = record_id)
-            # Preserve record_id label if labels are requested
-            if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
-              attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
-            }
-            result
-          } else {
-            instrument_data
-          }
-
-          rownames(processed_data) <- NULL
-
-          if (nrow(processed_data) > 0) {
-            instruments_list[[instrument_name[data_set]]] <- processed_data
-          } else {
-            # Keep empty data.frame structure instead of setting to NULL
-            instruments_list[[instrument_name[data_set]]] <- processed_data
-          }
-        }
-
-        return(instruments_list)
-      } else {
-        # assign to environment
-        for (data_set in seq_len(n_instr_int)) {
-          column_index <- get_instrument_columns(data_set, big_i, meta)
-
-          instrument_query <- data_tbl |>
-            select(all_of(column_index))
-
-          if (!is.null(filtered_ids)) {
-            instrument_query <- instrument_query |>
-              filter(!!sym(record_id) %in% filtered_ids)
-          } else if (!is.null(filter_function)) {
-            instrument_query <- instrument_query |> filter_function()
-          }
-
-          # collect data
-          instrument_data <- instrument_query |> collect()
-
-          # apply labels if requested
-          if (labels) {
-            instrument_data <- apply_labels_to_data(instrument_data, full_structure, ds_instrument)
-          }
-
-          processed_data <- if (drop_blank) {
-            result <- make_instrument_auto(instrument_data, record_id = record_id)
-            # Preserve record_id label if labels are requested
-            if (labels && record_id %in% names(result) && record_id %in% names(instrument_data)) {
-              attr(result[[record_id]], "label") <- attr(instrument_data[[record_id]], "label")
-            }
-            result
-          } else {
-            instrument_data
-          }
-
-          rownames(processed_data) <- NULL
-
-          if (nrow(processed_data) > 0) {
-            assign(instrument_name[data_set], processed_data, envir = envir)
-          } else {
-            cli_warn(
-              "The {instrument_name[data_set]} instrument has 0 records and will not be imported"
-            )
-          }
-        }
-
-        invisible()
-      }
+    invisible()
+  }
 }
 
 #' @title relabel

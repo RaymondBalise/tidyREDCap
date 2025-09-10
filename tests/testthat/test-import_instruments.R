@@ -293,7 +293,7 @@ test_that("robust error handling works correctly", {
       "https://bbmc.ouhsc.edu/redcap/api/",
       "9A81268476645C4E5F03428B8AC3AA7c"
     ),
-    "API access denied. Check your token permissions."
+    "Metadata read failed"
   )
   
   # Test network/hostname resolution error
@@ -302,7 +302,7 @@ test_that("robust error handling works correctly", {
       "https://nonexistent_redcap_server.com/api/",
       "9A81268476645C4E5F03428B8AC3AA7B"
     ),
-    "Could not resolve host"
+    "Metadata read failed.*Could not resolve host"
   )
   
   # Test 404 error with valid hostname but wrong path
@@ -311,7 +311,7 @@ test_that("robust error handling works correctly", {
       "https://httpbin.org/status/404",
       "9A81268476645C4E5F03428B8AC3AA7B"
     ),
-    "REDCap project not found. Check your URL."
+    "Metadata read failed"
   )
 })
 
