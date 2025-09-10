@@ -52,8 +52,8 @@ and returned record IDs are used to filter all other instruments.
 If \code{filter_instrument} is NULL (default), filter applies to each instrument separately.}
 }
 \value{
-One table (\code{data.frame}) for each instrument/form in a REDCap project.
-If \code{return_list} = TRUE, returns a named list.
+One table (\code{data.frame}) for each instrument is assigned to the environment.
+If \code{return_list} = TRUE, returns a named list instead.
 }
 \description{
 This function takes the url and key for a REDCap

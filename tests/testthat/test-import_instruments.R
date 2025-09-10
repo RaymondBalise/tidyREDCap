@@ -277,3 +277,64 @@ test_that("edge cases handle gracefully", {
   expect_true(all(multi_record_result$demographics$record_id %in% c(1, 3, 5)))
 })
 
+test_that("robust error handling works correctly", {
+  # Test malformed token error
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://bbmc.ouhsc.edu/redcap/api/",
+      "bad_token"
+    ),
+    "The token does not conform with the regex"
+  )
+  
+  # Test invalid token with correct format (403 error)
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://bbmc.ouhsc.edu/redcap/api/",
+      "9A81268476645C4E5F03428B8AC3AA7c"
+    ),
+    "API access denied. Check your token permissions."
+  )
+  
+  # Test network/hostname resolution error
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://nonexistent_redcap_server.com/api/",
+      "9A81268476645C4E5F03428B8AC3AA7B"
+    ),
+    "Could not resolve host"
+  )
+  
+  # Test 404 error with valid hostname but wrong path
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://httpbin.org/status/404",
+      "9A81268476645C4E5F03428B8AC3AA7B"
+    ),
+    "REDCap project not found. Check your URL."
+  )
+})
+
+test_that("error handling preserves list vs environment behavior", {
+  # Test that list mode throws errors
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://bbmc.ouhsc.edu/redcap/api/",
+      "bad_token",
+      return_list = TRUE
+    ),
+    "The token does not conform with the regex"
+  )
+  
+  # Test that environment mode also throws errors for invalid parameters
+  expect_error(
+    tidyREDCap::import_instruments(
+      "https://bbmc.ouhsc.edu/redcap/api/",
+      "bad_token",
+      return_list = FALSE
+    ),
+    "The token does not conform with the regex"
+  )
+})
+
+
