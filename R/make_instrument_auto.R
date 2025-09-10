@@ -58,9 +58,11 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
   instrument <- df[, c(first_col:last_col), drop = FALSE]
 
   # which records are all missing
-  allMissing <- apply(instrument, 1, function(x) {
-    all(is.na(x) | x == "")
-  })
+  allMissing <- rep(FALSE, nrow(instrument))
+  for (i in 1:nrow(instrument)) {
+    x <- instrument[i, ]
+    allMissing[i] <- all(is.na(x) | x == "")
+  }
 
   # the rows that are not all missing.
   if (drop_which_when == FALSE) {
