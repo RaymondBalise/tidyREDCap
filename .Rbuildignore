@@ -9,3 +9,4 @@
 ^\.travis\.yml$
 ^doc$
 ^Meta$
+^.github/
