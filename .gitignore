@@ -44,3 +44,7 @@ inst/doc
 **/.DS_Store
 doc
 Meta
+
+# pkgdown rendering
+^docs/
+^inst/docs/
