@@ -46,5 +46,5 @@ doc
 Meta
 
 # pkgdown rendering
-^docs/
-^inst/docs/
+docs/
+inst/docs/
