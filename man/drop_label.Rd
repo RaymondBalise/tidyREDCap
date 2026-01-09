@@ -2,20 +2,34 @@
 % Please edit documentation in R/make_instrument_auto.R
 \name{drop_label}
 \alias{drop_label}
-\title{Drop the label from a variable}
+\title{Drop the label from one or more variables}
 \usage{
-drop_label(df, x)
+drop_label(df, ...)
 }
 \arguments{
 \item{df}{the name of the data frame}
 
-\item{x}{the quoted name of the variable}
+\item{...}{Variable selection using tidyselect helpers (e.g., \code{contains()},
+\code{starts_with()}) or column names as symbols or strings}
 }
 \value{
-df
+df with labels removed from selected variables
 }
 \description{
-There is a reported issues with joins on data (without a reprex)
-that seem to be caused by the labels.  As a possible solution this can be
-used to drop labels.
+There is a reported issue with joins on data (without a reprex)
+that seem to be caused by the labels. As a possible solution this can be
+used to drop labels from one or more variables.
+}
+\examples{
+\dontrun{
+# Remove labels from a single variable
+df |> drop_label(employment)
+
+# Remove labels from multiple variables
+df |> drop_label(employment, marital_status)
+
+# Remove all demograhic labels using tidyselect helpers
+df |> drop_label(starts_with("dem_"))
+}
+
 }

@@ -23,15 +23,13 @@ While most people use the "Data Exports, Reports and Stats" Application built in
 
 We have used two R packages to access our REDCap projects,`redcapAPI` and `REDCapR`.  Unfortunately, `redcapAPI` is no longer being actively developed, and we have run into problems with it.  It had the lovely benefit of exporting variables, basically using the same variable names as you see in REDCap, then tagging the variables with the "labels" subjects viewed when completing the forms.
 
-that people taking REDCap surveys or viewing other forms see.  
-
 We have taken the labeling functionality and added it in tidyREDCap.
 
 ### Getting an API Token
 
 If your REDCap project has API access enabled, you will see it in the applications on the left side of the screen. 
 
-![](./key.jpg)
+![How to obtain an API key from the REDCap dashboard](./key.jpg)
 
 If you don't see that option, talk to your project leader or the REDCap system administrator.
 
@@ -104,7 +102,7 @@ rcon <- redcapAPI::redcapConnection(
 redcap <- redcapAPI::exportRecords(rcon)
 ```
 
-This includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). 
+This includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html). 
 
 
 If you are curious, when we made these help files, we saved the data using the `saveRDS()` function. 

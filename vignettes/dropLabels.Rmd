@@ -106,7 +106,7 @@ If you would like to see the labels on the data set `demographics`, you can use 
 View(demographics)
 ```
 
-![](./view_demog_w_labels_20230217.png){width=90%}
+![Demographics preview with labels](./view_demog_w_labels_20230217.png){width=90%}
 
 However, some functions do not work well with labeled variables. 
 ```{r skim-demo, error=TRUE}
@@ -121,7 +121,7 @@ So you need a way to drop the label off of a variable or to drop all the labels 
 You can drop the label from a single variable with the drop_label() function.  For example:
 
 ```{r}
-demographics_changed <- drop_label(demographics, "first_name")
+demographics_changed <- drop_label(demographics, "name_first")
 ```
 
 You can drop all the labels using the `drop_labels()` function.  For example:
