@@ -1,3 +1,9 @@
+# tidyREDCap 1.1.3 (CRAN release)
+
+* Package now depends on R >= 4.1.0 for use of pipe operator.
+* Fixed vignette URLs that were causing site redirection issues with automated CRAN checks.
+* Added alt text to vignette images.
+
 # tidyREDCap 1.1.2 (CRAN release)
 
 * Fix issues reported by CRAN with Linux and old R Windows (4.3.3) saying 
