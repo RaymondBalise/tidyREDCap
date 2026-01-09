@@ -34,7 +34,7 @@ redcap %>%
 It is desirable to have a concise table showing how often each option was chosen.
 
 ## Aside: Loading REDCap Data into R
-See the [Import All Instruments from a REDCap Project](../doc/importInstruments.html) and [Importing from REDCap](../doc/useAPI.html) vignettes for details/information.
+See the [Import All Instruments from a REDCap Project](./import_instruments.html) and [Importing from REDCap](./useAPI.html) vignettes for details/information.
 
 # The Solution
 

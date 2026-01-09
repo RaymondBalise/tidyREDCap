@@ -29,7 +29,7 @@ We have taken the labeling functionality and added it in tidyREDCap.
 
 If your REDCap project has API access enabled, you will see it in the applications on the left side of the screen. 
 
-![](./key.jpg)
+![How to obtain an API key from the REDCap dashboard](./key.jpg)
 
 If you don't see that option, talk to your project leader or the REDCap system administrator.
 

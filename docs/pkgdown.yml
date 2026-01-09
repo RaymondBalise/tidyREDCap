@@ -1,5 +1,5 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.6.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   dropLabels: dropLabels.html
@@ -9,5 +9,4 @@ articles:
   makeChooseOneTable: makeChooseOneTable.html
   makeInstrument: makeInstrument.html
   useAPI: useAPI.html
-last_built: 2023-05-29T16:22Z
-
+last_built: 2026-01-09T20:13Z

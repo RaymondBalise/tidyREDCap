@@ -31,7 +31,7 @@ p.caption {
 Suppose you have a REDCap project with many instruments; some instruments are administered in some visits but not in others. In that case, the export from REDCap will have empty cells for the visits in which the instrument was not used. For example, Figure 1 shows a study where subjects completed four instruments (Enrollment, NCI, GAD7, and Hamilton) at baseline. On days 1, 2, and 3, they completed only Hamilton. At the end of the study, they completed NCI and Hamilton. The export of the data for this subject will have five records (one for each visit), and each record will have a cell for every existing instrument. However,  the “NCI” record will only have values for the baseline and final visit and empty cells for the visits in between. On the other hand, there will be no empty spaces for the “Hamilton” record as it was completed in all the visits. It would be good to have a function that will export all the data from a project and produce one R table for each instrument. Those tables should remove the blank records. 
 \
 \
-![](./dashboard.jpg)
+![REDCap instrument status preview](./dashboard.jpg)
 <p class=caption id="fig1">
 Figure 1 </p>
 The same functionality should help deal with instruments that are potentially given repeatedly. Common examples include asking participants to fill out a form describing medical conditions for all their siblings or asking them to fill out a form for each side effect they experience while using a drug. In these cases, each participant may have zero or many records. Again, creating a table with all the records for these “repeated” instruments would be good.
@@ -61,10 +61,10 @@ The `import_instruments()` function can be given a URL and token for a REDCap pr
 
 After running the above code we get four tables from the REDCap project.
 
-![](./global.jpg)
+![RStudio Global Environment pane](./global.jpg)
 
 Notice that each repeat of the HAM-A is its own record.
 
-![](./hama.jpg)
+![HAM-A data preview using `View()`](./hama.jpg)
 
 If a person has only done the baseline assessment they will only have one record.
