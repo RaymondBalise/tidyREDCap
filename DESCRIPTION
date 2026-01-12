@@ -17,6 +17,13 @@ Authors@R:
         comment = c(ORCID = "0000-0003-1341-4555")
       ),
       person(
+        given = "Kyle",
+        family = "Grealis",
+        role = "aut",
+        email = "kxg679@miami.edu",
+        comment = c(ORCID = "0000-0002-9223-8854")
+      ),
+      person(
         given = "Anna",
         family = "Calderon",
         role = "aut",
@@ -45,11 +52,11 @@ Authors@R:
         comment = c(ORCID = "0000-0001-6241-2615")
       ),
       person(
-        given = "Kyle",
-        family = "Grealis",
-        role = "aut",
-        email = "kxg679@miami.edu",
-        comment = c(ORCID = "0000-0002-9223-8854")
+        given = "Daniel",
+        family = "Maya",
+        role = "ctb",
+        email = "dxh724@miami.edu",
+        comment = c(ORCID = "0000-0002-0164-7768")
       )
     )
 Description:

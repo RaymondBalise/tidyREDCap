@@ -32,7 +32,7 @@
 #' \dontrun{
 #' import_instruments(
 #'   "https://redcap.miami.edu/api/",
-#'   Sys.getenv("test_API_key")
+#'   keyring::key_get("test_API_key")
 #' )
 #' }
 import_instruments <- function(url, token, drop_blank = TRUE,

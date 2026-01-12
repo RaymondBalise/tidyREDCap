@@ -25,7 +25,7 @@ The `tidyREDCap` package creates data sets with labelled columns.
 ```{r eval=FALSE}
 tidyREDCap::import_instruments(
   url = "https://bbmc.ouhsc.edu/redcap/api/",
-  token = Sys.getenv("REDCapR_test")
+  token = keyring::key_get("REDCapR_test")
 )
 ```
 
@@ -106,7 +106,7 @@ If you would like to see the labels on the data set `demographics`, you can use 
 View(demographics)
 ```
 
-![Demographics preview with labels](./view_demog_w_labels_20230217.png){width=90%}
+![](./view_demog_w_labels_20230217.png){width=90% alt="Demographics preview with labels"}
 
 However, some functions do not work well with labeled variables. 
 ```{r skim-demo, error=TRUE}
@@ -118,7 +118,7 @@ So you need a way to drop the label off of a variable or to drop all the labels 
 
 # The Solution
 
-You can drop the label from a single variable with the drop_label() function.  For example:
+You can drop the label from a single variable with the `drop_label()` function.  For example:
 
 ```{r}
 demographics_changed <- drop_label(demographics, "name_first")

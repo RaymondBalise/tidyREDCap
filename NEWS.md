@@ -1,5 +1,6 @@
 # tidyREDCap 1.1.3 (CRAN release)
 
+* Update vignettes to suggest `keyring`.
 * Package now depends on R >= 4.1.0 for use of pipe operator.
 * Fixed vignette URLs that were causing site redirection issues with automated CRAN checks.
 * Added alt text to vignette images.
