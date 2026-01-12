@@ -1,0 +1,79 @@
+# Import All Instruments from a REDCap Project
+
+``` r
+library(tidyREDCap)
+```
+
+## The Problem
+
+Suppose you have a REDCap project with many instruments; some
+instruments are administered in some visits but not in others. In that
+case, the export from REDCap will have empty cells for the visits in
+which the instrument was not used. For example, Figure 1 shows a study
+where subjects completed four instruments (Enrollment, NCI, GAD7, and
+Hamilton) at baseline. On days 1, 2, and 3, they completed only
+Hamilton. At the end of the study, they completed NCI and Hamilton. The
+export of the data for this subject will have five records (one for each
+visit), and each record will have a cell for every existing instrument.
+However, the “NCI” record will only have values for the baseline and
+final visit and empty cells for the visits in between. On the other
+hand, there will be no empty spaces for the “Hamilton” record as it was
+completed in all the visits. It would be good to have a function that
+will export all the data from a project and produce one R table for each
+instrument. Those tables should remove the blank records.  
+  
+![REDCap instrument status preview](dashboard.jpg)
+
+Figure 1
+
+The same functionality should help deal with instruments that are
+potentially given repeatedly. Common examples include asking
+participants to fill out a form describing medical conditions for all
+their siblings or asking them to fill out a form for each side effect
+they experience while using a drug. In these cases, each participant may
+have zero or many records. Again, creating a table with all the records
+for these “repeated” instruments would be good.  
+  
+
+## The Solution
+
+``` r
+# Do not type your API token directly into your code
+tidyREDCap::import_instruments(
+  url = "https://redcap.miami.edu/api/",
+  token = "1A2B3CXXYYZZOOMMGOSHNOOOOX1Y2Z3" # This is BAD!
+)
+
+# A better way to do this is to read the API key saved in your operating system
+#   For instructions on saving your API key, see link below.
+tidyREDCap::import_instruments(
+  url = "https://redcap.miami.edu/api/", 
+  token = keyring::key_get("nacho_anxiety_key")  # This is BETTER!
+)
+```
+
+See the [Importing from
+REDCap](https://raymondbalise.github.io/tidyREDCap/articles/useAPI.md)
+vignette for details/information for saving your API key in a secure
+location.
+
+The
+[`import_instruments()`](https://raymondbalise.github.io/tidyREDCap/reference/import_instruments.md)
+function can be given a URL and token for a REDCap project, like the one
+created above and it will return one table for each instrument in a
+project. By default, the function will drop all empty records. For
+example, the above API call is pulling data from a REDCap project that
+has four instruments: Enrollment, the Nacho Craving Index (NCI), the
+Generalized Anxiety Disorder Assessment (GAD7), and the Hamilton Anxiety
+Scale (HAM-A).
+
+After running the above code we get four tables from the REDCap project.
+
+![RStudio Global Environment pane](global.jpg)
+
+Notice that each repeat of the HAM-A is its own record.
+
+![HAM-A data preview using \`View()\`](hama.jpg)
+
+If a person has only done the baseline assessment they will only have
+one record.
