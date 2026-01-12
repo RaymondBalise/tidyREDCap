@@ -31,7 +31,7 @@ We have taken the labeling functionality and added it in tidyREDCap.
 
 If your REDCap project has API access enabled, you will see it in the applications on the left side of the screen. 
 
-![](./key.jpg)
+![How to obtain an API key from the REDCap dashboard](./key.jpg)
 
 If you don't see that option, talk to your project leader or the REDCap system administrator.
 
@@ -104,7 +104,7 @@ rcon <- redcapAPI::redcapConnection(
 redcap <- redcapAPI::exportRecords(rcon)
 ```
 
-This includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/bit003_api-key-env-var.html). 
+This includes a call to `Sys.getenv()` to grab the key.  To learn more about working with APIs, look [here](https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html). 
 
 
 If you are curious, when we made these help files, we saved the data using the `saveRDS()` function. 
@@ -124,4 +124,4 @@ saveRDS(redcap, file = "redcap.rds")
 </br>
 
 ### Even Better Options
-If somebody gets access to the files on your machine, they could find and read your .Renviron file.  A more secure option is to use the r `keyring` package.  It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.).  Consider using it.  If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
+If somebody gets access to the files on your machine, they could find and read your .Renviron file. A more secure option is to use the r `keyring` package. It will store an encrypted copy of your API key in your machine's credential store (i.e., the "keychain" on macOS, the Credential Store on Windows, etc.). Consider using it. If you use it and your machine is stolen, it will buy you more time to find an internet connection, log into REDCap and change your API tokens (before the thief can access your data).
