@@ -57,7 +57,7 @@ If you do this, anybody who gets a copy of your code will be able to access your
 
 #### Better Options
 
-You can save your API keys into your operating system's built-in password manager (i.e., macOS Keychain, Windows Credential Manager, or the Secret Service API (GNOME Keyring/KWallet) on Linux). There are several packages available to do this. We recommend using either [`keyring`](https://keyring.r-lib.org/) or [`shelter`](https://cran.r-project.org/web/packages/shelter/index.html). `shelter` is a [solid choice](https://github.com/vubiostat/shelter?tab=readme-ov-file#differences-from-keyring) for users working with multiple operating systems. If you primarily work with one operating system, we recommend using `keyring`.
+You can save your API keys into your operating system's built-in password manager (i.e., macOS Keychain, Windows Credential Manager, or the Secret Service API (GNOME Keyring/KWallet) on Linux). There are several packages available to do this. We recommend using either [`keyring`](https://keyring.r-lib.org/) or [`shelter`](https://cran.r-project.org/package=shelter). `shelter` is a [solid choice](https://github.com/vubiostat/shelter?tab=readme-ov-file#differences-from-keyring) for users working with multiple operating systems. If you primarily work with one operating system, we recommend using `keyring`.
 
 ```r
 install.packages("pak")
