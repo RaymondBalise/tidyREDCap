@@ -24,7 +24,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/RaymondBalise/tidyREDCap/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/RaymondBalise/tidyREDCap/blob/tidyREDCap_v1.1.3/DESCRIPTION)
 
 Balise R, Odom G, Grealis K, Calderon A, Bouzoubaa L, DeFreitas W
 (2026). *tidyREDCap: Helper Functions for Working with 'REDCap' Data*. R
