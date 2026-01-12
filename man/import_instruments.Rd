@@ -45,7 +45,7 @@ project and returns a table for each instrument/form in the project.
 \dontrun{
 import_instruments(
   "https://redcap.miami.edu/api/",
-  Sys.getenv("test_API_key")
+  keyring::key_get("test_API_key")
 )
 }
 }

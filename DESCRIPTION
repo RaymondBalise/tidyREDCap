@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with 'REDCap' Data
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: 
     c(person(
         given = "Raymond",
@@ -15,6 +15,13 @@ Authors@R:
         role = "aut",
         email = "gabriel.odom@fiu.edu",
         comment = c(ORCID = "0000-0003-1341-4555")
+      ),
+      person(
+        given = "Kyle",
+        family = "Grealis",
+        role = "aut",
+        email = "kxg679@miami.edu",
+        comment = c(ORCID = "0000-0002-9223-8854")
       ),
       person(
         given = "Anna",
@@ -45,11 +52,11 @@ Authors@R:
         comment = c(ORCID = "0000-0001-6241-2615")
       ),
       person(
-        given = "Kyle",
-        family = "Grealis",
-        role = "aut",
-        email = "kxg679@miami.edu",
-        comment = c(ORCID = "0000-0002-9223-8854")
+        given = "Daniel",
+        family = "Maya",
+        role = "ctb",
+        email = "dxh724@miami.edu",
+        comment = c(ORCID = "0000-0002-0164-7768")
       )
     )
 Description:
@@ -58,8 +65,8 @@ Description:
     developed at Vanderbilt University.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.3.2
-Depends: R (>= 3.5.0)
+RoxygenNote: 7.3.3
+Depends: R (>= 4.1.0)
 Imports: 
     cli,
     dplyr,
@@ -82,6 +89,6 @@ Suggests:
     skimr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-URL: https://raymondbalise.github.io/tidyREDCap/index.html
+URL: https://raymondbalise.github.io/tidyREDCap/
 BugReports: https://github.com/RaymondBalise/tidyREDCap/issues
 Config/testthat/edition: 3

@@ -10,8 +10,15 @@ target <- structure(
   list(
     record_id = structure(
       c(1, 2, 3, 4, 5), 
+      # 01.12.2026: REDCapR >= 1.2.0 returns tibbles instead of data.frames.
+      # Tibbles handle attributes differently than data.frames, causing the 
+      # 'labelled' class and 'label' attribute to be stripped during data 
+      # processing. Removed these attributes from test fixture to match actual
+      # REDCapR output behavior in tibble format.
+      # See: https://github.com/OuhscBbmc/REDCapR/releases/tag/v1.2.0 (#415)
       label = "Study ID", 
-      class = c("labelled", "numeric")
+      # class = c("labelled", "numeric")
+      class = c("numeric")
     ), 
     name_first = structure(
       c(
