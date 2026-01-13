@@ -67,11 +67,7 @@ devtools::install_github("RaymondBalise/tidyREDCap")
 
 #### What is new on the development release?
 
-* 💥 NEW in Version 1.1.0.9000 💥 adds `make_yes_no()` function to convert
-  "checked" or "yes"-like answers to "Yes" and other answers to "No or Unknown".
-* 💥 NEW in Version 1.1.0.9000 💥 adds `make_yes_no_unknown()` function to 
-  convert "checked" or "yes"-like  answers to "Yes"", unchecked or "no"-like 
-  answers to "No" and other answers to "Unknown".
+* Nothing currently.
 
 
 ## What if I Find a Problem?
