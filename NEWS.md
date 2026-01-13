@@ -1,5 +1,10 @@
 # tidyREDCap 1.1.3 (CRAN release)
 
+* Updated `drop_label` now accepts multiple variables using `tidyselect` helpters.
+* Updated "Drop Labels from a Table" vignette to reflect new changes.
+
+# tidyREDCap 1.1.3 (CRAN release)
+
 * Update vignettes to suggest `keyring`.
 * Package now depends on R >= 4.1.0 for use of pipe operator.
 * Fixed vignette URLs that were causing site redirection issues with automated CRAN checks.

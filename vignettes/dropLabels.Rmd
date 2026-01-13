@@ -118,11 +118,27 @@ So you need a way to drop the label off of a variable or to drop all the labels 
 
 # The Solution
 
+## Drop a single label
+
 You can drop the label from a single variable with the `drop_label()` function.  For example:
 
 ```{r}
 demographics_changed <- drop_label(demographics, "name_first")
 ```
+
+## Drop multiple labels
+
+You can use `tidyselect` helper methods (i.e., `contains()` or `starts_with()`) to include more than one variable or list them. The following code produces the same result:
+
+```{r}
+demographics_changed_2 <- drop_label(demographics, contains("name"))
+# Same as:
+demographics_changed_3 <- drop_label(demographics, name_first, name_last)
+# Verifying:
+identical(demographics_changed_2, demographics_changed_3)
+```
+
+> NOTE: You do not need to enclose the variable names in quotations though the function still operates if you choose to.
 
 You can drop all the labels using the `drop_labels()` function.  For example:
 

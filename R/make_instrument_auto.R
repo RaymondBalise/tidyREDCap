@@ -13,19 +13,23 @@
 #' @export
 #'
 ## @examples
-make_instrument_auto <- function(df, drop_which_when = FALSE,
-                                 record_id = "record_id") {
+make_instrument_auto <- function(
+  df,
+  drop_which_when = FALSE,
+  record_id = "record_id"
+) {
   if (names(df)[1] != record_id) {
-    stop("
+    stop(
+      "
          The first variable in df must be `record_id`;
-         use option 'record_id=' to set the name of your custom id.", call. = FALSE)
+         use option 'record_id=' to set the name of your custom id.",
+      call. = FALSE
+    )
   }
-
 
   # Strip labels from REDCap created variables to prevent reported join (and
   #   perhaps pivot) issues on labeled variables.
   df <- drop_label(df, record_id)
-
 
   is_longitudinal <- any(names(df) == "redcap_event_name")
 
@@ -69,37 +73,49 @@ make_instrument_auto <- function(df, drop_which_when = FALSE,
     record_id_col <- which(colnames(df) == record_id)
     redcap_event_name_col <- which(colnames(df) == "redcap_event_name")
     record_repeat_inst_col <- which(colnames(df) == "redcap_repeat_instance")
-    
+
     if (is_longitudinal) {
-        # Select rows that have data with a repeat number     
-      if (is_repeated & !all(is.na(df[!allMissing,record_repeat_inst_col]))) {
-        return(df[!allMissing, c(
-          record_id_col,
-          redcap_event_name_col,
-          record_repeat_inst_col,
-          first_col:last_col
-        )])
+      # Select rows that have data with a repeat number
+      if (is_repeated & !all(is.na(df[!allMissing, record_repeat_inst_col]))) {
+        return(df[
+          !allMissing,
+          c(
+            record_id_col,
+            redcap_event_name_col,
+            record_repeat_inst_col,
+            first_col:last_col
+          )
+        ])
       } else {
         # Longitudinal not repeated instruments
-        return(df[!allMissing, c(
-          record_id_col,
-          redcap_event_name_col,
-          first_col:last_col
-        )])
+        return(df[
+          !allMissing,
+          c(
+            record_id_col,
+            redcap_event_name_col,
+            first_col:last_col
+          )
+        ])
       }
     } else {
-      # Select rows that have data with a repeat number   
-      if (is_repeated & !all(is.na(df[!allMissing,record_repeat_inst_col]))) {
-        return(df[!allMissing, c(
-          record_id_col,
-          record_repeat_inst_col,
-          first_col:last_col
-        )])
+      # Select rows that have data with a repeat number
+      if (is_repeated & !all(is.na(df[!allMissing, record_repeat_inst_col]))) {
+        return(df[
+          !allMissing,
+          c(
+            record_id_col,
+            record_repeat_inst_col,
+            first_col:last_col
+          )
+        ])
       } else {
-        return(df[!allMissing, c(
-          record_id_col,
-          first_col:last_col
-        )])
+        return(df[
+          !allMissing,
+          c(
+            record_id_col,
+            first_col:last_col
+          )
+        ])
       }
     }
   } else {
@@ -157,19 +173,44 @@ fix_class_bug <- function(df) {
 "fix_class_bug"
 
 
-#' Drop the label from a variable
-#' @description There is a reported issues with joins on data (without a reprex)
-#' that seem to be caused by the labels.  As a possible solution this can be
-#' used to drop labels.
+#' Drop the label from one or more variables
+#' @description There is a reported issue with joins on data (without a reprex)
+#' that seem to be caused by the labels. As a possible solution this can be
+#' used to drop labels from one or more variables.
 #'
 #' @param df the name of the data frame
-#' @param x the quoted name of the variable
+#' @param ... Variable selection using tidyselect helpers (e.g., `contains()`,
+#'   `starts_with()`) or column names as symbols or strings
+#'
+#' @examples
+#' \dontrun{
+#' # Remove labels from a single variable
+#' df |> drop_label(employment)
+#'
+#' # Remove labels from multiple variables
+#' df |> drop_label(employment, marital_status)
+#'
+#' # Remove all demograhic labels using tidyselect helpers
+#' df |> drop_label(starts_with("dem_"))
+#' }
 #'
 #' @export
 #'
-#'
-#' @return df
-drop_label <- function(df, x) {
-  attributes(df[, which(names(df) == x)]) <- NULL
-  df
+#' @return df with labels removed from selected variables
+drop_label <- function(df, ...) {
+  # Capture the variables using tidyselect.
+  # This captures the value(s) from `c(...)` and ensures it is handled as a
+  # single vector, allowing tidyselect `contains()`, `starts_with()`, etc for 
+  # identifying user-specified variables.
+  vars_idx <- tidyselect::eval_select(rlang::expr(c(...)), df)
+
+  # If no variables selected, return the dataframe as is
+  if (length(vars_idx) == 0) return(df)
+
+  # For each selected column, remove its attributes
+  for (col_idx in vars_idx) {
+    attributes(df[[col_idx]]) <- NULL
+  }
+
+  return(df)
 }
