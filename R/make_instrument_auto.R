@@ -174,9 +174,8 @@ fix_class_bug <- function(df) {
 
 
 #' Drop the label from one or more variables
-#' @description There is a reported issue with joins on data (without a reprex)
-#' that seem to be caused by the labels. As a possible solution this can be
-#' used to drop labels from one or more variables.
+#' @description Some functions don't work with labelled variables. As a solution, 
+#' this function can be used to drop labels from one or more variables.
 #'
 #' @param df the name of the data frame
 #' @param ... Variable selection using tidyselect helpers (e.g., `contains()`,
