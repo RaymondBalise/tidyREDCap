@@ -2,33 +2,35 @@
 % Please edit documentation in R/make_instrument_auto.R
 \name{drop_label}
 \alias{drop_label}
-\title{Drop the label from one or more variables}
+\title{Drop attributes/labels from variables or data frames}
 \usage{
-drop_label(df, ...)
+drop_label(x, ...)
 }
 \arguments{
-\item{df}{the name of the data frame}
+\item{x}{A data frame or a vector/column.}
 
-\item{...}{Variable selection using tidyselect helpers (e.g., \code{contains()},
-\code{starts_with()}) or column names as symbols or strings}
+\item{...}{When \code{x} is a data frame, select variables using tidyselect
+helpers (e.g., \code{contains()}, \code{starts_with()}) or unquoted names.
+Ignored when \code{x} is a vector.}
 }
 \value{
-df with labels removed from selected variables
+The modified data frame or vector with attributes removed.
 }
 \description{
 Some functions don't work with labelled variables. As a solution,
-this function can be used to drop labels from one or more variables.
+this function can be used to drop labels (and all other attributes) from
+one or more variables within a data frame, or from a vector directly.
 }
 \examples{
 \dontrun{
-# Remove labels from a single variable
-df |> drop_label(employment)
+# Dataset-level: Remove labels from specific variables
+df |> drop_label(employment, starts_with("dem_"))
 
-# Remove labels from multiple variables
-df |> drop_label(employment, marital_status)
+# Variable-level: Use inside mutate
+df |> mutate(name_first = drop_label(name_first))
 
-# Remove all demograhic labels using tidyselect helpers
-df |> drop_label(starts_with("dem_"))
+# Variable-level: Use with across()
+df |> mutate(across(c(age, income), drop_label))
 }
 
 }

@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(dplyr)
 ```
 
 ```{r setup}
@@ -85,6 +86,11 @@ demographics <- structure(
       label = "Age (years)",
       class = c("labelled", "numeric")
     ),
+    days = structure(
+      c(1, 2, 3, 4, 5),
+      label = "Days",
+      class = c("labelled", "numeric")
+    ),    
     sex = structure(
       c("Female", "Male", "Male", "Female", "Male"),
       label = "Gender",
@@ -108,10 +114,14 @@ View(demographics)
 
 ![](./view_demog_w_labels_20230217.png){width=90% alt="Demographics preview with labels"}
 
-However, some functions do not work well with labeled variables. 
-```{r skim-demo, error=TRUE}
-library(skimr)  # for the skim() function
-demographics |> skim()
+However, some functions do not work well with labeled variables. For example:
+
+![](./show_numbers.png){width=40% alt="Show two numeric variables with labels"}
+
+```{r show-error, error=TRUE}
+demographics |> 
+  rowwise() |> 
+  mutate(x = sum(c_across(c(age, days))))
 ```
 
 So you need a way to drop the label off of a variable or to drop all the labels from all the variables in a dataset.
@@ -122,15 +132,36 @@ So you need a way to drop the label off of a variable or to drop all the labels 
 
 You can drop the label from a single variable with the `drop_label()` function.  For example:
 
-```{r}
-demographics_changed <- drop_label(demographics, "name_first")
+```r
+new_demographics_table <- drop_label(demographics, "name_first")
+# Or
+new_demographics_table <- drop_label(demographics, name_first)
+# Or
+new_demographics_table <- demographics |> drop_label("name_first")
 ```
 
 ## Drop multiple labels
 
+If you need to drop labels from multiple variables, you can drop them individually or using helper methods (i.e., `across()`).
+
+```r
+demographics |> 
+  mutate(age = drop_label(age)) |> 
+  mutate(days = drop_label(days)) |> 
+  rowwise() |> 
+  mutate(x = sum(c_across(c(age, days))))
+# Or
+demographics |> 
+  mutate(across(c(age, days), drop_label)) |> 
+  rowwise() |> 
+  mutate(x = sum(c_across(c(age, days))))
+```
+
+![](./show_numbers_2.png){width=40% alt="Show three numeric variables without labels"}
+
 You can use `tidyselect` helper methods (i.e., `contains()` or `starts_with()`) to include more than one variable or list them. The following code produces the same result:
 
-```{r}
+```r
 demographics_changed_2 <- drop_label(demographics, contains("name"))
 # Same as:
 demographics_changed_3 <- drop_label(demographics, name_first, name_last)
@@ -138,14 +169,23 @@ demographics_changed_3 <- drop_label(demographics, name_first, name_last)
 identical(demographics_changed_2, demographics_changed_3)
 ```
 
-> NOTE: You do not need to enclose the variable names in quotations though the function still operates if you choose to.
+> NOTE: You do not normally need to enclose the variable names in quotations outside of `tidyselect` helpers (i.e., `contains()`) though the function still operates if you choose to.
+
+## Use inside a `mutate`
+
+You can now use `drop_label()` inside a `mutate` pipe like this:
+
+```r
+demographics_from_mutate <- demographics |> 
+  mutate(name_first = drop_label(name_first))
+# Or
+demographics_from_mutate <- demographics |> 
+  mutate(across(starts_with('name'), drop_label))
+```
 
 You can drop all the labels using the `drop_labels()` function.  For example:
 
 ```{r}
 demographics_without_labels <- drop_labels(demographics)
-
-demographics_without_labels |> 
-  skim()
 ```
 

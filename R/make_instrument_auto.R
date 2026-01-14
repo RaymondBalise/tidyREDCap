@@ -173,43 +173,49 @@ fix_class_bug <- function(df) {
 "fix_class_bug"
 
 
-#' Drop the label from one or more variables
+#' Drop attributes/labels from variables or data frames
+#' 
 #' @description Some functions don't work with labelled variables. As a solution, 
-#' this function can be used to drop labels from one or more variables.
+#' this function can be used to drop labels (and all other attributes) from 
+#' one or more variables within a data frame, or from a vector directly.
 #'
-#' @param df the name of the data frame
-#' @param ... Variable selection using tidyselect helpers (e.g., `contains()`,
-#'   `starts_with()`) or column names as symbols or strings
+#' @param x A data frame or a vector/column.
+#' @param ... When `x` is a data frame, select variables using tidyselect 
+#'   helpers (e.g., `contains()`, `starts_with()`) or unquoted names. 
+#'   Ignored when `x` is a vector.
+#'
+#' @return The modified data frame or vector with attributes removed.
 #'
 #' @examples
 #' \dontrun{
-#' # Remove labels from a single variable
-#' df |> drop_label(employment)
+#' # Dataset-level: Remove labels from specific variables
+#' df |> drop_label(employment, starts_with("dem_"))
 #'
-#' # Remove labels from multiple variables
-#' df |> drop_label(employment, marital_status)
-#'
-#' # Remove all demograhic labels using tidyselect helpers
-#' df |> drop_label(starts_with("dem_"))
+#' # Variable-level: Use inside mutate
+#' df |> mutate(name_first = drop_label(name_first))
+#' 
+#' # Variable-level: Use with across()
+#' df |> mutate(across(c(age, income), drop_label))
 #' }
 #'
 #' @export
-#'
-#' @return df with labels removed from selected variables
-drop_label <- function(df, ...) {
-  # Capture the variables using tidyselect.
-  # This captures the value(s) from `c(...)` and ensures it is handled as a
-  # single vector, allowing tidyselect `contains()`, `starts_with()`, etc for 
-  # identifying user-specified variables.
-  vars_idx <- tidyselect::eval_select(rlang::expr(c(...)), df)
-
-  # If no variables selected, return the dataframe as is
-  if (length(vars_idx) == 0) return(df)
-
-  # For each selected column, remove its attributes
-  for (col_idx in vars_idx) {
-    attributes(df[[col_idx]]) <- NULL
+drop_label <- function(x, ...) {
+  # 1. Dataset-level logic
+  if (is.data.frame(x)) {
+    vars_idx <- tidyselect::eval_select(rlang::expr(c(...)), x)
+    if (length(vars_idx) == 0) return(x)
+    
+    for (col_idx in vars_idx) {
+      attributes(x[[col_idx]]) <- NULL
+    }
+    return(x)
+  }
+  
+  # 2. Variable-level logic
+  if (is.character(substitute(x))) {
+    stop('It looks like you quoted your variable. The variable must be unquoted when used inside mutate().')
   }
 
-  return(df)
+  attributes(x) <- NULL
+  return(x)
 }
