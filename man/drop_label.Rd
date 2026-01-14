@@ -16,9 +16,8 @@ drop_label(df, ...)
 df with labels removed from selected variables
 }
 \description{
-There is a reported issue with joins on data (without a reprex)
-that seem to be caused by the labels. As a possible solution this can be
-used to drop labels from one or more variables.
+Some functions don't work with labelled variables. As a solution,
+this function can be used to drop labels from one or more variables.
 }
 \examples{
 \dontrun{
