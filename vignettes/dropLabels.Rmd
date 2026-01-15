@@ -183,9 +183,16 @@ demographics_from_mutate <- demographics |>
   mutate(across(starts_with('name'), drop_label))
 ```
 
-You can drop all the labels using the `drop_labels()` function.  For example:
+## Drop all dataset variable labels
+
+You can drop all the labels using the `drop_label()` function.  For example:
+
+```{r}
+demographics_without_labels <- drop_label(demographics)
+```
+
+> NOTE: tidyREDCap versions prior to 1.2.0 handled dropping all variable labels from a dataset by using `drop_labels()`. This function can still be used, but we added a polite message to use `drop_label()` instead.
 
 ```{r}
 demographics_without_labels <- drop_labels(demographics)
 ```
-
