@@ -2,20 +2,35 @@
 % Please edit documentation in R/make_instrument_auto.R
 \name{drop_label}
 \alias{drop_label}
-\title{Drop the label from a variable}
+\title{Drop attributes/labels from variables or data frames}
 \usage{
-drop_label(df, x)
+drop_label(x, ...)
 }
 \arguments{
-\item{df}{the name of the data frame}
+\item{x}{A data frame or a vector/column.}
 
-\item{x}{the quoted name of the variable}
+\item{...}{When \code{x} is a data frame, select variables using tidyselect
+helpers (e.g., \code{contains()}, \code{starts_with()}) or unquoted names.
+Ignored when \code{x} is a vector.}
 }
 \value{
-df
+The modified data frame or vector with attributes removed.
 }
 \description{
-There is a reported issues with joins on data (without a reprex)
-that seem to be caused by the labels.  As a possible solution this can be
-used to drop labels.
+Some functions don't work with labelled variables. As a solution,
+this function can be used to drop labels (and all other attributes) from
+one or more variables within a data frame, or from a vector directly.
+}
+\examples{
+\dontrun{
+# Dataset-level: Remove labels from specific variables
+df |> drop_label(employment, starts_with("dem_"))
+
+# Variable-level: Use inside mutate
+df |> mutate(name_first = drop_label(name_first))
+
+# Variable-level: Use with across()
+df |> mutate(across(c(age, income), drop_label))
+}
+
 }

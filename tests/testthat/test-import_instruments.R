@@ -16,7 +16,7 @@ target <- structure(
       # processing. Removed these attributes from test fixture to match actual
       # REDCapR output behavior in tibble format.
       # See: https://github.com/OuhscBbmc/REDCapR/releases/tag/v1.2.0 (#415)
-      label = "Study ID", 
+      # label = "Study ID", 
       # class = c("labelled", "numeric")
       class = c("numeric")
     ), 

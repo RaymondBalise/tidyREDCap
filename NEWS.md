@@ -1,3 +1,8 @@
+# tidyREDCap 1.2.0 (CRAN release)
+
+* Updated `drop_label()` now accepts multiple variables and uses `tidyselect` helpers.
+* Updated "Drop Labels from a Table" vignette to reflect new changes.
+
 # tidyREDCap 1.1.3 (CRAN release)
 
 * Update vignettes to suggest `keyring`.
