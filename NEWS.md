@@ -1,3 +1,17 @@
+# tidyREDCap 2.0.0 (CRAN release)
+
+## Breaking changes
+
+* `drop_label()` now preserves variable class attributes (e.g., `"character"`, `"numeric"`) while removing only the `"labelled"` class and `label` attribute. Previous versions removed all attributes.
+
+## New features
+
+* `drop_label()` now can be used on data frames. When called without arguments on a data frame, it removes labels from all variables.
+
+## Fixes/Changes
+
+* `drop_labels()` is now deprecated in favor of `drop_label()`. Use `drop_label()` without arguments to remove labels from all variables.
+
 # tidyREDCap 1.2.0 (CRAN release)
 
 * Updated `drop_label()` now accepts multiple variables and uses `tidyselect` helpers.

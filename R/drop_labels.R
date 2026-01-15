@@ -5,6 +5,7 @@
 #' @param df The data frame with column labels that you want to drop
 #' 
 #' @importFrom purrr map_df
+#' @importFrom lifecycle deprecate_soft
 #'
 #' @export
 #' 
@@ -17,6 +18,13 @@
 #'   skimr::skim()
 #' }
 drop_labels <- function(df) {
+  # Add deprecate message:
+  lifecycle::deprecate_soft(
+    when = "1.2.0",  # Version when this was deprecated
+    what = "drop_labels()",
+    with = "drop_label()"
+  )
+
   old_class_char <- class(df)
   if (!("data.frame" %in% old_class_char)) {
     stop("df must have class data.frame", call. = FALSE)
