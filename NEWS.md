@@ -1,4 +1,4 @@
-# tidyREDCap 2.0.0 (CRAN release)
+# tidyREDCap 2.0.0
 
 ## Breaking changes
 
@@ -12,7 +12,7 @@
 
 * `drop_labels()` is now deprecated in favor of `drop_label()`. Use `drop_label()` without arguments to remove labels from all variables.
 
-# tidyREDCap 1.2.0 (CRAN release)
+# tidyREDCap 1.2.0
 
 * Updated `drop_label()` now accepts multiple variables and uses `tidyselect` helpers.
 * Updated "Drop Labels from a Table" vignette to reflect new changes.
