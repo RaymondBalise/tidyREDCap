@@ -67,7 +67,7 @@ devtools::install_github("RaymondBalise/tidyREDCap")
 
 #### What is new on the development release?
 
-* Nothing currently.
+* Improvements to `drop_label()`.
 
 
 ## What if I Find a Problem?
