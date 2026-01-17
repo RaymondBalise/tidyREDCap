@@ -2,6 +2,7 @@
 #' @param data The name of the data set
 #' @param aVariable The name of the variable
 #' @importFrom stringr str_sub str_locate
+#' @importFrom labelVector get_label
 #' @return A variable's response label without the repeated text from of a
 #'     _choose all that apply_ question
 #'
@@ -9,11 +10,15 @@
 #'
 ## @examples
 getLabel2 <- function(data, aVariable) {
+  
+  #browser()
   # pull the variable out and into a data frame
   variable <- {{ data }}[aVariable]
   
   # grab the label attribute off the variable inside of the DF
-  theLab <- dropTags(attributes(variable[, aVariable])$label)
+  #theLab <- dropTags(attributes(variable[, aVariable])$label)
+  theLab <- dropTags(labelVector::get_label(variable[, aVariable]))
+  
   
   # check for the delimiters to mark the label for the answer
   # the manual export uses = or from the api uses : 
