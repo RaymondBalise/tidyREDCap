@@ -1,3 +1,9 @@
+# tidyREDCap 2.1.0
+
+## Fixes/Changes
+
+* Add checks on invalid API key
+
 # tidyREDCap 2.0.0
 
 ## Breaking changes

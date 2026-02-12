@@ -42,10 +42,10 @@ This function takes the url and key for a REDCap
 project and returns a table for each instrument/form in the project.
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 import_instruments(
   "https://redcap.miami.edu/api/",
   keyring::key_get("test_API_key")
 )
-}
+\dontshow{\}) # examplesIf}
 }

@@ -26,19 +26,35 @@
 #' @importFrom tidyselect ends_with
 #' @importFrom labelVector set_label
 #' @importFrom cli cli_inform
+#' @importFrom keyring key_get
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' import_instruments(
 #'   "https://redcap.miami.edu/api/",
 #'   keyring::key_get("test_API_key")
 #' )
-#' }
 import_instruments <- function(url, token, drop_blank = TRUE,
                                record_id = "record_id",
                                first_record_id = 1,
                                envir = .GlobalEnv) {
+  
+  cli::cli_inform("Looking for your project.... ")
+  
+  found_it <-
+    suppressWarnings(
+      suppressMessages(
+        check_project_exists(url, token)
+      )
+    )
+
+  if (!found_it) {
+    cli::cli_abort(c(
+      "I can't find the website.",
+      "i" = "Make sure the url ends in \"redcap/api/\" and that your API token is still valid."
+    ))
+  }
+  
   cli::cli_inform("Reading metadata about your project.... ")
 
   ds_instrument <-
@@ -208,10 +224,8 @@ import_instruments <- function(url, token, drop_blank = TRUE,
 #'
 #' @return vector text changed
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' relabel("What ingredients do you currently crave? (choice=Chips)")
-#' }
 #'
 relabel <- function(x) {
   # regular expression (Reg Ex) to get content inside () after choice=
@@ -225,4 +239,25 @@ relabel <- function(x) {
       gsub(re, "\\1", stringr::str_extract(x, re)) # content inside of Reg Ex
     )
   )
+}
+
+#' check_project_exists
+#'
+#' @description This checks to make sure that the user specified a valid project
+#'
+#' @param redcap_uri the REDCap URL
+#' @param token the API key
+#'
+#' @returns logical
+#' 
+#' @importFrom REDCapR redcap_project_info_read 
+#' 
+#' @export
+check_project_exists <- function(redcap_uri, token) {
+  result <- REDCapR::redcap_project_info_read(
+    redcap_uri = redcap_uri,
+    token      = token,
+    verbose    = FALSE
+  )
+  result$success
 }

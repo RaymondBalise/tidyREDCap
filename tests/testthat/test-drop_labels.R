@@ -120,26 +120,34 @@ target <- structure(
 
 ######  Tests  ######
 
+
 test_that("column attributes are removed for df", {
   expect_equal(
-    drop_labels(original), target
+    suppressWarnings(drop_labels(original)), target
   )
+})
+
+test_that("expect deprecation message ", {
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_warning(drop_labels(original), class = "lifecycle_warning_deprecated")
 })
 
 test_that("data frames are required input", {
-  expect_error(
-    drop_labels(original[, 2]), "df must have class data.frame"
-  )
+ expect_error(
+   # need to suppress the depreciation message
+   suppressWarnings(drop_labels(original[, 2])), "df must have class data.frame"
+ )
 })
 
 test_that("df classes are preserved after labels are dropped ", {
-  expect_equal(
-    original |>
-      dplyr::select("name_first") |>
-      drop_labels() |>
-      class(),
-    "data.frame"
-  )
+ expect_equal(
+   original |>
+     dplyr::select("name_first") |>
+     # need to suppress the depreciation message
+     suppressWarnings(drop_labels()) |>
+     class(),
+   "data.frame"
+ )
 })
 
 

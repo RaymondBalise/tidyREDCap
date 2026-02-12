@@ -1,6 +1,6 @@
 Package: tidyREDCap
 Title: Helper Functions for Working with 'REDCap' Data
-Version: 2.0.0
+Version: 2.1.0
 Authors@R: 
     c(person(
         given = "Raymond",
@@ -71,6 +71,7 @@ Imports:
     cli,
     dplyr,
     janitor,
+    keyring,
     labelVector,
     lifecycle,
     magrittr,
