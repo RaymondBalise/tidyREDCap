@@ -7,10 +7,12 @@
 ## New features
 
 * `drop_label()` now can be used on data frames. When called without arguments on a data frame, it removes labels from all variables.
+* `import_instruments()` now provides clearer error messages when REDCap API calls fail, helping users diagnose API URL, token permission, or network connectivity issues.
 
 ## Fixes/Changes
 
 * `drop_labels()` is now deprecated in favor of `drop_label()`. Use `drop_label()` without arguments to remove labels from all variables.
+* Fixed CRAN test failures on Linux/Windows platforms by making `import_instruments()` tests skip gracefully when external REDCap API is not accessible. Tests now check API availability before running and skip automatically when the API cannot be reached.
 
 # tidyREDCap 1.2.0
 

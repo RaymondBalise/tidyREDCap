@@ -49,3 +49,6 @@ Meta
 docs/
 inst/docs/
 
+# AI
+.claude/
+CLAUDE.md

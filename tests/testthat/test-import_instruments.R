@@ -1,9 +1,22 @@
-# Tests for the import_instruments against the import from data returned by 
+# Tests for the import_instruments against the import from data returned by
 #   REDCapR
-# Ray Balise and Gabriel Odom 
+# Ray Balise and Gabriel Odom
 # 2023-02-10
 
 library(testthat)
+
+######  API Availability Check  ######
+api_available <- tryCatch({
+  suppressWarnings(
+    suppressMessages({
+      result <- REDCapR::redcap_metadata_read(
+        redcap_uri = "https://bbmc.ouhsc.edu/redcap/api/",
+        token = "9A81268476645C4E5F03428B8AC3AA7B"
+      )
+      result$success && nrow(result$data) > 0
+    })
+  )
+}, error = function(e) FALSE)
 
 ######  Setup  ######
 target <- structure(
@@ -80,16 +93,20 @@ target <- structure(
   row.names = c(NA, -5L), class = c("tbl_df", "tbl", "data.frame")
 )
 
-# creates demographics
-tidyREDCap::import_instruments(
-  "https://bbmc.ouhsc.edu/redcap/api/",
-  "9A81268476645C4E5F03428B8AC3AA7B"
-)
+# creates demographics (only if API is available)
+if (api_available) {
+  tidyREDCap::import_instruments(
+    "https://bbmc.ouhsc.edu/redcap/api/",
+    "9A81268476645C4E5F03428B8AC3AA7B"
+  )
+}
 
 
 
 ######  Tests  ######
 test_that("import works", {
+  skip_if(!api_available, "External REDCap API not accessible")
+
   if (packageVersion("REDCapR") <= "1.1.0") {
     expect_equal(demographics, target, ignore_attr = TRUE)
   } else {
