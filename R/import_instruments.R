@@ -41,12 +41,32 @@ import_instruments <- function(url, token, drop_blank = TRUE,
                                envir = .GlobalEnv) {
   cli::cli_inform("Reading metadata about your project.... ")
 
-  ds_instrument <-
+  metadata_result <-
     suppressWarnings(
       suppressMessages(
-        REDCapR::redcap_metadata_read(redcap_uri = url, token = token)$data
+        REDCapR::redcap_metadata_read(redcap_uri = url, token = token)
       )
     )
+
+  if (!metadata_result$success || nrow(metadata_result$data) == 0) {
+    error_parts <- c(
+      "Failed to read project metadata from REDCap API.",
+      i = "Please check:",
+      i = "  - Your API URL is correct",
+      i = "  - Your API token has proper permissions",
+      i = "  - Your network can reach the REDCap server"
+    )
+    if (!is.null(metadata_result$status_message) &&
+          nzchar(metadata_result$status_message)) {
+      error_parts <- c(
+        error_parts,
+        i = paste("API response:", metadata_result$status_message)
+      )
+    }
+    rlang::abort(error_parts)
+  }
+
+  ds_instrument <- metadata_result$data
 
   # Get names of instruments
   form_name <- NULL
