@@ -1,4 +1,4 @@
-# tidyREDCap 2.1.0
+# tidyREDCap 2.1.0 (CRAN release)
 
 ## Fixes/Changes
 
